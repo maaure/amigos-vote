@@ -1,103 +1,102 @@
-import Image from "next/image";
+"use client";
+import FriendCard from "@/components/FriendCard";
+import { Button } from "@/components/ui/button";
+import { Calendar, Handshake, Sparkles } from "lucide-react";
+import { useState } from "react";
+
+export const mockFriends = [
+  { id: 1, name: "Alcides" },
+  { id: 2, name: "Ana Maria" },
+  { id: 3, name: "Chaves" },
+  { id: 4, name: "Daniela" },
+  { id: 5, name: "Débora" },
+  { id: 6, name: "Diogo" },
+  { id: 7, name: "Ester" },
+  { id: 8, name: "Felipe Alves" },
+  { id: 9, name: "Fernanda" },
+  { id: 10, name: "Gaby" },
+  { id: 11, name: "Isis" },
+  { id: 12, name: "Israel" },
+  { id: 13, name: "LG" },
+  { id: 14, name: "Luna" },
+  { id: 15, name: "Radmila" },
+  { id: 16, name: "Ramon" },
+  { id: 17, name: "Renan" },
+  { id: 18, name: "Robson" },
+  { id: 19, name: "Rômulo" },
+  { id: 20, name: "Ryan" },
+  { id: 21, name: "Lívia Rachel" },
+  { id: 22, name: "Lívia Saturno" },
+  { id: 23, name: "Hilquias" },
+  { id: 24, name: "Igor" },
+  { id: 25, name: "Manrick" },
+  { id: 26, name: "Maure" },
+];
+
+const MAX_SELECTED_FRIENDS = 3;
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [selected, setSelected] = useState<number[]>([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  function handleClickOnFriendCard(id: number) {
+    const isSelected = selected.includes(id);
+
+    if (isSelected) {
+      setSelected((prev) => prev.filter((p) => p !== id));
+      return;
+    }
+
+    if (selected.length < MAX_SELECTED_FRIENDS) {
+      setSelected((prev) => [...prev, id]);
+    }
+  }
+
+  return (
+    <div className="max-w-4xl m-auto space-y-8">
+      <header className="w-full flex flex-col items-center gap-4">
+        <div className="flex items-center justify-center gap-4 mt-6 text-sky-500 ">
+          <Sparkles />
+          <h1 className="text-4xl text-center font-bold">Votação do dia</h1>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <p className="text-muted-foreground">
+          Todo dia uma nova pergunta de caráter duvidoso. Escolha quais dos amigos que você acha que se encaixam melhor.
+        </p>
+      </header>
+
+      <Button variant="outline">
+        <Calendar /> Ver Resultados de Ontem
+      </Button>
+
+      <section className="border p-8 rounded-2xl space-y-2 text-center bg-secondary">
+        <p className="text-sky-500 font-bold">Pergunta do dia • #22</p>
+        <h2 className="text-2xl">
+          Todos nós seremos executados em uma semana, você só pode escolher três de nós para sobreviver, quem você
+          escolhe?
+        </h2>
+      </section>
+
+      <section className="space-y-8">
+        <div className="flex justify-center gap-2">
+          <Handshake /> <h3>Selecione até 3 amigos</h3>
+        </div>
+
+        <div className="gap-4 grid grid-cols-4">
+          {mockFriends.map((friend) => (
+            <FriendCard
+              name={friend.name}
+              onClick={() => handleClickOnFriendCard(friend.id)}
+              key={friend.id}
+              selected={!!selected.find((s) => s === friend.id)}
+            />
+          ))}
+        </div>
+      </section>
+
+      <div className="flex flex-row-reverse p-4 m-4">
+        <Button variant="submit" size="lg">
+          Enviar meus votos!
+        </Button>
+      </div>
     </div>
   );
 }
