@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Amigos Vote
 
-## Getting Started
+É uma aplicação web para votação entre amigos, permitindo que usuários criem questões e votem em diferentes opções. Inspirado pelo jogo "Amigos de M*rda".
 
-First, run the development server:
+## Lista de Tecnologias
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Next.js
+- React
+- TypeScript
+- Supabase
+- pnpm (ou npm/yarn)
+- ESLint & Prettier
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Funcionalidades
+- Cadastro de questões para votação
+- Votação entre amigos
+- Visualização dos resultados
+- Integração com Supabase para persistência dos dados
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Como rodar o projeto localmente
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Pré-requisitos:**
+   - Node.js (recomendado v18 ou superior)
+   - pnpm (ou npm/yarn)
+   - Conta e projeto no [Supabase](https://supabase.com/)
 
-## Learn More
+2. **Clone o repositório:**
+   ```bash
+   git clone <URL_DO_REPOSITORIO>
+   cd ladeiros-vote
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+3. **Instale as dependências:**
+   ```bash
+   pnpm install
+   # ou npm install
+   # ou yarn install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. **Configure as variáveis de ambiente:**
+   - Crie um arquivo `.env.local` na raiz do projeto.
+   - Adicione as variáveis do Supabase:
+     ```env
+     NEXT_PUBLIC_SUPABASE_URL=<sua-url-do-supabase>
+     NEXT_PUBLIC_SUPABASE_ANON_KEY=<sua-anon-key>
+     ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. **Inicie o servidor de desenvolvimento:**
+   ```bash
+   pnpm dev
+   # ou npm run dev
+   # ou yarn dev
+   ```
+   O projeto estará disponível em `http://localhost:3000`.
 
-## Deploy on Vercel
+## Como contribuir
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Fork o repositório** e crie uma branch para sua feature ou correção:
+   ```bash
+   git checkout -b minha-feature
+   ```
+2. **Implemente sua alteração** seguindo o padrão do projeto.
+3. **Faça commits claros e objetivos.**
+4. **Abra um Pull Request** explicando sua contribuição.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Recomendações
+- Siga o padrão de código definido pelo ESLint e Prettier.
+- Adicione testes se possível.
+- Descreva bem o que foi alterado no PR.
+
+## Licença
+Este projeto está sob a licença MIT.
+
+---
+Dúvidas ou sugestões? Abra uma issue!

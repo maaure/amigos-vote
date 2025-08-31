@@ -2,50 +2,26 @@
 
 import { Handshake } from "lucide-react";
 import FriendCard from "../FriendCard";
-import { Button } from "../../../../components/ui/button";
+import { Button } from "../../../../../components/ui/button";
 import { useState } from "react";
 import { useVoteStore } from "@/store/vote";
 import { useDailyVote } from "@/hooks/useDailyVotes";
 import AlreadyVoted from "../AlreadyVoted";
-
-export const mockFriends = [
-  { id: 1, name: "Alcides" },
-  { id: 2, name: "Ana Maria" },
-  { id: 3, name: "Chaves" },
-  { id: 4, name: "Daniela" },
-  { id: 5, name: "Débora" },
-  { id: 6, name: "Diogo" },
-  { id: 7, name: "Ester" },
-  { id: 8, name: "Felipe Alves" },
-  { id: 9, name: "Fernanda" },
-  { id: 10, name: "Gaby" },
-  { id: 11, name: "Isis" },
-  { id: 12, name: "Israel" },
-  { id: 13, name: "LG" },
-  { id: 14, name: "Luna" },
-  { id: 15, name: "Radmila" },
-  { id: 16, name: "Ramon" },
-  { id: 17, name: "Renan" },
-  { id: 18, name: "Robson" },
-  { id: 19, name: "Rômulo" },
-  { id: 20, name: "Ryan" },
-  { id: 21, name: "Lívia Rachel" },
-  { id: 22, name: "Lívia Saturno" },
-  { id: 23, name: "Hilquias" },
-  { id: 24, name: "Igor" },
-  { id: 25, name: "Manrick" },
-  { id: 26, name: "Maure" },
-];
+import { useVoteService } from "@/services/hooks/useVoteService";
+import { useGetFriendsQuery } from "@/services/hooks/useGetFriendsQuery";
 
 const MAX_SELECTED_FRIENDS = 3;
 
 export default function VotingSection() {
-  const [selected, setSelected] = useState<number[]>([]);
-  const { hasVotedToday, isPending } = useDailyVote();
+  const [selected, setSelected] = useState<string[]>([]);
+  const { hasVotedToday, isPending: isHasVotedTodayLoading } = useDailyVote();
+
+  const { mutate: submitVote } = useVoteService();
+  const { data: friends, isPending: isFriendsLoading } = useGetFriendsQuery();
 
   const setVotedToday = useVoteStore((state) => state.setVotedToday);
 
-  function handleClickOnFriendCard(id: number) {
+  function handleClickOnFriendCard(id: string) {
     const isSelected = selected.includes(id);
 
     if (isSelected) {
@@ -59,10 +35,14 @@ export default function VotingSection() {
   }
 
   function handleVote() {
-    setVotedToday();
+    // setVotedToday();
+    submitVote({
+      friends_ids: selected.map((s) => String(s)),
+      question_id: "teste",
+    });
   }
 
-  if (isPending) {
+  if (isHasVotedTodayLoading || isFriendsLoading) {
     return "Loading...";
   }
 
@@ -83,11 +63,12 @@ export default function VotingSection() {
         </div>
 
         <div className="gap-4 grid grid-cols-4">
-          {mockFriends.map((friend) => (
+          {friends?.map((friend) => (
             <FriendCard
               name={friend.name}
               onClick={() => handleClickOnFriendCard(friend.id)}
               key={friend.id}
+              img={friend.url_pic}
               selected={!!selected.find((s) => s === friend.id)}
             />
           ))}
