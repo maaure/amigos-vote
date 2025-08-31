@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import VotingSection from "@/components/VotingSection";
+import VotingSection from "@/app/(home)/_components/VotingSection";
 import { Calendar, Sparkles } from "lucide-react";
 
 export default function Home() {

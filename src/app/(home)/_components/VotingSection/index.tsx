@@ -2,8 +2,11 @@
 
 import { Handshake } from "lucide-react";
 import FriendCard from "../FriendCard";
-import { Button } from "../ui/button";
+import { Button } from "../../../../components/ui/button";
 import { useState } from "react";
+import { useVoteStore } from "@/store/vote";
+import { useDailyVote } from "@/hooks/useDailyVotes";
+import AlreadyVoted from "../AlreadyVoted";
 
 export const mockFriends = [
   { id: 1, name: "Alcides" },
@@ -38,6 +41,9 @@ const MAX_SELECTED_FRIENDS = 3;
 
 export default function VotingSection() {
   const [selected, setSelected] = useState<number[]>([]);
+  const { hasVotedToday, isPending } = useDailyVote();
+
+  const setVotedToday = useVoteStore((state) => state.setVotedToday);
 
   function handleClickOnFriendCard(id: number) {
     const isSelected = selected.includes(id);
@@ -51,6 +57,19 @@ export default function VotingSection() {
       setSelected((prev) => [...prev, id]);
     }
   }
+
+  function handleVote() {
+    setVotedToday();
+  }
+
+  if (isPending) {
+    return "Loading...";
+  }
+
+  if (hasVotedToday) {
+    return <AlreadyVoted />;
+  }
+
   return (
     <>
       <section className="space-y-8">
@@ -76,7 +95,7 @@ export default function VotingSection() {
       </section>
 
       <div className="flex flex-row-reverse p-4 m-4">
-        <Button variant="submit" size="lg">
+        <Button variant="submit" size="lg" onClick={handleVote}>
           Enviar meus votos!
         </Button>
       </div>
