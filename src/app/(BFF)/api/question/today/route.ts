@@ -12,7 +12,7 @@ export async function GET() {
     }
 
     return NextResponse.json(data[0], { status: 200 });
-  } catch (err) {
+  } catch {
     return NextResponse.json({ message: "Erro interno do servidor ao buscar amigos." }, { status: 500 });
   }
 }

@@ -17,7 +17,7 @@ export default function Home() {
       </header>
 
       <Button variant="outline">
-        <Calendar /> Ver Resultados de Ontem
+        <Calendar /> Ver Últimos Resultados
       </Button>
 
       <QuestionArea />

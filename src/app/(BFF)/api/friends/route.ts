@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const supabase = await createClient();
   try {
-    const { data, error } = await supabase.from("friends").select("*");
+    const { data, error } = await supabase.from("friends").select("*").order("name");
     if (error) {
       return NextResponse.json({ message: `Erro ao buscar amigos: ${error.message}` }, { status: 500 });
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Handshake } from "lucide-react";
+import { Handshake, Loader2Icon } from "lucide-react";
 import FriendCard from "../FriendCard";
 import { Button } from "../../../../../components/ui/button";
 import { useMemo, useState } from "react";
@@ -10,13 +10,15 @@ import AlreadyVoted from "../AlreadyVoted";
 import { useVoteService } from "@/data/hooks/useVoteService";
 import { useGetFriendsQuery } from "@/data/hooks/useGetFriendsQuery";
 import { useGetTodayQuestionQuery } from "@/data/hooks/useGetTodayQuestionQuery";
+import VotingSectionLoading from "./loading";
+import { toast } from "sonner";
 
 export default function VotingSection() {
   const [selected, setSelected] = useState<string[]>([]);
   const { hasVotedToday, isPending: isHasVotedTodayLoading } = useDailyVote();
   const [maxSelectedFriends, setMaxSelectedFriends] = useState<number>(1);
 
-  const { mutate: submitVote } = useVoteService();
+  const { mutate: submitVote, isPending: isVoteLoading } = useVoteService();
   const { data: friends, isPending: isFriendsLoading } = useGetFriendsQuery();
   const { data: question } = useGetTodayQuestionQuery();
 
@@ -36,25 +38,27 @@ export default function VotingSection() {
   }
 
   function handleVote() {
-    if (!question) {
-      console.error("Houve um erro, tente novamente!");
-      return;
+    try {
+      submitVote({
+        friends_ids: selected.map((s) => String(s)),
+        question_id: question!.id,
+      });
+      toast.success("Voto salvo com sucesso!");
+    } catch {
+      toast.error("Houve um erro, tente novamente.");
+    } finally {
+      setVotedToday();
     }
-
-    submitVote({
-      friends_ids: selected.map((s) => String(s)),
-      question_id: question?.id,
-    });
-
-    setVotedToday();
   }
 
   useMemo(() => {
     setMaxSelectedFriends(question?.allowed_votes ?? 1);
   }, [question]);
 
+  const isButtonEnabled = selected.length === maxSelectedFriends && !!question;
+
   if (isHasVotedTodayLoading || isFriendsLoading) {
-    return "Loading...";
+    return <VotingSectionLoading />;
   }
 
   if (hasVotedToday) {
@@ -66,29 +70,34 @@ export default function VotingSection() {
       <section className="space-y-8">
         <div className="flex flex-col items-center">
           <span className="inline-flex gap-2">
-            <Handshake /> <h3>{`Selecione até ${maxSelectedFriends} amigos`}</h3>
+            <Handshake /> <h3>{`Selecione ${maxSelectedFriends} ${maxSelectedFriends > 1 ? "amigos" : "amigo"}`}</h3>
           </span>
           <span className="text-muted-foreground">
-            {selected.length}/{maxSelectedFriends} selecionados
+            {selected.length}/{maxSelectedFriends} {maxSelectedFriends > 1 ? "selecionados" : "selecionado"}
           </span>
         </div>
 
         <div className="gap-4 grid grid-cols-4">
-          {friends?.map((friend) => (
-            <FriendCard
-              name={friend.name}
-              onClick={() => handleClickOnFriendCard(friend.id)}
-              key={friend.id}
-              img={friend.url_pic}
-              selected={!!selected.find((s) => s === friend.id)}
-            />
-          ))}
+          {friends?.map((friend) => {
+            const isSelected = selected.includes(friend.id);
+            const isDisabled = !isSelected && selected.length >= maxSelectedFriends;
+            return (
+              <FriendCard
+                name={friend.name}
+                onClick={() => handleClickOnFriendCard(friend.id)}
+                key={friend.id}
+                img={friend.url_pic}
+                selected={isSelected}
+                disabled={isDisabled}
+              />
+            );
+          })}
         </div>
       </section>
 
       <div className="flex flex-row-reverse p-4 m-4">
-        <Button variant="submit" size="lg" onClick={handleVote}>
-          Enviar meus votos!
+        <Button variant="submit" disabled={!isButtonEnabled || isVoteLoading} size="lg" onClick={handleVote}>
+          {isVoteLoading ? <Loader2Icon className="animate-spin" /> : "Enviar meus votos!"}
         </Button>
       </div>
     </>
