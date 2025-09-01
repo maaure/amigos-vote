@@ -12,3 +12,12 @@ export function getInitials(name: string): string {
     .map((word) => word[0].toUpperCase())
     .join("");
 }
+
+export function formatDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}

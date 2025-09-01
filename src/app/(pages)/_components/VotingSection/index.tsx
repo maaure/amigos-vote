@@ -2,7 +2,6 @@
 
 import { Handshake, Loader2Icon } from "lucide-react";
 import FriendCard from "../FriendCard";
-import { Button } from "../../../../../components/ui/button";
 import { useMemo, useState } from "react";
 import { useVoteStore } from "@/store/vote";
 import { useDailyVote } from "@/hooks/useDailyVotes";
@@ -12,6 +11,7 @@ import { useGetFriendsQuery } from "@/data/hooks/useGetFriendsQuery";
 import { useGetTodayQuestionQuery } from "@/data/hooks/useGetTodayQuestionQuery";
 import VotingSectionLoading from "./loading";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 export default function VotingSection() {
   const [selected, setSelected] = useState<string[]>([]);

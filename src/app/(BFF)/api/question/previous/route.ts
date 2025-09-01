@@ -5,13 +5,13 @@ export async function GET() {
   const supabase = await createClient();
   try {
     const todayDate = new Date().toISOString().split("T")[0];
-    const { data, error } = await supabase.from("questions").select("*").eq("day", todayDate);
+    const { data, error } = await supabase.from("questions").select("*").lte("day", todayDate);
 
     if (error) {
-      return NextResponse.json({ message: `Erro ao buscar questoes: ${error.message}` }, { status: 500 });
+      throw new Error(error.message);
     }
 
-    return NextResponse.json(data[0], { status: 200 });
+    return NextResponse.json(data, { status: 200 });
   } catch {
     return NextResponse.json({ message: "Erro interno do servidor ao buscar amigos." }, { status: 500 });
   }

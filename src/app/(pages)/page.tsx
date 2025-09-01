@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
-import VotingSection from "@/app/(pages)/(home)/_components/VotingSection";
+import VotingSection from "@/app/(pages)/_components/VotingSection";
 import { Calendar, Sparkles } from "lucide-react";
 import QuestionArea from "./_components/QuestionArea";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -16,9 +17,11 @@ export default function Home() {
         </p>
       </header>
 
-      <Button variant="outline">
-        <Calendar /> Ver Últimos Resultados
-      </Button>
+      <Link href="/previous">
+        <Button variant="outline">
+          <Calendar /> Ver Últimos Resultados
+        </Button>
+      </Link>
 
       <QuestionArea />
 
