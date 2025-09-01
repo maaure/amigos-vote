@@ -1,4 +1,4 @@
-import { createClient } from "@/services/supabase/client";
+import { createClient } from "@/data/supabase/client";
 import { NextRequest, NextResponse } from "next/server";
 
 interface VoteData {

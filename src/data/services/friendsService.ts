@@ -10,9 +10,3 @@ export interface FriendResponse {
 export function getFriends(): Promise<FriendResponse[]> {
   return apiClient.get("/api/friends");
 }
-
-export const voteService = {
-  submitVotes: (): Promise<FriendResponse[]> => {
-    return apiClient.get("/api/friends");
-  },
-};

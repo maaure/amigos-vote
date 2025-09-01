@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import VotingSection from "@/app/(pages)/(home)/_components/VotingSection";
 import { Calendar, Sparkles } from "lucide-react";
+import QuestionArea from "./_components/QuestionArea";
 
 export default function Home() {
   return (
@@ -19,13 +20,7 @@ export default function Home() {
         <Calendar /> Ver Resultados de Ontem
       </Button>
 
-      <section className="border p-8 rounded-2xl space-y-2 text-center bg-secondary">
-        <p className="text-sky-500 font-bold">Pergunta do dia • #22</p>
-        <h2 className="text-2xl">
-          Todos nós seremos executados em uma semana, você só pode escolher três de nós para sobreviver, quem você
-          escolhe?
-        </h2>
-      </section>
+      <QuestionArea />
 
       <VotingSection />
     </div>

@@ -3,21 +3,22 @@
 import { Handshake } from "lucide-react";
 import FriendCard from "../FriendCard";
 import { Button } from "../../../../../components/ui/button";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useVoteStore } from "@/store/vote";
 import { useDailyVote } from "@/hooks/useDailyVotes";
 import AlreadyVoted from "../AlreadyVoted";
-import { useVoteService } from "@/services/hooks/useVoteService";
-import { useGetFriendsQuery } from "@/services/hooks/useGetFriendsQuery";
-
-const MAX_SELECTED_FRIENDS = 3;
+import { useVoteService } from "@/data/hooks/useVoteService";
+import { useGetFriendsQuery } from "@/data/hooks/useGetFriendsQuery";
+import { useGetTodayQuestionQuery } from "@/data/hooks/useGetTodayQuestionQuery";
 
 export default function VotingSection() {
   const [selected, setSelected] = useState<string[]>([]);
   const { hasVotedToday, isPending: isHasVotedTodayLoading } = useDailyVote();
+  const [maxSelectedFriends, setMaxSelectedFriends] = useState<number>(1);
 
   const { mutate: submitVote } = useVoteService();
   const { data: friends, isPending: isFriendsLoading } = useGetFriendsQuery();
+  const { data: question } = useGetTodayQuestionQuery();
 
   const setVotedToday = useVoteStore((state) => state.setVotedToday);
 
@@ -29,18 +30,28 @@ export default function VotingSection() {
       return;
     }
 
-    if (selected.length < MAX_SELECTED_FRIENDS) {
+    if (selected.length < maxSelectedFriends) {
       setSelected((prev) => [...prev, id]);
     }
   }
 
   function handleVote() {
-    // setVotedToday();
+    if (!question) {
+      console.error("Houve um erro, tente novamente!");
+      return;
+    }
+
     submitVote({
       friends_ids: selected.map((s) => String(s)),
-      question_id: "teste",
+      question_id: question?.id,
     });
+
+    setVotedToday();
   }
+
+  useMemo(() => {
+    setMaxSelectedFriends(question?.allowed_votes ?? 1);
+  }, [question]);
 
   if (isHasVotedTodayLoading || isFriendsLoading) {
     return "Loading...";
@@ -55,10 +66,10 @@ export default function VotingSection() {
       <section className="space-y-8">
         <div className="flex flex-col items-center">
           <span className="inline-flex gap-2">
-            <Handshake /> <h3>Selecione até 3 amigos</h3>
+            <Handshake /> <h3>{`Selecione até ${maxSelectedFriends} amigos`}</h3>
           </span>
           <span className="text-muted-foreground">
-            {selected.length}/{MAX_SELECTED_FRIENDS} selecionados
+            {selected.length}/{maxSelectedFriends} selecionados
           </span>
         </div>
 
