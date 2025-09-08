@@ -3,6 +3,7 @@ import VotingSection from "@/app/(pages)/_components/VotingSection";
 import { Calendar, Sparkles } from "lucide-react";
 import QuestionArea from "./_components/QuestionArea";
 import Link from "next/link";
+import Timer from "./_components/Timer";
 
 export default function Home() {
   return (
@@ -17,11 +18,15 @@ export default function Home() {
         </p>
       </header>
 
-      <Link href="/previous" className="ml-4">
-        <Button variant="outline">
-          <Calendar /> Ver Últimos Resultados
-        </Button>
-      </Link>
+      <div className="flex justify-between items-center mx-4">
+        <Link href="/previous">
+          <Button variant="outline">
+            <Calendar /> Ver Últimos Resultados
+          </Button>
+        </Link>
+
+        <Timer />
+      </div>
 
       <QuestionArea />
 
