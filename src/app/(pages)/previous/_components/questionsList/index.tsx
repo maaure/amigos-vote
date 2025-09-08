@@ -31,7 +31,7 @@ export default function QuestionsList() {
             </p>
             <ArrowRight />
           </DialogTrigger>
-          <DialogContent className="max-h-[80vh]">
+          <DialogContent className="max-h-[80vh] min-w-fit">
             <DialogHeader>
               <DialogTitle>Resultados</DialogTitle>
               <DialogDescription>{question.text}</DialogDescription>

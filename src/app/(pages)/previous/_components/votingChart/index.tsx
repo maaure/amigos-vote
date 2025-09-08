@@ -40,7 +40,7 @@ export function VotingChart({ id }: VotingChartProps) {
   });
 
   return (
-    <ChartContainer config={chartConfig} className="mx-auto aspect-square min-h-[500px]">
+    <ChartContainer config={chartConfig} className="mx-auto aspect-square lg:min-h-[500px] min-h-[80vw]">
       <PieChart>
         <ChartTooltip content={<ChartTooltipContent nameKey="votes" hideLabel />} />
         <Pie
@@ -51,7 +51,7 @@ export function VotingChart({ id }: VotingChartProps) {
           activeShape={({ outerRadius = 0, ...props }: PieSectorDataItem) => (
             <Sector {...props} outerRadius={outerRadius + 10} />
           )}
-          isAnimationActive={false}
+          animationDuration={250}
         >
           <LabelList dataKey="friend" position="insideTop" offset={8} className="fill-foreground" fontSize={12} />
         </Pie>
