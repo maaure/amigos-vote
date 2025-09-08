@@ -27,7 +27,7 @@ export function VotingChart({ id }: VotingChartProps) {
   const results =
     data?.results?.map((item, idx) => ({
       ...item,
-      fill: `var(--chart-${(idx + 1) % 10})`,
+      fill: `var(--chart-${idx < 10 ? (idx % 10) + 1 : 10})`,
     })) ?? [];
 
   const chartConfig: ChartConfig = {};
