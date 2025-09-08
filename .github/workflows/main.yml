@@ -1,0 +1,18 @@
+name: Select Daily Question
+
+on:
+  schedule:
+    - cron: '0 0 * * *' 
+  workflow_dispatch: 
+
+jobs:
+  select-question:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Select Daily Question API
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET_KEY }}" \
+            https://yourdomain.com/api/select-daily-question
+        env:
+          CRON_SECRET_KEY: ${{ secrets.CRON_SECRET_KEY }}
