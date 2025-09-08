@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="max-w-4xl m-auto space-y-8">
+    <div className="max-w-4xl m-auto flex flex-col gap-6">
       <header className="w-full flex flex-col items-center gap-4">
         <div className="flex items-center justify-center gap-4 mt-6 text-sky-500 ">
           <Sparkles />
