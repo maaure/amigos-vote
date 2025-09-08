@@ -2,8 +2,8 @@ name: Select Daily Question
 
 on:
   schedule:
-    - cron: '0 0 * * *' 
-  workflow_dispatch: 
+    - cron: "0 0 * * *"
+  workflow_dispatch:
 
 jobs:
   select-question:
@@ -13,6 +13,6 @@ jobs:
         run: |
           curl -X POST \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET_KEY }}" \
-            https://yourdomain.com/api/select-daily-question
+           https://ladeiros-vote.vercel.app/api/question/rotation
         env:
           CRON_SECRET_KEY: ${{ secrets.CRON_SECRET_KEY }}

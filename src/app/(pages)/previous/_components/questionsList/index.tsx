@@ -27,7 +27,7 @@ export default function QuestionsList() {
         <Dialog key={question.id}>
           <DialogTrigger className="w-full p-4 flex justify-between transition-colors hover:bg-secondary hover:text-sky-500 cursor-pointer">
             <p>
-              {formatDate(question.day)} - <span className="font-semibold">{question.text}</span>
+              {formatDate(question.published_when)} - <span className="font-semibold">{question.text}</span>
             </p>
             <ArrowRight />
           </DialogTrigger>

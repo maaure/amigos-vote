@@ -4,7 +4,7 @@ interface QuestionResponse {
   id: string;
   text: string;
   allowed_votes: number;
-  day: string;
+  published_when: string;
 }
 
 interface ResultsResponse {

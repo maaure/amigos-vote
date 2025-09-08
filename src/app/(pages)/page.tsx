@@ -12,12 +12,12 @@ export default function Home() {
           <Sparkles />
           <h1 className="text-4xl text-center font-bold">Votação do dia</h1>
         </div>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground px-4 text-center">
           Todo dia uma nova pergunta de caráter duvidoso. Escolha quais dos amigos que você acha que se encaixam melhor.
         </p>
       </header>
 
-      <Link href="/previous">
+      <Link href="/previous" className="ml-4">
         <Button variant="outline">
           <Calendar /> Ver Últimos Resultados
         </Button>
