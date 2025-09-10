@@ -39,11 +39,13 @@
 
 4. **Configure as variáveis de ambiente:**
    - Crie um arquivo `.env.local` na raiz do projeto.
-   - Adicione as variáveis do Supabase:
+   - Adicione as variáveis do Supabase e a chave de autenticação para rotinas automáticas:
      ```env
      NEXT_PUBLIC_SUPABASE_URL=<sua-url-do-supabase>
      NEXT_PUBLIC_SUPABASE_ANON_KEY=<sua-anon-key>
+     CRON_SECRET_KEY=<sua-cron-key>
      ```
+   - `CRON_SECRET_KEY` é utilizada para autenticar rotinas automáticas (cron jobs) do projeto, garantindo que apenas chamadas autorizadas possam executar tarefas agendadas. Você pode gerar sua key da forma que preferir, só garanta que a key usada no secret do job seja *a mesma* usada no .env da sua instancia do projeto.
 
 5. **Inicie o servidor de desenvolvimento:**
    ```bash
@@ -52,6 +54,10 @@
    # ou yarn dev
    ```
    O projeto estará disponível em `http://localhost:3000`.
+
+6. **Configure o banco de dados:**
+   - Execute o arquivo `.db/migrate.sql` no seu banco PostgreSQL do Supabase para instalar as tabelas, índices e funções necessárias.
+   - Você pode rodar o script usando o SQL Editor do Supabase ou qualquer ferramenta de administração PostgreSQL.
 
 ## Como contribuir
 
