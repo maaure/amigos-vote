@@ -10,7 +10,7 @@ export async function GET() {
       .from("questions")
       .select("*")
       .not("published_when", "is", null)
-      .lt("published_when", today)
+      // .lt("published_when", today)
       .order("published_when", { ascending: false });
 
     if (error) {
