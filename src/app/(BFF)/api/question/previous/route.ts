@@ -10,7 +10,7 @@ export async function GET() {
       .from("questions")
       .select("*")
       .not("published_when", "is", null)
-      // .lt("published_when", today)
+      .lt("published_when", today)
       .order("published_when", { ascending: false });
 
     if (error) {
@@ -19,6 +19,9 @@ export async function GET() {
 
     return NextResponse.json(data, { status: 200 });
   } catch {
-    return NextResponse.json({ message: "Erro interno do servidor ao buscar amigos." }, { status: 500 });
+    return NextResponse.json(
+      { message: "Erro interno do servidor ao buscar amigos." },
+      { status: 500 }
+    );
   }
 }
