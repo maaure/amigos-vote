@@ -4,7 +4,7 @@ export interface FriendResponse {
   id: string;
   created_at: string;
   name: string;
-  url_pic: string;
+  urlPic: string;
 }
 
 export function getFriends(): Promise<FriendResponse[]> {
