@@ -56,8 +56,13 @@
    O projeto estará disponível em `http://localhost:3000`.
 
 6. **Configure o banco de dados:**
-   - Execute o arquivo `.db/migrate.sql` no seu banco PostgreSQL do Supabase para instalar as tabelas, índices e funções necessárias.
-   - Você pode rodar o script usando o SQL Editor do Supabase ou qualquer ferramenta de administração PostgreSQL.
+   - Após subir a aplicação (localmente ou via Docker), aplique as tabelas do banco de dados rodando:
+
+   ```sh
+   make migrate
+   ```
+
+   - Esse comando executa a geração e aplicação das migrations usando o Drizzle ORM.
 
 ## Como contribuir
 
