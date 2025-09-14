@@ -86,7 +86,7 @@ export default function VotingSection() {
                 name={friend.name}
                 onClick={() => handleClickOnFriendCard(friend.id)}
                 key={friend.id}
-                img={friend.url_pic}
+                img={friend.urlPic}
                 selected={isSelected}
                 disabled={isDisabled}
               />
