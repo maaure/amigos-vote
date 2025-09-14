@@ -1,0 +1,40 @@
+services:
+  next-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: inimigo-app
+    ports:
+      - "3000:3000"
+    networks:
+      - inimigo-net
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env.local
+
+  db:
+    image: postgres:15-alpine
+    container_name: inimigo-db
+    ports:
+      - "5432:5432"
+    networks:
+      - inimigo-net
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env.local
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  inimigo-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
