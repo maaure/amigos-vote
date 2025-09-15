@@ -1,23 +1,7 @@
 import { db } from "@/db";
 import { groups } from "@/db/schema";
+import { GroupSchemaIn, GroupSchemaOut } from "@/types/groups";
 import { eq } from "drizzle-orm";
-
-interface GroupSchemaIn {
-  name: string;
-  description?: string;
-  accessCode: string;
-  createdBy: string;
-}
-
-interface GroupSchemaOut {
-  id: string;
-  createdAt: Date;
-  createdBy: string;
-  name: string;
-  description: string | null;
-  accessCode: string;
-  membersCount: number;
-}
 
 export const GroupsRepository = {
   /**
