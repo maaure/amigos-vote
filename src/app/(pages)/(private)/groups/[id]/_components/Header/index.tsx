@@ -21,7 +21,7 @@ export default function Header() {
     <div className="flex items-center justify-between">
       <div className="flex items-center space-x-4">
         <Avatar className="w-12 h-12">
-          <AvatarImage src={session.data?.user?.image ?? undefined} />
+          <AvatarImage src={session.data?.user?.urlPic ?? undefined} />
           <AvatarFallback>
             {session.data?.user?.name
               ?.split(" ")
@@ -30,7 +30,9 @@ export default function Header() {
           </AvatarFallback>
         </Avatar>
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Olá, {session.data?.user?.name?.split(" ")[0]}!</h1>
+          <h1 className="text-2xl font-bold text-foreground">
+            Olá, {session.data?.user?.name?.split(" ")[0]}!
+          </h1>
           <p className="text-muted-foreground">Seus grupos de amigos</p>
         </div>
       </div>
