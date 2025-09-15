@@ -40,6 +40,7 @@ COPY --from=build --chown=inimigos:inimigos /app/.next ./.next
 COPY --from=build --chown=inimigos:inimigos /app/public ./public
 COPY --from=build --chown=inimigos:inimigos /app/drizzle.config.ts ./drizzle.config.ts
 COPY --from=build --chown=inimigos:inimigos /app/src ./src
+COPY --from=build --chown=inimigos:inimigos /app/.db ./.db
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store,uid=1001,gid=1001 \
     pnpm install --frozen-lockfile --production

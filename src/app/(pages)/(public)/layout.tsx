@@ -10,7 +10,6 @@ export default function PublicLayout({
 }>) {
   const { status } = useSession();
 
-  console.log(status);
   if (status === "loading") return <>Loading...</>;
   if (status === "authenticated") redirect("/groups");
 

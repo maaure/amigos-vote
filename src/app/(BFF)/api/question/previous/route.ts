@@ -7,7 +7,7 @@ export async function GET() {
     return NextResponse.json(data, { status: 200 });
   } catch {
     return NextResponse.json(
-      { message: "Erro interno do servidor ao buscar amigos." },
+      { message: "Erro interno do servidor ao buscar questões anteriores." },
       { status: 500 }
     );
   }

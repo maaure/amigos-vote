@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fira_Code, Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AppProviders from "@/providers/AppProviders";
 

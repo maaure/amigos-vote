@@ -19,7 +19,11 @@ const EXISTING_GROUPS = [
 export default function JoinGroup() {
   const [isLoading, setIsLoading] = useState(false);
   const [isJoined, setIsJoined] = useState(true);
-  const [joinedGroup, setJoinedGroup] = useState<any>({ id: "id-temporario", name: "Grupo", memberCount: 3 });
+  const [joinedGroup, setJoinedGroup] = useState({
+    id: "id-temporario",
+    name: "Grupo",
+    memberCount: 3,
+  });
   const [groupCode, setGroupCode] = useState("");
 
   if (isJoined && joinedGroup) {
@@ -40,7 +44,8 @@ export default function JoinGroup() {
                 <p className="text-muted-foreground">{joinedGroup.memberCount} membros</p>
                 <div className="bg-accent/10 border border-accent/20 rounded-lg p-4">
                   <p className="text-sm text-accent-foreground">
-                    🎉 Agora você pode participar das perguntas diárias e ver o que seus amigos pensam uns dos outros!
+                    🎉 Agora você pode participar das perguntas diárias e ver o que seus amigos
+                    pensam uns dos outros!
                   </p>
                 </div>
               </div>
@@ -90,7 +95,9 @@ export default function JoinGroup() {
                   className="text-center text-lg font-mono tracking-wider"
                   maxLength={10}
                 />
-                <p className="text-xs text-muted-foreground">O código tem geralmente 6 caracteres</p>
+                <p className="text-xs text-muted-foreground">
+                  O código tem geralmente 6 caracteres
+                </p>
               </div>
 
               <div className="bg-muted/50 border border-border rounded-lg p-4 text-sm space-y-2">
