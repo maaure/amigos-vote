@@ -29,13 +29,13 @@ export async function POST(request: NextRequest) {
     const { name, description } = body;
     const createdBy = session.user.id;
 
-    let data;
+    let newGroup;
     let attempts = 0;
 
     while (attempts < 5) {
       const accessCode = generateAccessCode(6);
       try {
-        data = await GroupsRepository.create({
+        newGroup = await GroupsRepository.create({
           name,
           description,
           accessCode,
@@ -51,14 +51,19 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    if (!data) {
+    if (!newGroup) {
       return NextResponse.json(
         { error: "Não foi possível gerar um código de acesso único." },
         { status: 500 }
       );
     }
 
-    return NextResponse.json({ message: "Grupo criado com sucesso.", data }, { status: 201 });
+    await GroupParticipationRepository.addMember(newGroup?.id, createdBy);
+
+    return NextResponse.json(
+      { message: "Grupo criado com sucesso.", data: newGroup },
+      { status: 201 }
+    );
   } catch (err) {
     console.error("Erro ao criar grupo:", err);
     return NextResponse.json(
