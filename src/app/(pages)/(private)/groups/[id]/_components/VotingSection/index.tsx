@@ -1,6 +1,6 @@
 "use client";
 
-import { Handshake, Loader2Icon } from "lucide-react";
+import { Handshake, Loader2Icon, Send } from "lucide-react";
 import FriendCard from "../FriendCard";
 import { useMemo, useState } from "react";
 import { useVoteStore } from "@/store/vote";
@@ -95,9 +95,31 @@ export default function VotingSection() {
         </div>
       </section>
 
-      <div className="flex flex-row-reverse p-4 m-4">
-        <Button variant="submit" disabled={!isButtonEnabled || isVoteLoading} size="lg" onClick={handleVote}>
-          {isVoteLoading ? <Loader2Icon className="animate-spin" /> : "Enviar meus votos!"}
+      <div className="flex justify-center">
+        <Button
+          variant="submit"
+          disabled={!isButtonEnabled || isVoteLoading}
+          size="lg"
+          onClick={handleVote}
+          className="mx-auto min-w-[200px]"
+        >
+          {isVoteLoading ? (
+            <Loader2Icon className="animate-spin" />
+          ) : (
+            <>
+              <Send /> Enviar Resposta
+            </>
+          )}
+        </Button>
+      </div>
+
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 border-t border-border">
+        <Button variant="ghost" className="flex items-center space-x-2 min-w-[180px]">
+          <span>💡 Sugerir Pergunta</span>
+        </Button>
+
+        <Button variant="ghost" className="flex items-center space-x-2 min-w-[180px]">
+          <span>🗳️ Votar Pergunta de Amanhã</span>
         </Button>
       </div>
     </>
