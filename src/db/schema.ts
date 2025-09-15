@@ -23,7 +23,7 @@ export const friends = pgTable("friends", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   name: text("name").notNull(),
   urlPic: text("url_pic"),
-  githubId: text("github_id"),
+  githubId: text("github_id").unique(),
 });
 
 export const votes = pgTable("vote", {
