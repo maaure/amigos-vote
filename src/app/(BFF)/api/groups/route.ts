@@ -92,5 +92,5 @@ export async function GET() {
   }
   const friendId = session.user.id;
   const groups = await GroupParticipationRepository.getGroupsForMember(friendId);
-  return NextResponse.json({ groups }, { status: 200 });
+  return NextResponse.json(groups, { status: 200 });
 }

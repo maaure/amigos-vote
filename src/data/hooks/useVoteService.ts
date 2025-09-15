@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { voteService } from "@/data/services/voteService";
+import { voteService } from "@/data/services/vote.service";
 
 export const useVoteService = () => {
   return useMutation({

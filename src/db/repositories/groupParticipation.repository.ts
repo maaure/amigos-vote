@@ -1,5 +1,6 @@
 import { db } from "@/db";
 import { groupParticipation, groups } from "@/db/schema";
+import { GroupSchemaOut } from "@/types/groups";
 import { eq, and } from "drizzle-orm";
 
 export const GroupParticipationRepository = {
@@ -23,19 +24,19 @@ export const GroupParticipationRepository = {
   /**
    * Retorna todos os grupos que o usuário é membro.
    */
-  getGroupsForMember: async (friendId: string) => {
-    const participations = await db
+  getGroupsForMember: async (friendId: string): Promise<GroupSchemaOut[]> => {
+    return await db
       .select({
         id: groups.id,
         name: groups.name,
         description: groups.description,
-        memberCount: groups.membersCount,
-        code: groups.accessCode,
+        membersCount: groups.membersCount,
+        accessCode: groups.accessCode,
+        createdAt: groups.createdAt,
+        createdBy: groups.createdBy,
       })
       .from(groupParticipation)
       .innerJoin(groups, eq(groupParticipation.group, groups.id))
       .where(eq(groupParticipation.user, friendId));
-
-    return { groups: participations };
   },
 };
