@@ -29,23 +29,29 @@ export const friends = pgTable("friends", {
 export const votes = pgTable("vote", {
   id: uuid("id").defaultRandom().primaryKey(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  friendId: uuid("friend_id").references(() => friends.id, {
-    onUpdate: "cascade",
-    onDelete: "cascade",
-  }),
-  questionId: uuid("question_id").references(() => questions.id, {
-    onUpdate: "cascade",
-    onDelete: "cascade",
-  }),
+  friendId: uuid("friend_id")
+    .references(() => friends.id, {
+      onUpdate: "cascade",
+      onDelete: "cascade",
+    })
+    .notNull(),
+  questionId: uuid("question_id")
+    .references(() => questions.id, {
+      onUpdate: "cascade",
+      onDelete: "cascade",
+    })
+    .notNull(),
 });
 
 export const groups = pgTable("group", {
   id: uuid("id").defaultRandom().primaryKey(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  createdBy: uuid("created_by").references(() => friends.id, {
-    onUpdate: "cascade",
-    onDelete: "cascade",
-  }),
+  createdBy: uuid("created_by")
+    .references(() => friends.id, {
+      onUpdate: "cascade",
+      onDelete: "cascade",
+    })
+    .notNull(),
   name: text("name").notNull(),
   description: text("description"),
   accessCode: text("access_code").notNull().unique(),
@@ -54,12 +60,16 @@ export const groups = pgTable("group", {
 
 export const groupParticipation = pgTable("groupParticipation", {
   id: uuid("id").defaultRandom().primaryKey(),
-  user: uuid("friend_id").references(() => friends.id, {
-    onUpdate: "cascade",
-    onDelete: "cascade",
-  }),
-  group: uuid("group_id").references(() => groups.id, {
-    onUpdate: "cascade",
-    onDelete: "cascade",
-  }),
+  user: uuid("friend_id")
+    .references(() => friends.id, {
+      onUpdate: "cascade",
+      onDelete: "cascade",
+    })
+    .notNull(),
+  group: uuid("group_id")
+    .references(() => groups.id, {
+      onUpdate: "cascade",
+      onDelete: "cascade",
+    })
+    .notNull(),
 });
