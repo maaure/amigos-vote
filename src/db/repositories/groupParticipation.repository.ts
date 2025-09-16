@@ -26,7 +26,7 @@ export const GroupParticipationRepository = {
         .set({ membersCount: sql`${groups.membersCount} + 1` })
         .where(eq(groups.id, groupId));
 
-      return await tx
+      const [data] = await tx
         .select({
           id: groups.id,
           name: groups.name,
@@ -39,6 +39,8 @@ export const GroupParticipationRepository = {
         .from(groups)
         .where(eq(groups.id, groupId))
         .limit(1);
+
+      return data;
     });
   },
 

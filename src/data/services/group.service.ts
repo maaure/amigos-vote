@@ -5,7 +5,10 @@ export const GroupService = {
   newGroup: (payload: GroupPayload): Promise<NewGroupResponse> => {
     return apiClient.post("/api/groups", payload);
   },
-  getGroups(): Promise<GroupSchemaOut[]> {
+  getGroups: (): Promise<GroupSchemaOut[]> => {
     return apiClient.get("/api/groups");
+  },
+  joinGroup: (accessCode: string): Promise<NewGroupResponse> => {
+    return apiClient.post(`/api/groups/${accessCode}/member`);
   },
 };

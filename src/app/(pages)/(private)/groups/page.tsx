@@ -25,11 +25,7 @@ const Groups = () => {
             </Button>
           </Link>
           <Link href="/groups/join" className="block">
-            <Button
-              variant="outline"
-              onClick={() => redirect("/entrar-grupo")}
-              className="flex items-center space-x-2"
-            >
+            <Button variant="outline" className="flex items-center space-x-2">
               <Users className="w-4 h-4" />
               <span>Entrar em Grupo</span>
             </Button>

@@ -17,20 +17,22 @@ import { authOptions } from "@/app/(BFF)/api/auth/[...nextauth]/route";
  * Comportamento esperado:
  * - O usuário logado informa o código, e se válido, torna-se membro do grupo.
  */
-export async function POST(request: NextRequest) {
+export async function POST(
+  _request: NextRequest,
+  { params }: { params: Promise<{ accessCode: string }> }
+) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
-  const body = await request.json();
-  const { accessCode } = body;
+  const { accessCode } = await params;
   if (!accessCode) {
-    return NextResponse.json({ error: "Código de acesso obrigatório." }, { status: 400 });
+    return NextResponse.json({ message: "Código de acesso obrigatório." }, { status: 400 });
   }
 
   const group = await GroupsRepository.findByAccessCode(accessCode);
   if (!group) {
-    return NextResponse.json({ error: "Grupo não encontrado." }, { status: 404 });
+    return NextResponse.json({ message: "Grupo não encontrado." }, { status: 404 });
   }
 
   const groupId = group.id;
@@ -38,12 +40,13 @@ export async function POST(request: NextRequest) {
 
   const alreadyMember = await GroupParticipationRepository.isMember(groupId, friendId);
   if (alreadyMember.length) {
-    return NextResponse.json({ error: "Usuário já é membro do grupo." }, { status: 409 });
+    return NextResponse.json({ message: "Usuário já é membro do grupo." }, { status: 409 });
   }
 
-  await GroupParticipationRepository.addMember(groupId, friendId);
+  const data = await GroupParticipationRepository.addMember(groupId, friendId);
+
   return NextResponse.json(
-    { message: "Usuário adicionado ao grupo com sucesso." },
+    { message: "Usuário adicionado ao grupo com sucesso.", data: data },
     { status: 201 }
   );
 }
