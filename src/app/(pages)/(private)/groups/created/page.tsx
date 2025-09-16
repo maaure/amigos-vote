@@ -10,13 +10,14 @@ import { toast } from "sonner";
 
 export default function GroupCreated() {
   const searchParams = useSearchParams();
-  const code = searchParams.get("code") ?? "";
+  const accessCode = searchParams.get("accessCode")!;
+  const groupName = searchParams.get("groupName")!;
 
   const [copied, setCopied] = useState(false);
 
   const copyGroupCode = async () => {
     try {
-      await navigator.clipboard.writeText(code);
+      await navigator.clipboard.writeText(accessCode);
       setCopied(true);
       toast.success("Código copiado", {
         description: "O código do grupo foi copiado para a área de transferência.",
@@ -38,22 +39,28 @@ export default function GroupCreated() {
               <Users className="w-8 h-8 text-primary" />
             </div>
             <CardTitle className="text-2xl">Grupo Criado!</CardTitle>
-            <CardDescription>Compartilhe o código abaixo com seus amigos para eles entrarem no grupo</CardDescription>
+            <CardDescription>
+              Compartilhe o código abaixo com seus amigos para eles entrarem no grupo
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="text-center space-y-4">
               <div>
                 <Label className="text-sm font-medium">Nome do Grupo</Label>
-                <p className="text-lg font-semibold text-foreground">Ladeiros</p>
+                <p className="text-lg font-semibold text-foreground">{groupName}</p>
               </div>
 
               <div>
                 <Label className="text-sm font-medium">Código de Acesso</Label>
                 <div className="flex items-center space-x-2 mt-2">
                   <div className="flex-1 p-3 bg-muted rounded-lg text-center">
-                    <span className="text-2xl font-bold tracking-wider">{code}</span>
+                    <span className="text-2xl font-bold tracking-wider">{accessCode}</span>
                   </div>
-                  <Button variant="outline" onClick={copyGroupCode} className="flex items-center space-x-1">
+                  <Button
+                    variant="outline"
+                    onClick={copyGroupCode}
+                    className="flex items-center space-x-1"
+                  >
                     {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                   </Button>
                 </div>

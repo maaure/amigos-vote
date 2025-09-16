@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     await GroupParticipationRepository.addMember(newGroup?.id, createdBy);
 
     return NextResponse.json(
-      { message: "Grupo criado com sucesso.", data: newGroup },
+      { message: "Grupo criado com sucesso.", data: { ...newGroup, membersCount: 1 } },
       { status: 201 }
     );
   } catch (err) {

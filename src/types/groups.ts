@@ -1,3 +1,12 @@
+import { Response } from "@/data/types";
+
+export type NewGroupResponse = Response<GroupSchemaOut>;
+
+export interface GroupPayload {
+  name: string;
+  description?: string;
+}
+
 export interface GroupSchemaIn {
   name: string;
   description?: string;
