@@ -37,8 +37,8 @@
   --sidebar-border: #e2e8f0;
   --sidebar-ring: #0ea5e9;
   --font-sans: Geist, ui-sans-serif, sans-serif, system-ui;
-  --font-serif: Lora;
-  --font-mono: Fira Code;
+  --font-serif: Lora;  
+  --font-mono: var(---font-jetbrains-mono);
   --radius: 0.5rem;
   --shadow-2xs: 0px 4px 10px 0px hsl(0 0% 0% / 0.05);
   --shadow-xs: 0px 4px 10px 0px hsl(0 0% 0% / 0.05);
@@ -87,7 +87,7 @@
   --sidebar-ring: #0ea5e9;
   --font-sans: Geist, ui-sans-serif, sans-serif, system-ui;
   --font-serif: Lora;
-  --font-mono: Fira Code;
+  --font-mono: var(---font-jetbrains-mono);
   --radius: 0.5rem;
   --shadow-2xs: 0px 4px 10px 0px hsl(0 0% 0% / 0.25);
   --shadow-xs: 0px 4px 10px 0px hsl(0 0% 0% / 0.25);
