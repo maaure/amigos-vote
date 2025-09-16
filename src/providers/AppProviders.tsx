@@ -22,9 +22,14 @@ export default function AppProviders({ children }: { children: React.ReactNode }
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
-          <Toaster />
+          <Toaster richColors />
         </ThemeProvider>
       </QueryClientProvider>
     </SessionProvider>

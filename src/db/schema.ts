@@ -72,4 +72,5 @@ export const groupParticipation = pgTable("groupParticipation", {
       onDelete: "cascade",
     })
     .notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });

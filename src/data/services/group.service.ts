@@ -1,6 +1,11 @@
-import { GroupSchemaOut } from "@/types/groups";
+import { GroupPayload, GroupSchemaOut, NewGroupResponse } from "@/types/groups";
 import apiClient from "../http";
 
-export async function getGroups(): Promise<GroupSchemaOut[]> {
-  return await apiClient.get("/api/groups");
-}
+export const GroupService = {
+  newGroup: (payload: GroupPayload): Promise<NewGroupResponse> => {
+    return apiClient.post("/api/groups", payload);
+  },
+  getGroups(): Promise<GroupSchemaOut[]> {
+    return apiClient.get("/api/groups");
+  },
+};

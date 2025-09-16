@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { groupParticipation, groups } from "@/db/schema";
 import { GroupSchemaOut } from "@/types/groups";
-import { eq, and } from "drizzle-orm";
+import { eq, and, sql } from "drizzle-orm";
 
 export const GroupParticipationRepository = {
   /**
@@ -18,7 +18,28 @@ export const GroupParticipationRepository = {
    * Adiciona um usuário a um grupo.
    */
   addMember: async (groupId: string, friendId: string) => {
-    return await db.insert(groupParticipation).values({ group: groupId, user: friendId });
+    return await db.transaction(async (tx) => {
+      await tx.insert(groupParticipation).values({ group: groupId, user: friendId });
+
+      await tx
+        .update(groups)
+        .set({ membersCount: sql`${groups.membersCount} + 1` })
+        .where(eq(groups.id, groupId));
+
+      return await tx
+        .select({
+          id: groups.id,
+          name: groups.name,
+          description: groups.description,
+          membersCount: groups.membersCount,
+          accessCode: groups.accessCode,
+          createdAt: groups.createdAt,
+          createdBy: groups.createdBy,
+        })
+        .from(groups)
+        .where(eq(groups.id, groupId))
+        .limit(1);
+    });
   },
 
   /**
