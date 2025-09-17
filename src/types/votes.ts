@@ -1,6 +1,7 @@
 export interface VoteSchemaIn {
-  friends_ids: string[];
-  question_id: string;
+  friendsIds: string[];
+  questionId: string;
+  groupId: string;
 }
 
 export interface VoteSchemaOut {

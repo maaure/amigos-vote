@@ -14,20 +14,25 @@ import {
 } from "@/components/ui/dialog";
 import { VotingChart } from "../votingChart";
 
-export default function QuestionsList() {
-  const { data: previousQuestions, isPending } = useGetPreviousQuestionsQuery();
+interface IQuestionsListProps {
+  groupId: string;
+}
+
+export default function QuestionsList({ groupId }: IQuestionsListProps) {
+  const { data: previousQuestions, isPending } = useGetPreviousQuestionsQuery(groupId);
 
   if (isPending) {
     return <QuestionListLoading />;
   }
 
   return (
-    <div className="border rounded space-y-2">
+    <div className="border border-border rounded space-y-2">
       {previousQuestions?.map((question) => (
         <Dialog key={question.id}>
           <DialogTrigger className="w-full p-4 flex justify-between transition-colors hover:bg-secondary hover:text-sky-500 cursor-pointer">
             <p>
-              {formatDate(question.published_when)} - <span className="font-semibold">{question.text}</span>
+              {formatDate(question.publishedWhen)} -{" "}
+              <span className="font-semibold">{question.text}</span>
             </p>
             <ArrowRight />
           </DialogTrigger>
@@ -37,7 +42,7 @@ export default function QuestionsList() {
               <DialogDescription>{question.text}</DialogDescription>
             </DialogHeader>
 
-            <VotingChart id={question.id} />
+            <VotingChart questionId={question.id} groupId={groupId} />
           </DialogContent>
         </Dialog>
       ))}

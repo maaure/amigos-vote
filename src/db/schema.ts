@@ -1,19 +1,10 @@
-import {
-  pgTable,
-  uuid,
-  timestamp,
-  text,
-  numeric,
-  boolean,
-  date,
-  integer,
-} from "drizzle-orm/pg-core";
+import { pgTable, uuid, timestamp, text, boolean, date, integer } from "drizzle-orm/pg-core";
 
 export const questions = pgTable("questions", {
   id: uuid("id").defaultRandom().primaryKey(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   text: text("text").notNull().unique(),
-  allowedVotes: numeric("allowed_votes").notNull().default("1"),
+  allowedVotes: integer("allowed_votes").notNull().default(1),
   used: boolean("used").notNull().default(false),
   publishedWhen: date("published_when"),
 });
@@ -41,6 +32,10 @@ export const votes = pgTable("vote", {
       onDelete: "cascade",
     })
     .notNull(),
+  groupId: uuid("group_id").references(() => groups.id, {
+    onUpdate: "cascade",
+    onDelete: "cascade",
+  }),
 });
 
 export const groups = pgTable("group", {

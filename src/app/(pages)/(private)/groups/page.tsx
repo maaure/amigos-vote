@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Plus, Users } from "lucide-react";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import Header from "./[id]/_components/Header";
 import { useGetGroupsQuery } from "@/data/hooks/useGetGroupsQuery";

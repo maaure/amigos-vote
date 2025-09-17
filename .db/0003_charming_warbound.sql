@@ -1,1 +1,0 @@
-ALTER TABLE "friends" ADD CONSTRAINT "friends_github_id_unique" UNIQUE("github_id");

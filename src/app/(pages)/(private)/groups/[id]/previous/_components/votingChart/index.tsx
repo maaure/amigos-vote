@@ -1,16 +1,22 @@
 "use client";
 import { LabelList, Pie, PieChart, Sector } from "recharts";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import { PieSectorDataItem } from "recharts/types/polar/Pie";
 import { useGetResultsFromQuestionsQuery } from "@/data/hooks/useGetResultsFromQuestionsQuery";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface VotingChartProps {
-  id: string;
+  questionId: string;
+  groupId: string;
 }
 
-export function VotingChart({ id }: VotingChartProps) {
-  const { data, isPending } = useGetResultsFromQuestionsQuery(id);
+export function VotingChart({ groupId, questionId }: VotingChartProps) {
+  const { data, isPending } = useGetResultsFromQuestionsQuery(groupId, questionId);
 
   if (isPending) {
     return (
@@ -40,7 +46,10 @@ export function VotingChart({ id }: VotingChartProps) {
   });
 
   return (
-    <ChartContainer config={chartConfig} className="mx-auto aspect-square lg:min-h-[500px] min-h-[80vw]">
+    <ChartContainer
+      config={chartConfig}
+      className="mx-auto aspect-square lg:min-h-[500px] min-h-[80vw]"
+    >
       <PieChart>
         <ChartTooltip content={<ChartTooltipContent nameKey="votes" hideLabel />} />
         <Pie
@@ -53,7 +62,13 @@ export function VotingChart({ id }: VotingChartProps) {
           )}
           animationDuration={250}
         >
-          <LabelList dataKey="friend" position="insideTop" offset={8} className="fill-foreground" fontSize={12} />
+          <LabelList
+            dataKey="friend"
+            position="insideTop"
+            offset={8}
+            className="fill-foreground"
+            fontSize={12}
+          />
         </Pie>
       </PieChart>
     </ChartContainer>

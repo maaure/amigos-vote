@@ -12,14 +12,22 @@ import { useGetTodayQuestionQuery } from "@/data/hooks/useGetTodayQuestionQuery"
 import VotingSectionLoading from "./loading";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { ErrorResponse } from "@/data/types";
 
-export default function VotingSection() {
+export interface IVoteSectionProps {
+  groupId: string;
+}
+
+export default function VotingSection({ groupId }: IVoteSectionProps) {
   const [selected, setSelected] = useState<string[]>([]);
   const { hasVotedToday, isPending: isHasVotedTodayLoading } = useDailyVote();
   const [maxSelectedFriends, setMaxSelectedFriends] = useState<number>(1);
 
-  const { mutate: submitVote, isPending: isVoteLoading } = useVoteService();
-  const { data: friends, isPending: isFriendsLoading } = useGetFriendsQuery();
+  const { mutate: submitVote, isPending: isVoteLoading } = useVoteService(
+    onVoteSuccess,
+    onVoteError
+  );
+  const { data: friends, isPending: isFriendsLoading } = useGetFriendsQuery(groupId);
   const { data: question } = useGetTodayQuestionQuery();
 
   const setVotedToday = useVoteStore((state) => state.setVotedToday);
@@ -37,22 +45,25 @@ export default function VotingSection() {
     }
   }
 
+  function onVoteSuccess() {
+    toast.success("Voto salvo com sucesso!");
+    setVotedToday();
+  }
+
+  function onVoteError(error: ErrorResponse) {
+    toast.error(error.message);
+  }
+
   function handleVote() {
-    try {
-      submitVote({
-        friends_ids: selected.map((s) => String(s)),
-        question_id: question!.id,
-      });
-      toast.success("Voto salvo com sucesso!");
-    } catch {
-      toast.error("Houve um erro, tente novamente.");
-    } finally {
-      setVotedToday();
-    }
+    submitVote({
+      friendsIds: selected.map((s) => String(s)),
+      questionId: question!.id,
+      groupId,
+    });
   }
 
   useMemo(() => {
-    setMaxSelectedFriends(question?.allowed_votes ?? 1);
+    setMaxSelectedFriends(question?.allowedVotes ?? 1);
   }, [question]);
 
   const isButtonEnabled = selected.length === maxSelectedFriends && !!question;
@@ -70,10 +81,14 @@ export default function VotingSection() {
       <section className="space-y-8">
         <div className="flex flex-col items-center">
           <span className="inline-flex gap-2">
-            <Handshake /> <h3>{`Selecione ${maxSelectedFriends} ${maxSelectedFriends > 1 ? "amigos" : "amigo"}`}</h3>
+            <Handshake />{" "}
+            <h3>{`Selecione ${maxSelectedFriends} ${
+              maxSelectedFriends > 1 ? "amigos" : "amigo"
+            }`}</h3>
           </span>
           <span className="text-muted-foreground">
-            {selected.length}/{maxSelectedFriends} {maxSelectedFriends > 1 ? "selecionados" : "selecionado"}
+            {selected.length}/{maxSelectedFriends}{" "}
+            {maxSelectedFriends > 1 ? "selecionados" : "selecionado"}
           </span>
         </div>
 

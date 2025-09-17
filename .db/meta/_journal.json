@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1757786584012,
-      "tag": "0000_chilly_slapstick",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1757821577090,
-      "tag": "0001_green_george_stacy",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1757822678457,
-      "tag": "0002_pale_purifiers",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1757909489686,
-      "tag": "0003_charming_warbound",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1757956946139,
-      "tag": "0004_clumsy_black_crow",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1757971038324,
-      "tag": "0005_lush_blackheart",
+      "when": 1758074471374,
+      "tag": "0000_luxuriant_rogue",
       "breakpoints": true
     }
   ]

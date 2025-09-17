@@ -18,7 +18,7 @@ export default function Previous({ params }: { params: Promise<{ id: string }> }
         </div>
       </header>
 
-      <QuestionsList />
+      <QuestionsList groupId={id} />
     </div>
   );
 }

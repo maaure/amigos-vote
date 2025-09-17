@@ -40,14 +40,13 @@ export const QuestionsRepository = {
    */
   getRandom: async () => {
     try {
-      // Drizzle não tem um `random()` direto, então usamos `sql` para isso.
-      const result = await db
+      const [result] = await db
         .select()
         .from(questions)
         .where(eq(questions.used, false))
         .orderBy(sql`random()`)
         .limit(1);
-      return result[0] || null;
+      return result;
     } catch (error) {
       console.error("Erro ao buscar questão aleatória:", error);
       throw new Error("Erro no banco de dados ao buscar questão aleatória.");
@@ -61,11 +60,13 @@ export const QuestionsRepository = {
   setAsPublished: async (id: string) => {
     const today = new Date().toISOString().split("T")[0];
     try {
-      return await db
+      const [result] = await db
         .update(questions)
         .set({ used: true, publishedWhen: today })
         .where(eq(questions.id, id))
         .returning();
+
+      return result;
     } catch (error) {
       console.error("Erro ao atualizar a questão:", error);
       throw new Error("Erro no banco de dados ao atualizar a questão.");

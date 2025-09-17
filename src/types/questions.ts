@@ -1,8 +1,8 @@
 export interface QuestionSchemaOut {
   id: string;
   text: string;
-  allowed_votes: number;
-  published_when: string;
+  allowedVotes: number;
+  publishedWhen: string;
 }
 
 export interface QuestionsResultsSchemaOut {

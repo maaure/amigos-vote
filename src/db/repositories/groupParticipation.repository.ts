@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { groupParticipation, groups } from "@/db/schema";
 import { GroupSchemaOut } from "@/types/groups";
-import { eq, and, sql } from "drizzle-orm";
+import { eq, and, sql, inArray } from "drizzle-orm";
 
 export const GroupParticipationRepository = {
   /**
@@ -12,6 +12,18 @@ export const GroupParticipationRepository = {
       .select()
       .from(groupParticipation)
       .where(and(eq(groupParticipation.group, groupId), eq(groupParticipation.user, friendId)));
+  },
+
+  /**
+   * Verifica se uma lista de friendsIds são membros de um grupo específico.
+   */
+  checkMultipleMembers: async (groupId: string, friendsIds: string[]) => {
+    return await db
+      .select()
+      .from(groupParticipation)
+      .where(
+        and(eq(groupParticipation.group, groupId), inArray(groupParticipation.user, friendsIds))
+      );
   },
 
   /**

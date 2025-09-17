@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { friends } from "@/db/schema";
+import { friends, groupParticipation } from "@/db/schema";
 import { asc, eq } from "drizzle-orm";
 
 export const FriendsRepository = {
@@ -41,6 +41,26 @@ export const FriendsRepository = {
     } catch (error) {
       console.error("Erro ao criar amigo:", error);
       throw new Error("Erro no banco de dados ao criar amigo.");
+    }
+  },
+
+  getAllByGroupId: async (id: string) => {
+    try {
+      const result = await db
+        .select({
+          id: friends.id,
+          name: friends.name,
+          urlPic: friends.urlPic,
+          githubId: friends.githubId,
+        })
+        .from(groupParticipation)
+        .innerJoin(friends, eq(groupParticipation.user, friends.id))
+        .where(eq(groupParticipation.group, id));
+
+      return result;
+    } catch (error) {
+      console.error("Erro ao procurar os amigos do seu grupo: ", error);
+      throw new Error("Erro ao procurar os seus amigos do grupo. ");
     }
   },
 };
