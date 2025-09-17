@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPreviousQuestions } from "../services/question.service";
 
-export function useGetPreviousQuestionsQuery() {
+export function useGetPreviousQuestionsQuery(groupId: string) {
   return useQuery({
     queryKey: ["previousQuestions"],
-    queryFn: getPreviousQuestions,
+    queryFn: () => {
+      return getPreviousQuestions(groupId);
+    },
   });
 }

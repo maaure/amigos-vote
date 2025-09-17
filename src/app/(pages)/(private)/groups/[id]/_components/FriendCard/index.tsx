@@ -9,11 +9,17 @@ interface IFriendCardProps {
   disabled?: boolean;
 }
 
-export default function FriendCard({ img, name, onClick, selected = false, disabled = false }: IFriendCardProps) {
+export default function FriendCard({
+  img,
+  name,
+  onClick,
+  selected = false,
+  disabled = false,
+}: IFriendCardProps) {
   const nameInitials = getInitials(name);
 
   const containerClasses = cn(
-    "border rounded-xl flex flex-col justify-center items-center gap-y-2 p-8 cursor-pointer transition-all",
+    "border border-border rounded-xl flex flex-col justify-center items-center gap-y-2 p-8 cursor-pointer transition-all",
     {
       "border-4 border-sky-500 bg-sky-100 dark:bg-sky-900/30": selected,
       "opacity-50 cursor-not-allowed pointer-events-none": disabled,
@@ -21,7 +27,11 @@ export default function FriendCard({ img, name, onClick, selected = false, disab
   );
 
   return (
-    <div className={containerClasses} onClick={disabled ? undefined : onClick} aria-disabled={disabled}>
+    <div
+      className={containerClasses}
+      onClick={disabled ? undefined : onClick}
+      aria-disabled={disabled}
+    >
       <Avatar className="w-[4rem] h-[4rem]">
         <AvatarImage src={img} />
         <AvatarFallback>{nameInitials}</AvatarFallback>
