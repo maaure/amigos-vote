@@ -13,8 +13,8 @@ export default function Welcome() {
               <h1 className="text-5xl font-bold text-foreground">Inimigo do Dia</h1>
             </div>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Responda perguntas capciosas e descubra o que seus amigos pensam sobre você. Crie grupos privados e
-              divirta-se com uma nova pergunta todo dia!
+              Responda perguntas capciosas e descubra o que seus amigos pensam sobre você. Crie
+              grupos privados e divirta-se com uma nova pergunta todo dia!
             </p>
           </div>
 
@@ -23,7 +23,9 @@ export default function Welcome() {
               <CardHeader>
                 <Users className="w-12 h-12 text-primary mx-auto mb-4" />
                 <CardTitle>Grupos Privados</CardTitle>
-                <CardDescription>Crie grupos com seus amigos e mantenham suas respostas entre vocês</CardDescription>
+                <CardDescription>
+                  Crie grupos com seus amigos e mantenham suas respostas entre vocês
+                </CardDescription>
               </CardHeader>
             </Card>
 
@@ -31,7 +33,9 @@ export default function Welcome() {
               <CardHeader>
                 <MessageCircle className="w-12 h-12 text-purple-600 mx-auto mb-4" />
                 <CardTitle>Perguntas Diárias</CardTitle>
-                <CardDescription>Uma nova pergunta capciosa todo dia para animar o grupo</CardDescription>
+                <CardDescription>
+                  Uma nova pergunta capciosa todo dia para animar o grupo
+                </CardDescription>
               </CardHeader>
             </Card>
 
@@ -39,7 +43,9 @@ export default function Welcome() {
               <CardHeader>
                 <Sparkles className="w-12 h-12 text-pink-700 mx-auto mb-4" />
                 <CardTitle>Novas perguntas</CardTitle>
-                <CardDescription>Cadastre novas perguntas ou use uma do banco de questões</CardDescription>
+                <CardDescription>
+                  Cadastre novas perguntas ou use uma do banco de questões
+                </CardDescription>
               </CardHeader>
             </Card>
           </div>
@@ -61,8 +67,9 @@ export default function Welcome() {
         <div className="space-y-4">
           <h3 className="text-2xl font-semibold text-foreground">Sobre o Projeto</h3>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            <strong>Inimigo do Dia</strong> é um projeto de código aberto criado para estudo e, claro, para diversão.
-            Sinta-se à vontade para explorar o código, contribuir ou criar sua própria versão.
+            <strong>Inimigo do Dia</strong> é um projeto de código aberto criado para estudo e,
+            claro, para diversão. Sinta-se à vontade para explorar o código, contribuir ou criar sua
+            própria versão.
           </p>
           <div className="flex items-center justify-center gap-6 mt-4">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
