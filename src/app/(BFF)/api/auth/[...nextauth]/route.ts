@@ -15,7 +15,7 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user }) {
-      const existing = await FriendsRepository.findByGithubId({ id: user.id! });
+      const [existing] = await FriendsRepository.findByGithubId({ id: user.id! });
 
       if (!existing) {
         await FriendsRepository.create({

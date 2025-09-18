@@ -66,6 +66,7 @@ export async function POST(request: NextRequest) {
     );
   } catch (err) {
     console.error("Erro ao criar grupo:", err);
+
     return NextResponse.json(
       { message: "Erro interno do servidor ao processar a requisição." },
       { status: 500 }
@@ -87,6 +88,7 @@ export async function POST(request: NextRequest) {
  */
 export async function GET() {
   const session = await getServerSession(authOptions);
+
   if (!session || !session.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
