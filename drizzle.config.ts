@@ -5,7 +5,7 @@ dotenv.config({ path: ".env.local" });
 
 const dbUrl =
   process.env.DB_CLIENT === "supabase"
-    ? process.env.DATABASE_URL_SUPABASE
+    ? process.env.DATABASE_URL_SUPABASE_SESSION || process.env.DATABASE_URL_SUPABASE
     : `postgresql://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@${process.env.DB_ADDRESS}:5432/${process.env.POSTGRES_DB}`;
 
 if (!dbUrl) {

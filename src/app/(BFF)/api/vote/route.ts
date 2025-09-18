@@ -17,7 +17,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const isMember = await GroupParticipationRepository.isMember(groupId, session.user.id);
+    const userId = session.user.id;
+
+    const hasVoted = await VotesRepository.hasUserVotedTodayInThisGroup(
+      userId,
+      questionId,
+      groupId
+    );
+    if (hasVoted) {
+      return NextResponse.json({ message: "Você já votou nesta questão hoje." }, { status: 409 });
+    }
+
+    const isMember = await GroupParticipationRepository.isMember(groupId, userId);
     const friendsMembers = await GroupParticipationRepository.checkMultipleMembers(
       groupId,
       friendsIds
@@ -32,7 +43,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const data = await VotesRepository.createMany(friendsIds, questionId, groupId);
+    const data = await VotesRepository.createMany(friendsIds, questionId, groupId, userId);
 
     return NextResponse.json({ message: "Votos registrados com sucesso.", data }, { status: 201 });
   } catch (error) {

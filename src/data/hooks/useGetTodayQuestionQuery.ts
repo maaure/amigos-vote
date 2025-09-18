@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getTodayQuestion } from "../services/question.service";
 
-export function useGetTodayQuestionQuery() {
+export function useGetTodayQuestionQuery(groupId: string) {
   return useQuery({
-    queryKey: ["todayQuestion"],
-    queryFn: getTodayQuestion,
+    queryKey: ["todayQuestion", groupId],
+    queryFn: () => {
+      return getTodayQuestion(groupId);
+    },
   });
 }

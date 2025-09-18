@@ -5,6 +5,11 @@ export interface QuestionSchemaOut {
   publishedWhen: string;
 }
 
+export interface TodayQuestionResponse {
+  data: QuestionSchemaOut;
+  alreadyVotedToday: boolean;
+}
+
 export interface QuestionsResultsSchemaOut {
   results: {
     name: string;

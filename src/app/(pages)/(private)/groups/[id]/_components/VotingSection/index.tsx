@@ -3,8 +3,6 @@
 import { Handshake, Loader2Icon, Send } from "lucide-react";
 import FriendCard from "../FriendCard";
 import { useMemo, useState } from "react";
-import { useVoteStore } from "@/store/vote";
-import { useDailyVote } from "@/hooks/useDailyVotes";
 import AlreadyVoted from "../AlreadyVoted";
 import { useVoteService } from "@/data/hooks/useVoteService";
 import { useGetFriendsQuery } from "@/data/hooks/useGetFriendsQuery";
@@ -20,17 +18,19 @@ export interface IVoteSectionProps {
 
 export default function VotingSection({ groupId }: IVoteSectionProps) {
   const [selected, setSelected] = useState<string[]>([]);
-  const { hasVotedToday, isPending: isHasVotedTodayLoading } = useDailyVote();
   const [maxSelectedFriends, setMaxSelectedFriends] = useState<number>(1);
-
   const { mutate: submitVote, isPending: isVoteLoading } = useVoteService(
     onVoteSuccess,
     onVoteError
   );
-  const { data: friends, isPending: isFriendsLoading } = useGetFriendsQuery(groupId);
-  const { data: question } = useGetTodayQuestionQuery();
+  const { data: friends, isPending: isFriendsLoading, refetch } = useGetFriendsQuery(groupId);
+  const { data: questionResponse, isPending: isQuestionLoading } =
+    useGetTodayQuestionQuery(groupId);
 
-  const setVotedToday = useVoteStore((state) => state.setVotedToday);
+  const question = questionResponse?.data;
+  const [alreadyVotedToday, setAlreadyVotedToday] = useState<boolean>(
+    questionResponse?.alreadyVotedToday || false
+  );
 
   function handleClickOnFriendCard(id: string) {
     const isSelected = selected.includes(id);
@@ -47,7 +47,7 @@ export default function VotingSection({ groupId }: IVoteSectionProps) {
 
   function onVoteSuccess() {
     toast.success("Voto salvo com sucesso!");
-    setVotedToday();
+    setAlreadyVotedToday(true);
   }
 
   function onVoteError(error: ErrorResponse) {
@@ -68,11 +68,11 @@ export default function VotingSection({ groupId }: IVoteSectionProps) {
 
   const isButtonEnabled = selected.length === maxSelectedFriends && !!question;
 
-  if (isHasVotedTodayLoading || isFriendsLoading) {
+  if (isQuestionLoading || isFriendsLoading) {
     return <VotingSectionLoading />;
   }
 
-  if (hasVotedToday) {
+  if (alreadyVotedToday) {
     return <AlreadyVoted />;
   }
 
