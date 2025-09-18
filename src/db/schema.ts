@@ -20,6 +20,10 @@ export const friends = pgTable("friends", {
 export const votes = pgTable("vote", {
   id: uuid("id").defaultRandom().primaryKey(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  voterId: uuid("voter_id").references(() => friends.id, {
+    onUpdate: "cascade",
+    onDelete: "cascade",
+  }),
   friendId: uuid("friend_id")
     .references(() => friends.id, {
       onUpdate: "cascade",

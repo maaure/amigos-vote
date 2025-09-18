@@ -8,6 +8,20 @@
       "when": 1758074471374,
       "tag": "0000_luxuriant_rogue",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1758232108376,
+      "tag": "0001_powerful_enchantress",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1758237072595,
+      "tag": "0002_flippant_emma_frost",
+      "breakpoints": true
     }
   ]
 }

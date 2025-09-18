@@ -4,11 +4,44 @@ import { eq, sql, desc, and } from "drizzle-orm";
 
 export const VotesRepository = {
   /**
+   * Verifica se um usuário já votou na questão de hoje.
+   * @param userId O ID do usuário.
+   * @param questionId O ID da questão.
+   * @param groupId O ID do grupo.
+   */
+  hasUserVotedTodayInThisGroup: async (userId: string, questionId: string, groupId: string) => {
+    try {
+      const result = await db
+        .select()
+        .from(votes)
+        .where(
+          and(
+            eq(votes.voterId, userId),
+            eq(votes.questionId, questionId),
+            eq(votes.groupId, groupId)
+          )
+        )
+        .limit(1);
+
+      return result.length > 0;
+    } catch (error) {
+      console.error("Erro ao verificar se usuário já votou:", error);
+      throw new Error("Erro no banco de dados ao verificar voto do usuário.");
+    }
+  },
+
+  /**
    * Insere múltiplos votos para uma questão.
    * @param payload Objeto contendo os IDs dos amigos e o ID da questão.
    */
-  createMany: async (friendsIds: string[], questionId: string, groupId: string) => {
+  createMany: async (
+    friendsIds: string[],
+    questionId: string,
+    groupId: string,
+    voterId: string
+  ) => {
     const votesToInsert = friendsIds.map((friendId) => ({
+      voterId,
       friendId,
       questionId,
       groupId,

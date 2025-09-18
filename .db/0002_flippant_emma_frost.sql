@@ -1,0 +1,1 @@
+ALTER TABLE "vote" ALTER COLUMN "voter_id" DROP NOT NULL;

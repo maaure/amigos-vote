@@ -37,7 +37,7 @@ export default function Home() {
           <Timer />
         </div>
 
-        <QuestionArea />
+        <QuestionArea groupId={id as string} />
 
         <VotingSection groupId={id as string} />
       </div>

@@ -1,8 +1,12 @@
-import { QuestionSchemaOut, QuestionsResultsSchemaOut } from "@/types/questions";
+import {
+  QuestionSchemaOut,
+  QuestionsResultsSchemaOut,
+  TodayQuestionResponse,
+} from "@/types/questions";
 import apiClient from "../http";
 
-export function getTodayQuestion(): Promise<QuestionSchemaOut> {
-  return apiClient.get("/api/question/today");
+export function getTodayQuestion(groupId: string): Promise<TodayQuestionResponse> {
+  return apiClient.get(`/api/question/today?groupId=${groupId}`);
 }
 
 export function getPreviousQuestions(groupId: string): Promise<QuestionSchemaOut[]> {

@@ -1,0 +1,2 @@
+ALTER TABLE "vote" ADD COLUMN "voter_id" uuid NOT NULL;--> statement-breakpoint
+ALTER TABLE "vote" ADD CONSTRAINT "vote_voter_id_friends_id_fk" FOREIGN KEY ("voter_id") REFERENCES "public"."friends"("id") ON DELETE cascade ON UPDATE cascade;
