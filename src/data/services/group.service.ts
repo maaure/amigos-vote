@@ -9,6 +9,6 @@ export const GroupService = {
     return apiClient.get("/api/groups");
   },
   joinGroup: (accessCode: string): Promise<NewGroupResponse> => {
-    return apiClient.post(`/api/groups/${accessCode}/member`);
+    return apiClient.post(`/api/groups/membership`, { accessCode });
   },
 };
