@@ -8,10 +8,11 @@ export const GroupParticipationRepository = {
    * Verifica se um usuário já é membro de um grupo.
    */
   isMember: async (groupId: string, friendId: string) => {
-    return await db
+    const [result] = await db
       .select()
       .from(groupParticipation)
       .where(and(eq(groupParticipation.group, groupId), eq(groupParticipation.user, friendId)));
+    return result;
   },
 
   /**
