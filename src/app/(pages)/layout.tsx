@@ -20,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ladeiros Vote",
+  title: "Inimigo do Dia",
 };
 
 export default function RootLayout({
