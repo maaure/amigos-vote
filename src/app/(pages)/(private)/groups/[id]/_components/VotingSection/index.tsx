@@ -28,9 +28,7 @@ export default function VotingSection({ groupId }: IVoteSectionProps) {
     useGetTodayQuestionQuery(groupId);
 
   const question = questionResponse?.data;
-  const [alreadyVotedToday, setAlreadyVotedToday] = useState<boolean>(
-    questionResponse?.alreadyVotedToday || false
-  );
+  const [alreadyVotedToday, setAlreadyVotedToday] = useState<boolean>(false);
 
   function handleClickOnFriendCard(id: string) {
     const isSelected = selected.includes(id);
@@ -47,6 +45,7 @@ export default function VotingSection({ groupId }: IVoteSectionProps) {
 
   function onVoteSuccess() {
     toast.success("Voto salvo com sucesso!");
+    refetch();
     setAlreadyVotedToday(true);
   }
 
@@ -72,7 +71,7 @@ export default function VotingSection({ groupId }: IVoteSectionProps) {
     return <VotingSectionLoading />;
   }
 
-  if (alreadyVotedToday) {
+  if (questionResponse?.alreadyVotedToday || alreadyVotedToday) {
     return <AlreadyVoted />;
   }
 
