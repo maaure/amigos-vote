@@ -20,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Inimigo do Dia",
+  title: "Inimigo Secreto",
 };
 
 export default function RootLayout({
