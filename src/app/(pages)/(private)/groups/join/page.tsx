@@ -37,7 +37,6 @@ export default function JoinGroup() {
   const { mutate: joinGroup, isPending } = useJoinGroupService(onSuccess, onError);
 
   function onSuccess(joinedGroup: NewGroupResponse) {
-    console.log(joinedGroup);
     setJoinedGroup(joinedGroup.data);
     toast.success("Você juntou-se ao grupo com sucesso!");
   }

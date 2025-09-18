@@ -8,7 +8,6 @@ interface IQuestionArea {
 }
 
 export default function QuestionArea({ groupId }: IQuestionArea) {
-  console.log("GroupId", groupId);
   const { data: todayQuestion, isPending } = useGetTodayQuestionQuery(groupId);
 
   if (isPending) {
