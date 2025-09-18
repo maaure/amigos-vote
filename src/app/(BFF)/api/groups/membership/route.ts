@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     const friendId = session.user?.id;
 
     const alreadyMember = await GroupParticipationRepository.isMember(groupId, friendId);
-    if (alreadyMember.length) {
+    if (alreadyMember) {
       return NextResponse.json({ message: "Usuário já é membro do grupo." }, { status: 409 });
     }
 

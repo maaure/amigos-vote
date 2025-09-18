@@ -23,10 +23,14 @@ export async function GET(
     const isMember = await GroupParticipationRepository.isMember(groupId, session.user.id);
 
     if (!isMember) {
-      return NextResponse.json({
-        message: "Não é possível visualizar as infromações desse grupo.",
-        status: 401,
-      });
+      return NextResponse.json(
+        {
+          message: "Não é possível visualizar as informações desse grupo.",
+        },
+        {
+          status: 401,
+        }
+      );
     }
 
     const data = await FriendsRepository.getAllByGroupId(groupId);

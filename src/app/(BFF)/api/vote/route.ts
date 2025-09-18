@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     if (!isMember || !allFriendsAreMembers) {
       return NextResponse.json(
-        { message: "Você não pode votar nessas pessoas nesse grupo." },
+        { message: "Você não pode votar nas pessoas nesse grupo." },
         { status: 400 }
       );
     }
