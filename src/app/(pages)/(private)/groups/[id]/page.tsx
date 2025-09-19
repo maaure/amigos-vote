@@ -17,17 +17,6 @@ export default function Home() {
       <div className="max-w-4xl mx-auto space-y-8">
         <Header />
 
-        <section className="w-full flex flex-col items-center gap-4">
-          <div className="flex items-center justify-center gap-4 mt-6 text-sky-500 ">
-            <Sparkles />
-            <h1 className="text-4xl text-center font-bold">Pergunta do Dia</h1>
-          </div>
-          <p className="text-muted-foreground px-4 text-center">
-            Selecione o seu amigo do seu grupo que você acha que se encaixaria melhor na pergunta de
-            hoje.
-          </p>
-        </section>
-
         <div className="flex justify-between items-center mx-4">
           <Link href={`/groups/${id}/previous`}>
             <Button variant="outline">
