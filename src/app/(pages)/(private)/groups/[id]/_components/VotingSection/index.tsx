@@ -128,11 +128,23 @@ export default function VotingSection({ groupId }: IVoteSectionProps) {
       </div>
 
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 border-t border-border">
-        <Button variant="ghost" className="flex items-center space-x-2 min-w-[180px]">
+        <Button
+          variant="ghost"
+          className="flex items-center space-x-2 min-w-[180px]"
+          onClick={() => {
+            toast("Em desenvolvimento...");
+          }}
+        >
           <span>💡 Sugerir Pergunta</span>
         </Button>
 
-        <Button variant="ghost" className="flex items-center space-x-2 min-w-[180px]">
+        <Button
+          variant="ghost"
+          className="flex items-center space-x-2 min-w-[180px]"
+          onClick={() => {
+            toast("Em desenvolvimento...");
+          }}
+        >
           <span>🗳️ Votar Pergunta de Amanhã</span>
         </Button>
       </div>
