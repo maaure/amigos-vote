@@ -13,6 +13,8 @@ export interface TodayQuestionResponse {
 export interface QuestionsResultsSchemaOut {
   results: {
     name: string;
+    image: string;
     votes: number;
+    totalVotes: number;
   }[];
 }

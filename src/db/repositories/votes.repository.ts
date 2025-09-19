@@ -86,15 +86,26 @@ export const VotesRepository = {
    */
   getResultsByQuestionIdAndGroupId: async (questionId: string, groupId: string) => {
     try {
+      const totalVotesResult = await db
+        .select({
+          totalVotes: sql<number>`count(${votes.id})`.mapWith(Number),
+        })
+        .from(votes)
+        .where(and(eq(votes.questionId, questionId), eq(votes.groupId, groupId)));
+
+      const totalVotes = totalVotesResult[0]?.totalVotes || 0;
+
       const result = await db
         .select({
-          friend: friends.name,
+          name: friends.name,
+          image: friends.urlPic,
           votes: sql<number>`count(${votes.id})`.mapWith(Number),
+          totalVotes: sql<number>`${totalVotes}`.mapWith(Number),
         })
         .from(votes)
         .innerJoin(friends, eq(votes.friendId, friends.id))
         .where(and(eq(votes.questionId, questionId), eq(votes.groupId, groupId)))
-        .groupBy(friends.name)
+        .groupBy(friends.name, friends.urlPic)
         .orderBy(desc(sql`count(${votes.id})`));
 
       return result;
