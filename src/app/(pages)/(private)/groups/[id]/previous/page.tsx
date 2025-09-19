@@ -4,7 +4,7 @@ import { use } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useGetPreviousQuestionsQuery } from "@/data/hooks/useGetPreviousResultsQuery";
-import QuestionResultsCard from "@/app/(pages)/(private)/groups/[id]/previous/_components/questionCard";
+import QuestionResultsCard from "@/app/(pages)/(private)/groups/[id]/previous/_components/questionResultCard";
 import QuestionListLoading from "./loading";
 
 export default function Previous({ params }: { params: Promise<{ id: string }> }) {
@@ -16,7 +16,7 @@ export default function Previous({ params }: { params: Promise<{ id: string }> }
     <div className="min-h-screen bg-background px-4 py-8">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="flex items-center justify-between">
-          <Link href={"/groups"}>
+          <Link href={`/groups/${id}`}>
             <Button variant="ghost" className="flex items-center space-x-2">
               <ArrowLeft className="w-4 h-4" />
               <span>Voltar</span>
