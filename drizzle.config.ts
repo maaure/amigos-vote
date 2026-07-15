@@ -1,7 +1,7 @@
 import { defineConfig } from "drizzle-kit";
 import * as dotenv from "dotenv";
 
-dotenv.config({ path: ".env.local" });
+dotenv.config({ path: ".env" });
 
 const dbUrl = `postgresql://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@${process.env.DB_ADDRESS}:5432/${process.env.POSTGRES_DB}`;
 
