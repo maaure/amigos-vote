@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Github } from "lucide-react";
 import { signIn } from "next-auth/react";
 
 function GoogleIcon({ className }: { className?: string }) {
@@ -29,24 +28,24 @@ function GoogleIcon({ className }: { className?: string }) {
 
 export default function GitHubLoginButton() {
   return (
-    <div className="flex flex-col items-center gap-3">
-      <Button
+    <div className="flex flex-col gap-3">
+      {/* <Button
         size="lg"
         onClick={() => signIn("github")}
-        className="flex items-center gap-3 px-8 py-4 text-lg min-w-[260px]"
+        className="group gap-3 px-8 py-6"
       >
-        <Github className="w-5 h-5" />
-        <span>Entrar com GitHub</span>
-      </Button>
+        <Github className="size-5 transition-transform group-hover:rotate-12" />
+        <span className="font-display text-lg normal-case tracking-normal">Entrar no Tribunal</span>
+      </Button> */}
 
       <Button
         size="lg"
         variant="outline"
         onClick={() => signIn("google")}
-        className="flex items-center gap-3 px-8 py-4 text-lg min-w-[260px]"
+        className="gap-3 px-8 py-6"
       >
-        <GoogleIcon className="w-5 h-5" />
-        <span>Entrar com Google</span>
+        <GoogleIcon className="size-5" />
+        <span className="font-display text-lg normal-case tracking-normal">Entrar no Tribunal</span>
       </Button>
     </div>
   );

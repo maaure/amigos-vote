@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { QuestionSchemaOut } from "@/types/questions";
 import { useGetResultsFromQuestionsQuery } from "@/data/hooks/useGetResultsFromQuestionsQuery";
 import { getInitials } from "@/lib/utils";
+import Kicker from "@/components/visual/Kicker";
 
 interface QuestionCardProps {
   question: QuestionSchemaOut;
@@ -27,16 +28,14 @@ export default function QuestionResultsCard({
     enabled: expanded,
   });
 
-  const handleToggle = () => {
-    setExpanded(!expanded);
-  };
+  const handleToggle = () => setExpanded(!expanded);
 
   return (
-    <Card className="bg-card border-border shadow-card py-0">
+    <Card className="overflow-hidden border-2 border-rule bg-paper p-0 py-0 shadow-[4px_4px_0_0_var(--rule)] transition-transform hover:-translate-y-0.5">
       <div className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-2 text-highlight/80 text-sm font-medium">
-            <Calendar className="w-4 h-4" />
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-highlight">
+            <Calendar className="size-4" />
             <span>
               {new Date(question.publishedWhen).toLocaleDateString("pt-BR", {
                 weekday: "long",
@@ -45,79 +44,101 @@ export default function QuestionResultsCard({
               })}
             </span>
           </div>
-          <div className="flex items-center space-x-2">
-            <span className="text-xs text-muted-foreground bg-secondary px-2 py-1 rounded-full">
+          <div className="flex items-center gap-2">
+            <span className="border border-rule bg-background/50 px-2 py-1 font-mono text-xs tracking-widest text-muted-foreground">
               #{totalQuestions - questionIndex}
             </span>
-            <Button variant="ghost" size="sm" onClick={handleToggle} className="h-8 w-8 p-0">
-              {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            <Button variant="ghost" size="icon" onClick={handleToggle} className="size-8">
+              {expanded ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
             </Button>
           </div>
         </div>
 
-        <h2 className="text-xl md:text-2xl font-bold text-foreground leading-tight mb-4">
-          {question.text}
-        </h2>
+        <blockquote className="masthead text-balance text-xl leading-tight md:text-2xl">
+          “{question.text}”
+        </blockquote>
 
-        <div className="w-12 h-0.5 bg-highlight rounded-full"></div>
+        <div className="mt-4 h-[3px] w-16 bg-highlight" />
       </div>
 
       {expanded && (
-        <div className="px-6 pb-6 pt-0">
-          <div className="space-y-3">
-            <div className="flex items-center space-x-2 text-foreground mb-4">
-              <Users className="w-4 h-4" />
-              <span className="font-medium text-sm">Resultados da Votação</span>
-            </div>
+        <div className="border-t-2 border-rule bg-background/30 px-6 pb-6 pt-5">
+          <div className="mb-4 flex items-center gap-2">
+            <Users className="size-4 text-rule" />
+            <Kicker className="text-rule">Veredito do júri</Kicker>
+          </div>
 
-            {isPending && (
-              <div className="text-center text-muted-foreground py-4">Carregando resultados...</div>
-            )}
-            {data?.results.length === 0 && (
-              <span className="text-muted-foreground text-center">
-                Não houve votos nesse dia :(
+          {isPending && (
+            <div className="py-6 text-center font-mono text-sm uppercase tracking-widest text-muted-foreground">
+              Reunindo os votos...
+            </div>
+          )}
+          {data?.results.length === 0 && (
+            <div className="py-6 text-center">
+              <span className="font-mono text-sm uppercase tracking-widest text-muted-foreground">
+                Ninguém votou nesse dia :(
               </span>
-            )}
+            </div>
+          )}
+
+          <div className="space-y-2">
             {data?.results.map((result, index) => {
               const percentage =
                 result.totalVotes > 0 ? Math.round((result.votes / result.totalVotes) * 100) : 0;
+              const isWinner = index === 0;
 
               return (
                 <div
                   key={result.name}
-                  className="flex items-center justify-between p-3 bg-secondary/20 rounded-lg"
+                  className={`relative flex items-center justify-between gap-3 border-2 p-3 ${
+                    isWinner ? "border-highlight bg-highlight/5" : "border-rule bg-paper"
+                  }`}
                 >
-                  <div className="flex items-center space-x-3">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-lg font-bold text-primary min-w-[24px]">
-                        #{index + 1}
-                      </span>
-                      {index === 0 && <Trophy className="w-4 h-4 text-highlight" />}
-                    </div>
+                  {isWinner && (
+                    <span className="stamp absolute -right-2 -top-3 z-10 px-1.5 py-0.5 text-[0.6rem]">
+                      Culpado
+                    </span>
+                  )}
 
-                    <Avatar className="w-8 h-8">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <span
+                      className={`masthead text-2xl leading-none ${
+                        isWinner ? "text-highlight" : "text-muted-foreground"
+                      }`}
+                    >
+                      {index + 1}
+                    </span>
+
+                    <Avatar
+                      className={`size-9 shrink-0 rounded-none border-2 ${
+                        isWinner ? "border-highlight" : "border-rule"
+                      }`}
+                    >
                       <AvatarImage src={result.image} />
-                      <AvatarFallback className="bg-primary text-primary-foreground font-bold text-xs">
+                      <AvatarFallback className="rounded-none bg-secondary font-display text-xs">
                         {getInitials(result.name)}
                       </AvatarFallback>
                     </Avatar>
 
-                    <div>
-                      <h3 className="font-medium text-foreground">{result.name}</h3>
-                      <p className="text-xs text-muted-foreground">{result.votes} votos</p>
+                    <div className="min-w-0">
+                      <h3 className="truncate font-bold leading-tight">{result.name}</h3>
+                      <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                        {result.votes} {result.votes === 1 ? "voto" : "votos"}
+                      </p>
                     </div>
+                    {isWinner && <Trophy className="size-4 shrink-0 text-gold" />}
                   </div>
 
-                  <div className="flex items-center space-x-3">
-                    <div className="w-20 h-1.5 bg-secondary rounded-full overflow-hidden">
+                  <div className="flex shrink-0 items-center gap-3">
+                    <div className="hidden h-2 w-24 overflow-hidden border border-rule bg-background sm:block">
                       <div
-                        className="h-full bg-primary rounded-full transition-all duration-500"
+                        className={`h-full transition-all duration-700 ${
+                          isWinner ? "bg-highlight" : "bg-rule"
+                        }`}
                         style={{ width: `${percentage}%` }}
                       />
                     </div>
-                    <span className="text-sm font-bold text-primary min-w-[40px] text-right">
-                      {percentage}%
-                    </span>
+                    <span className="font-display text-lg tabular-nums">{percentage}%</span>
                   </div>
                 </div>
               );

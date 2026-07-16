@@ -1,26 +1,33 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import { Anton, Hanken_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
 import AppProviders from "@/providers/AppProviders";
 import { Analytics } from "@vercel/analytics/next";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const anton = Anton({
+  variable: "--font-anton",
   subsets: ["latin"],
+  weight: "400",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const hanken = Hanken_Grotesk({
+  variable: "--font-hanken",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
   subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Inimigo Secreto",
+  title: "Tribunal do Dia — O Júri dos Amigos",
+  description:
+    "Todo dia uma nova acusação. Reúna seu grupo, vote e descubra quem é o Culpado do Dia.",
 };
 
 export default function RootLayout({
@@ -30,9 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${jetbrainsMono.variable} antialiased bg-background`}
-      >
+      <body className={`${anton.variable} ${hanken.variable} ${spaceMono.variable} antialiased`}>
         <AppProviders>{children}</AppProviders>
         <Analytics />
       </body>

@@ -1,46 +1,50 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertTriangle, Home, Users } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Home, Users } from "lucide-react";
 import Link from "next/link";
+import PageShell from "@/components/layout/PageShell";
+import Kicker from "@/components/visual/Kicker";
+import Stamp from "@/components/visual/Stamp";
 
 export default async function NotFound() {
   return (
-    <div className="min-h-screen bg-background px-4 py-8 flex items-center justify-center">
-      <div className="max-w-md w-full space-y-6">
-        <Card>
-          <CardHeader className="text-center">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <AlertTriangle className="w-6 h-6 text-destructive" />
-            </div>
-            <CardTitle className="text-2xl">Grupo não encontrado</CardTitle>
-            <CardDescription>
-              Você não tem permissão para acessar este grupo ou ele não existe.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-md text-muted-foreground">Isso pode acontecer se:</p>
-            <ul className="text-sm text-muted-foreground space-y-1">
-              <li>• Você não é membro deste grupo</li>
-              <li>• O grupo foi removido</li>
-              <li>• O link está incorreto</li>
-            </ul>
-            <div className="flex flex-col gap-3 pt-4">
-              <Link href="/groups" className="w-full">
-                <Button className="w-full" variant="default">
-                  <Users className="w-4 h-4 mr-2" />
-                  Ver Meus Grupos
-                </Button>
-              </Link>
-              <Link href="/" className="w-full">
-                <Button className="w-full" variant="outline">
-                  <Home className="w-4 h-4 mr-2" />
-                  Voltar ao Início
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <PageShell width="prose" centered>
+      <Card className="poster-frame relative gap-0 overflow-hidden bg-paper p-0 py-0 paper-grain">
+        <div className="halftone pointer-events-none absolute inset-0 opacity-10" />
+        <CardContent className="relative space-y-6 p-8 text-center">
+          <div className="mx-auto w-fit">
+            <Stamp tone="ink" rotate={-8}>
+              Arquivo confidencial
+            </Stamp>
+          </div>
+          <div className="space-y-2">
+            <Kicker>Processo indisponível</Kicker>
+            <h1 className="masthead text-3xl">Tribunal não encontrado</h1>
+          </div>
+          <p className="mx-auto max-w-sm leading-relaxed text-muted-foreground">
+            Você não tem permissão para acessar este grupo ou ele não existe nos registros.
+          </p>
+          <ul className="mx-auto max-w-sm space-y-1 text-left font-mono text-xs uppercase tracking-widest text-muted-foreground">
+            <li>— Você não é membro deste tribunal.</li>
+            <li>— O grupo foi removido.</li>
+            <li>— O link está incorreto.</li>
+          </ul>
+          <div className="flex flex-col gap-3 pt-2">
+            <Link href="/groups" className="w-full">
+              <Button className="w-full py-6" size="lg">
+                <Users className="size-4" />
+                Ver meus tribunais
+              </Button>
+            </Link>
+            <Link href="/" className="w-full">
+              <Button variant="outline" className="w-full">
+                <Home className="size-4" />
+                Voltar ao início
+              </Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </PageShell>
   );
 }

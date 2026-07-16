@@ -7,53 +7,55 @@ import { useGetGroupsQuery } from "@/data/hooks/useGetGroupsQuery";
 import GroupCard from "./_components/GroupCard";
 import EmptyGroupList from "./_components/EmptyGroupList";
 import { Skeleton } from "@/components/ui/skeleton";
+import PageShell from "@/components/layout/PageShell";
 
 const Groups = () => {
   const { data, isPending } = useGetGroupsQuery();
 
   return (
-    <div className="min-h-screen bg-background px-4 py-8">
-      <div className="max-w-4xl mx-auto space-y-8">
-        <Header />
+    <PageShell width="default">
+      <Header />
 
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Link href="/groups/new" className="block">
-            <Button className="flex items-center space-x-2">
-              <Plus className="w-4 h-4" />
-              <span>Criar Novo Grupo</span>
-            </Button>
-          </Link>
-          <Link href="/groups/join" className="block">
-            <Button variant="outline" className="flex items-center space-x-2">
-              <Users className="w-4 h-4" />
-              <span>Entrar em Grupo</span>
-            </Button>
-          </Link>
-        </div>
-
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-foreground">Meus Grupos</h2>
-
-          {isPending && (
-            <>
-              <Skeleton className="w-[896px] h-[190px]" />
-              <Skeleton className="w-[896px] h-[190px]" />
-              <Skeleton className="w-[896px] h-[190px]" />
-            </>
-          )}
-
-          {data?.length === 0 ? (
-            <EmptyGroupList />
-          ) : (
-            <div className="grid gap-4">
-              {data?.map((group) => (
-                <GroupCard key={group.id} group={group} />
-              ))}
-            </div>
-          )}
-        </div>
+      <div className="reveal flex flex-col gap-3 sm:flex-row" style={{ animationDelay: "60ms" }}>
+        <Link href="/groups/new" className="block">
+          <Button size="lg" className="w-full sm:w-auto">
+            <Plus className="size-4" />
+            Abrir novo tribunal
+          </Button>
+        </Link>
+        <Link href="/groups/join" className="block">
+          <Button variant="outline" size="lg" className="w-full sm:w-auto">
+            <Users className="size-4" />
+            Entrar com código
+          </Button>
+        </Link>
       </div>
-    </div>
+
+      <section className="space-y-4">
+        <div className="flex items-center gap-3">
+          <h2 className="masthead text-2xl">Boletim de processos</h2>
+          <span className="h-[3px] flex-1 bg-rule" />
+        </div>
+
+        {isPending && (
+          <div className="space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className="h-44 w-full rounded-none" />
+            ))}
+          </div>
+        )}
+
+        {data?.length === 0 ? (
+          <EmptyGroupList />
+        ) : (
+          <div className="grid gap-4">
+            {data?.map((group) => (
+              <GroupCard key={group.id} group={group} />
+            ))}
+          </div>
+        )}
+      </section>
+    </PageShell>
   );
 };
 

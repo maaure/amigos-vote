@@ -1,7 +1,7 @@
 "use client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { ClockIcon } from "lucide-react";
+import { Hourglass } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function Timer() {
@@ -29,23 +29,21 @@ export default function Timer() {
     }, 1000);
 
     return () => clearInterval(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!timeLeft) {
-    <Skeleton className="w-[85px] h-[20px]" />;
+    return <Skeleton className="h-8 w-28 rounded-none" />;
   }
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <span className="flex gap-2 items-center text-muted-foreground">
-          <ClockIcon size="16px" /> {timeLeft}
+        <span className="flex items-center gap-2 border-2 border-rule bg-paper px-3 py-1.5 font-mono text-sm font-bold uppercase tracking-widest">
+          <Hourglass className="size-4 animate-tick text-highlight" />
+          {timeLeft}
         </span>
       </TooltipTrigger>
-      <TooltipContent>
-        <p>Para a próxima questão.</p>
-      </TooltipContent>
+      <TooltipContent>Até a próxima acusação.</TooltipContent>
     </Tooltip>
   );
 }

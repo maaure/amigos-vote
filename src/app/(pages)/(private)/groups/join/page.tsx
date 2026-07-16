@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useJoinGroupService } from "@/data/hooks/useJoinGroupService";
@@ -8,12 +8,15 @@ import { ErrorResponse } from "@/data/types";
 import { cn } from "@/lib/utils";
 import { GroupSchemaOut, NewGroupResponse } from "@/types/groups";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Check, Users } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
+import PageShell from "@/components/layout/PageShell";
+import Kicker from "@/components/visual/Kicker";
+import Stamp from "@/components/visual/Stamp";
 
 const schema = z.object({
   accessCode: z.string().length(6, "O código de acesso deve ter exatamente 6 caracteres"),
@@ -38,11 +41,11 @@ export default function JoinGroup() {
 
   function onSuccess(joinedGroup: NewGroupResponse) {
     setJoinedGroup(joinedGroup.data);
-    toast.success("Você juntou-se ao grupo com sucesso!");
+    toast.success("Você entrou no tribunal!");
   }
 
   function onError(error: ErrorResponse) {
-    toast.error(error?.message ?? "Houve um erro ao juntar-se ao grupo.");
+    toast.error(error?.message ?? "Houve um erro ao entrar no grupo.");
   }
 
   const onSubmit = (data: FormValues) => {
@@ -51,105 +54,121 @@ export default function JoinGroup() {
 
   if (joinedGroup) {
     return (
-      <div className="min-h-screen bg-background px-4 py-8 flex items-center justify-center">
-        <div className="max-w-md w-full space-y-6">
-          <Card>
-            <CardHeader className="text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Check className="w-8 h-8 text-primary" />
-              </div>
-              <CardTitle className="text-2xl">Bem-vindo!</CardTitle>
-              <CardDescription>Você agora faz parte do grupo</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="text-center space-y-3">
-                <h3 className="text-xl font-semibold text-foreground">{joinedGroup.name}</h3>
-                <p className="text-muted-foreground">{joinedGroup.membersCount} membros</p>
-                <div className="bg-accent/10 border border-accent/20 rounded-lg p-4">
-                  <p className="text-sm text-accent-foreground">
-                    🎉 Agora você pode participar das perguntas diárias e ver o que seus amigos
-                    pensam uns dos outros!
-                  </p>
-                </div>
-              </div>
+      <PageShell width="prose" centered>
+        <Card className="poster-frame gap-0 bg-paper p-0 py-0">
+          <CardContent className="space-y-6 p-8 text-center">
+            <div className="mx-auto w-fit">
+              <Stamp tone="gold" rotate={-6}>
+                Admitido
+              </Stamp>
+            </div>
+            <div className="space-y-2">
+              <Kicker>Bem-vindo ao banco dos réus</Kicker>
+              <h2 className="masthead text-3xl">{joinedGroup.name}</h2>
+              <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                {joinedGroup.membersCount} {joinedGroup.membersCount === 1 ? "membro" : "membros"}
+              </p>
+            </div>
 
-              <div className="space-y-3">
-                <Link href={`/groups/${joinedGroup.id}`} className="block">
-                  <Button className="w-full">Ir para o Grupo</Button>
-                </Link>
-                <Link href={`/groups/`} className="block">
-                  <Button variant="outline" className="w-full">
-                    Ver Todos os Grupos
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+            <div className="border-2 border-dashed border-rule bg-background/40 p-4">
+              <p className="font-mono text-xs uppercase leading-relaxed tracking-widest text-muted-foreground">
+                Agora você pode participar das acusações diárias e ver quem seus amigos elegem como
+                o pior da turma.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <Link href={`/groups/${joinedGroup.id}`} className="block">
+                <Button className="w-full py-6" size="lg">
+                  Ir ao tribunal
+                </Button>
+              </Link>
+              <Link href={`/groups/`} className="block">
+                <Button variant="outline" className="w-full">
+                  Ver todos os tribunais
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </PageShell>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background px-4 py-8">
-      <div className="max-w-md mx-auto space-y-6">
-        <Link className="block" href={"/groups"}>
-          <Button variant="ghost" className="flex items-center space-x-2">
-            <ArrowLeft className="w-4 h-4" />
-            <span>Voltar aos Grupos</span>
-          </Button>
-        </Link>
+    <PageShell width="prose" centered>
+      <Link href="/groups" className="block w-fit">
+        <Button variant="ghost">
+          <ArrowLeft className="size-4" />
+          Voltar aos grupos
+        </Button>
+      </Link>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">Entrar em Grupo</CardTitle>
-            <CardDescription>Use o código que seu amigo compartilhou com você</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-              <div className="space-y-2">
-                <Label htmlFor="code">Código do Grupo</Label>
-                <Input
-                  id="code"
-                  placeholder="Ex: FAC2024"
-                  className={cn("text-center text-lg font-mono tracking-wider", {
-                    "border-destructive": !!errors.accessCode,
-                  })}
-                  maxLength={10}
-                  {...register("accessCode")}
-                />
-                {!!errors.accessCode ? (
-                  <span className="text-red-500 text-xs">{errors.accessCode.message}</span>
-                ) : (
-                  <p className="text-xs text-muted-foreground">
-                    O código tem exatamente 6 caracteres
-                  </p>
-                )}
-              </div>
-
-              <div className="bg-muted/50 border border-border rounded-lg p-4 text-sm space-y-2">
-                <p className="font-medium text-foreground flex items-center space-x-2">
-                  <Users className="w-4 h-4" />
-                  <span>Como conseguir um código:</span>
-                </p>
-                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                  <li>Peça para um amigo que já está no grupo</li>
-                  <li>O criador do grupo tem o código</li>
-                  <li>Códigos são únicos para cada grupo</li>
-                </ul>
-              </div>
-
-              <Button
-                type="submit"
-                disabled={isPending || !watch("accessCode").trim()}
-                className="w-full"
-              >
-                {isPending ? "Procurando Grupo..." : "Entrar no Grupo"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+      <div className="space-y-2">
+        <Kicker>Convite recebido</Kicker>
+        <h1 className="masthead text-4xl">Entrar num tribunal</h1>
+        <p className="text-muted-foreground">
+          Digite o código de 6 caracteres que seu amigo passou.
+        </p>
       </div>
-    </div>
+
+      <Card className="poster-frame gap-0 bg-paper p-0 py-0">
+        <CardContent className="p-6">
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            <div className="space-y-2">
+              <Label htmlFor="code" className="font-mono text-xs uppercase tracking-widest">
+                Código de acesso
+              </Label>
+              <Input
+                id="code"
+                placeholder="Ex: FAC2024"
+                className={cn(
+                  "h-14 rounded-none text-center font-display text-2xl uppercase tracking-[0.4em]",
+                  { "border-destructive": !!errors.accessCode }
+                )}
+                maxLength={10}
+                {...register("accessCode")}
+              />
+              {!!errors.accessCode ? (
+                <span className="font-mono text-xs text-destructive">
+                  {errors.accessCode.message}
+                </span>
+              ) : (
+                <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                  O código tem exatamente 6 caracteres
+                </p>
+              )}
+            </div>
+
+            <div className="border-2 border-dashed border-rule bg-background/40 p-4 text-sm">
+              <p className="font-mono text-xs font-bold uppercase tracking-widest text-highlight">
+                Como conseguir um código
+              </p>
+              <ul className="mt-2 space-y-1 text-muted-foreground">
+                <li>— Peça a um amigo que já está no tribunal.</li>
+                <li>— Quem abre o grupo recebe o código.</li>
+                <li>— Cada código é único e permanente.</li>
+              </ul>
+            </div>
+
+            <Button
+              type="submit"
+              size="lg"
+              disabled={isPending || !watch("accessCode").trim()}
+              className="w-full py-6"
+            >
+              {isPending ? (
+                "Localizando..."
+              ) : (
+                <>
+                  <Check className="size-4" />
+                  Entrar no tribunal
+                </>
+              )}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </PageShell>
   );
 }

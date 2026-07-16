@@ -1,6 +1,6 @@
 "use client";
 
-import { Handshake, Loader2Icon, Send } from "lucide-react";
+import { Loader2Icon, Send } from "lucide-react";
 import FriendCard from "../FriendCard";
 import { useMemo, useState } from "react";
 import AlreadyVoted from "../AlreadyVoted";
@@ -78,20 +78,20 @@ export default function VotingSection({ groupId }: IVoteSectionProps) {
   return (
     <>
       <section className="space-y-8">
-        <div className="flex flex-col items-center">
-          <span className="inline-flex gap-2">
-            <Handshake />{" "}
-            <h3>{`Selecione ${maxSelectedFriends} ${
-              maxSelectedFriends > 1 ? "amigos" : "amigo"
-            }`}</h3>
+        <div className="flex flex-col items-center gap-2 text-center">
+          <span className="font-mono text-[0.7rem] font-bold uppercase tracking-widest text-highlight">
+            Júri em sessão
           </span>
-          <span className="text-muted-foreground">
-            {selected.length}/{maxSelectedFriends}{" "}
+          <h3 className="masthead text-2xl sm:text-3xl">
+            {maxSelectedFriends > 1 ? `Acuse ${maxSelectedFriends} suspeitos` : "Acuse o suspeito"}
+          </h3>
+          <span className="font-mono text-sm uppercase tracking-widest text-muted-foreground">
+            <span className="text-highlight">{selected.length}</span> / {maxSelectedFriends}{" "}
             {maxSelectedFriends > 1 ? "selecionados" : "selecionado"}
           </span>
         </div>
 
-        <div className="gap-4 grid grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {friends?.map((friend) => {
             const isSelected = selected.includes(friend.id);
             const isDisabled = !isSelected && selected.length >= maxSelectedFriends;
@@ -115,37 +115,39 @@ export default function VotingSection({ groupId }: IVoteSectionProps) {
           disabled={!isButtonEnabled || isVoteLoading}
           size="lg"
           onClick={handleVote}
-          className="mx-auto min-w-[200px]"
+          className="min-w-[240px] py-6"
         >
           {isVoteLoading ? (
             <Loader2Icon className="animate-spin" />
           ) : (
             <>
-              <Send /> Enviar Resposta
+              <Send /> Proclamar veredito
             </>
           )}
         </Button>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 border-t border-border">
+      <div className="flex flex-col items-center justify-center gap-4 border-t-2 border-rule pt-8 sm:flex-row">
         <Button
           variant="ghost"
-          className="flex items-center space-x-2 min-w-[180px]"
+          className="min-w-[200px]"
           onClick={() => {
             toast("Em desenvolvimento...");
           }}
         >
-          <span>💡 Sugerir Pergunta</span>
+          <span className="font-mono text-xs uppercase tracking-widest">Sugerir acusação</span>
         </Button>
 
         <Button
           variant="ghost"
-          className="flex items-center space-x-2 min-w-[180px]"
+          className="min-w-[200px]"
           onClick={() => {
             toast("Em desenvolvimento...");
           }}
         >
-          <span>🗳️ Votar Pergunta de Amanhã</span>
+          <span className="font-mono text-xs uppercase tracking-widest">
+            Influenciar o júri de amanhã
+          </span>
         </Button>
       </div>
     </>

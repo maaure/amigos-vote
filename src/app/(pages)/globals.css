@@ -1,111 +1,120 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* @custom-variant dark (&:is(.dark *)); */
+/* ============================================================
+   INIMIGO DO DIA — Design System "TRIBUNAL / PROCURADO"
+   Conceito: todo dia é um julgamento. A pergunta é a acusação,
+   os amigos são suspeitos, o mais votado é o culpado. Estética
+   de tabloide + cartaz de procurado: tipografia condensada
+   pesada, carimbo de tinta vermelha, textura de papel/jornal,
+   molduras dramáticas. Tokens centralizados (DRY), componentes
+   de responsabilidade única (SOLID), composição simples (KISS).
+   ============================================================ */
 
 :root {
-  --background: #ffffff;
-  --foreground: #020817;
-  --card: #ffffff;
-  --card-foreground: #020817;
-  --popover: #ffffff;
-  --popover-foreground: #020817;
-  --primary: #0ea5e9;
-  --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0f172a;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #f1f5f9;
-  --accent-foreground: #0f172a;
-  --highlight: #e23670;
-  --highlight-foreground: #f8fafc;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #0ea5e9;
-  --chart-1: #0ea5e9;
-  --chart-2: #f43f5e;
-  --chart-3: #f59e0b;
-  --chart-4: #10b981;
-  --chart-5: #6366f1;
-  --sidebar: #f8fafc;
-  --sidebar-foreground: #0f172a;
-  --sidebar-primary: #0ea5e9;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e2e8f0;
-  --sidebar-accent-foreground: #0f172a;
-  --sidebar-border: #e2e8f0;
-  --sidebar-ring: #0ea5e9;
-  --font-sans: Geist, ui-sans-serif, sans-serif, system-ui;
-  --font-serif: Lora;
-  --font-mono: var(---font-jetbrains-mono);
-  --radius: 0.5rem;
-  --shadow-2xs: 0px 4px 8px -2px hsl(240 4.8780% 83.9216% / 0.50);
-  --shadow-xs: 0px 4px 8px -2px hsl(240 4.8780% 83.9216% / 0.50);
-  --shadow-sm: 0px 4px 8px -2px hsl(240 4.8780% 83.9216% / 1.00), 0px 1px 2px -3px hsl(240 4.8780% 83.9216% / 1.00);
-  --shadow: 0px 4px 8px -2px hsl(240 4.8780% 83.9216% / 1.00), 0px 1px 2px -3px hsl(240 4.8780% 83.9216% / 1.00);
-  --shadow-md: 0px 4px 8px -2px hsl(240 4.8780% 83.9216% / 1.00), 0px 2px 4px -3px hsl(240 4.8780% 83.9216% / 1.00);
-  --shadow-lg: 0px 4px 8px -2px hsl(240 4.8780% 83.9216% / 1.00), 0px 4px 6px -3px hsl(240 4.8780% 83.9216% / 1.00);
-  --shadow-xl: 0px 4px 8px -2px hsl(240 4.8780% 83.9216% / 1.00), 0px 8px 10px -3px hsl(240 4.8780% 83.9216% / 1.00);
-  --shadow-2xl: 0px 4px 8px -2px hsl(240 4.8780% 83.9216% / 2.50);
-  --tracking-normal: normal;
+  /* --- Papel & tinta (light = tabloide diurno) --- */
+  --background: #e8dec6;      /* jornal envelhecido */
+  --paper: #f5eeda;           /* a folha / card */
+  --foreground: #1c1714;      /* tinta preta quente */
+  --muted: #ddcfaf;
+  --muted-foreground: #7a6d4d;
+  --accent: #efe5c9;
+  --accent-foreground: #1c1714;
+  --secondary: #e2d6b6;
+  --secondary-foreground: #1c1714;
+  --border: #cdbf9b;          /* riso leve */
+  --rule: #1c1714;            /* filete de tinta pesado */
+  --input: #cdbf9b;
+
+  /* --- Marca / ação --- */
+  --primary: #1c1714;         /* botão de tinta */
+  --primary-foreground: #f5eeda;
+  --highlight: #bf2a26;       /* vermelho de carimbo (ACUSAÇÃO) */
+  --highlight-foreground: #fff7e6;
+  --gold: #a9760f;            /* troféu / culpado */
+  --destructive: #b3261e;
+  --destructive-foreground: #fff7e6;
+  --ring: #bf2a26;
+
+  --popover: #f5eeda;
+  --popover-foreground: #1c1714;
+  --card: #f5eeda;
+  --card-foreground: #1c1714;
+
+  --chart-1: #bf2a26;
+  --chart-2: #a9760f;
+  --chart-3: #1c1714;
+  --chart-4: #6f7b3f;
+  --chart-5: #3f6b7b;
+
+  --sidebar: #efe5c9;
+  --sidebar-foreground: #1c1714;
+  --sidebar-primary: #1c1714;
+  --sidebar-primary-foreground: #f5eeda;
+  --sidebar-accent: #e2d6b6;
+  --sidebar-accent-foreground: #1c1714;
+  --sidebar-border: #1c1714;
+  --sidebar-ring: #bf2a26;
+
+  --font-display: var(--font-anton), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-space-mono), ui-monospace, monospace;
+
+  --radius: 0.125rem;          /* cantos quase retos = cartaz */
+
+  --tracking-normal: 0.01em;
   --spacing: 0.25rem;
 }
 
 .dark {
-  --background: #020817;
-  --foreground: #f8fafc;
-  --card: #020817;
-  --card-foreground: #f8fafc;
-  --popover: #020817;
-  --popover-foreground: #f8fafc;
-  --primary: #0ea5e9;
-  --primary-foreground: #020817;
-  --secondary: #1e293b;
-  --secondary-foreground: #f8fafc;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #1e293b;
-  --accent-foreground: #f8fafc;
-  --destructive: #7f1d1d;
-  --destructive-foreground: #f8fafc;
-  --highlight: #e23670;
-  --highlight-foreground: #f8fafc;
-  --border: #1e293b;
-  --input: #1e293b;
-  --ring: #0ea5e9;
-  --chart-1: #0ea5e9;
-  --chart-2: #f43f5e;
-  --chart-3: #f59e0b;
-  --chart-4: #10b981;
-  --chart-5: #6366f1;
-  --sidebar: #0f172a;
-  --sidebar-foreground: #f8fafc;
-  --sidebar-primary: #0ea5e9;
-  --sidebar-primary-foreground: #020817;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #f8fafc;
-  --sidebar-border: #1e293b;
-  --sidebar-ring: #0ea5e9;
-  --font-sans: Geist, ui-sans-serif, sans-serif, system-ui;
-  --font-serif: Lora;
-  --font-mono: var(---font-jetbrains-mono);
-  --radius: 0.5rem;
-  --shadow-2xs: 0px 4px 10px 0px hsl(0 0% 0% / 0.13);
-  --shadow-xs: 0px 4px 10px 0px hsl(0 0% 0% / 0.13);
-  --shadow-sm: 0px 4px 10px 0px hsl(0 0% 0% / 0.25), 0px 1px 2px -1px hsl(0 0% 0% / 0.25);
-  --shadow: 0px 4px 10px 0px hsl(0 0% 0% / 0.25), 0px 1px 2px -1px hsl(0 0% 0% / 0.25);
-  --shadow-md: 0px 4px 10px 0px hsl(0 0% 0% / 0.25), 0px 2px 4px -1px hsl(0 0% 0% / 0.25);
-  --shadow-lg: 0px 4px 10px 0px hsl(0 0% 0% / 0.25), 0px 4px 6px -1px hsl(0 0% 0% / 0.25);
-  --shadow-xl: 0px 4px 10px 0px hsl(0 0% 0% / 0.25), 0px 8px 10px -1px hsl(0 0% 0% / 0.25);
-  --shadow-2xl: 0px 4px 10px 0px hsl(0 0% 0% / 0.63);
+  /* --- Noir / tribunal noturno --- */
+  --background: #14110d;
+  --paper: #1e1812;
+  --foreground: #efe6cc;
+  --muted: #2a2418;
+  --muted-foreground: #9b8c6a;
+  --accent: #2a2418;
+  --accent-foreground: #efe6cc;
+  --secondary: #2a2418;
+  --secondary-foreground: #efe6cc;
+  --border: #352f1f;
+  --rule: #efe6cc;
+  --input: #352f1f;
+
+  --primary: #efe6cc;          /* botão creme sobre tinta */
+  --primary-foreground: #14110d;
+  --highlight: #ef4650;        /* carimbo mais vivo no escuro */
+  --highlight-foreground: #1a0d0a;
+  --gold: #e6b54a;
+  --destructive: #cf3a2c;
+  --destructive-foreground: #fff7e6;
+  --ring: #ef4650;
+
+  --popover: #1e1812;
+  --popover-foreground: #efe6cc;
+  --card: #1e1812;
+  --card-foreground: #efe6cc;
+
+  --chart-1: #ef4650;
+  --chart-2: #e6b54a;
+  --chart-3: #efe6cc;
+  --chart-4: #a7b76a;
+  --chart-5: #6fa9bd;
+
+  --sidebar: #1e1812;
+  --sidebar-foreground: #efe6cc;
+  --sidebar-primary: #efe6cc;
+  --sidebar-primary-foreground: #14110d;
+  --sidebar-accent: #2a2418;
+  --sidebar-accent-foreground: #efe6cc;
+  --sidebar-border: #efe6cc;
+  --sidebar-ring: #ef4650;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-paper: var(--paper);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -120,6 +129,8 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-highlight: var(--highlight);
   --color-highlight-foreground: var(--highlight-foreground);
+  --color-gold: var(--gold);
+  --color-rule: var(--rule);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
@@ -140,31 +151,175 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
   --font-mono: var(--font-mono);
-  --font-serif: var(--font-serif);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
+  --radius-sm: 0.0625rem;
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --shadow-2xs: var(--shadow-2xs);
-  --shadow-xs: var(--shadow-xs);
-  --shadow-sm: var(--shadow-sm);
-  --shadow: var(--shadow);
-  --shadow-md: var(--shadow-md);
-  --shadow-lg: var(--shadow-lg);
-  --shadow-xl: var(--shadow-xl);
-  --shadow-2xl: var(--shadow-2xl);
-
-  --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
-  --tracking-tight: calc(var(--tracking-normal) - 0.025em);
+  --tracking-tighter: -0.04em;
+  --tracking-tight: -0.02em;
   --tracking-normal: var(--tracking-normal);
-  --tracking-wide: calc(var(--tracking-normal) + 0.025em);
-  --tracking-wider: calc(var(--tracking-normal) + 0.05em);
-  --tracking-widest: calc(var(--tracking-normal) + 0.1em);
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.08em;
+  --tracking-widest: 0.18em;
+
+  --animate-stamp: stamp-slam 0.45s cubic-bezier(0.16, 1.2, 0.4, 1) both;
+  --animate-reveal: reveal-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-tick: tick 1s steps(2, end) infinite;
+  --animate-marquee: marquee 28s linear infinite;
 }
 
-body {
-  letter-spacing: var(--tracking-normal);
+/* ====================== BASE ====================== */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    letter-spacing: var(--tracking-normal);
+    color: var(--foreground);
+    background-color: var(--background);
+    background-image:
+      radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--highlight) 5%, transparent), transparent 38%),
+      radial-gradient(circle at 86% 88%, color-mix(in srgb, var(--gold) 6%, transparent), transparent 42%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: 220px 220px, 220px 220px, 220px 220px;
+    background-blend-mode: normal, normal, multiply;
+  }
+
+  ::selection {
+    background: var(--highlight);
+    color: var(--highlight-foreground);
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--rule);
+    border: 3px solid var(--background);
+  }
+}
+
+/* ====================== UTILITÁRIOS DE TEMA ====================== */
+@layer utilities {
+  /* Textura de grão extra para superfícies (cards "de papel") */
+  .paper-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.22'/%3E%3C/svg%3E");
+  }
+
+  /* Meio-tom (pontilhismo) para detalhes de quadrinho/tabloide */
+  .halftone {
+    background-image: radial-gradient(color-mix(in srgb, var(--rule) 75%, transparent) 1.4px, transparent 1.5px);
+    background-size: 10px 10px;
+  }
+  .halftone-highlight {
+    background-image: radial-gradient(color-mix(in srgb, var(--highlight) 70%, transparent) 1.6px, transparent 1.7px);
+    background-size: 9px 9px;
+  }
+
+  /* Filete triplo de tabloide */
+  .rule-thick {
+    border-color: var(--rule);
+    box-shadow:
+      0 -2px 0 0 var(--rule),
+      0 4px 0 -2px var(--rule),
+      0 6px 0 -3px var(--rule);
+  }
+
+  /* Moldura pesada estilo cartaz de procurado */
+  .poster-frame {
+    border: 2px solid var(--rule);
+    box-shadow:
+      inset 0 0 0 2px var(--paper),
+      inset 0 0 0 3px var(--rule),
+      6px 6px 0 0 var(--rule);
+  }
+
+  /* Cabeçalho de tabloide: display condensada + filetes */
+  .masthead {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    line-height: 0.86;
+    letter-spacing: -0.01em;
+  }
+
+  /* Carimbo de tinta (CULPADO / ARQUIVADO) */
+  .stamp {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--highlight);
+    border: 3px solid var(--highlight);
+    padding: 0.28em 0.7em;
+    border-radius: 2px;
+    position: relative;
+    background: transparent;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--highlight) 40%, transparent);
+  }
+  .stamp::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)' opacity='0.5'/%3E%3C/svg%3E");
+    mix-blend-mode: lighten;
+    opacity: 0.35;
+  }
+
+  /* Fita "pinotada" de cartaz */
+  .tape {
+    background: color-mix(in srgb, var(--gold) 55%, transparent);
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.2);
+  }
+
+  .font-display { font-family: var(--font-display); }
+  .font-mono { font-family: var(--font-mono); }
+
+  .text-balance { text-wrap: balance; }
+
+  /* Entradas encadeadas — aplica animate-reveal + delay via style inline */
+  .reveal { animation: var(--animate-reveal); }
+}
+
+/* ====================== KEYFRAMES ====================== */
+@keyframes stamp-slam {
+  0%   { opacity: 0; transform: rotate(-18deg) scale(2.4); filter: blur(4px); }
+  60%  { opacity: 1; transform: rotate(-9deg) scale(0.92); filter: blur(0); }
+  100% { transform: rotate(-7deg) scale(1); }
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tick {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

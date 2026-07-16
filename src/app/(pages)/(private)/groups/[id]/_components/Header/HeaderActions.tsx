@@ -15,15 +15,16 @@ import { toast } from "sonner";
 export default function HeaderActions() {
   const handleLogout = () => {
     signOut();
-    toast("Logout realizado", {
-      description: "Até logo!",
+    toast("Sessão encerrada", {
+      description: "O tribunal se reuniu noutra hora.",
     });
   };
+
   return (
     <div className="flex gap-2">
       <Link href={"/groups"} className="block">
         <Button variant="outline" size="sm">
-          <Users className="w-4 h-4 mr-2" />
+          <Users className="size-4" />
           Meus grupos
         </Button>
       </Link>
@@ -31,16 +32,16 @@ export default function HeaderActions() {
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="ghost" size="sm">
-            <LogOut className="w-4 h-4 mr-2" />
+            <LogOut className="size-4" />
             Sair
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Deseja mesmo sair?</DialogTitle>
+            <DialogTitle className="masthead text-2xl">Encerrar a sessão?</DialogTitle>
           </DialogHeader>
 
-          <DialogFooter className="flex flex-col sm:flex-row gap-4">
+          <DialogFooter className="flex flex-col gap-4 sm:flex-row">
             <Button variant="secondary" className="flex-1">
               Continuar por aqui
             </Button>
