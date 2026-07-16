@@ -7,6 +7,11 @@ export const questions = pgTable("questions", {
   allowedVotes: integer("allowed_votes").notNull().default(1),
   used: boolean("used").notNull().default(false),
   publishedWhen: date("published_when"),
+  mode: text("mode").notNull().default("daily"), // 'daily' | 'live' | 'both'
+  authorFriendId: uuid("author_friend_id").references(() => friends.id, {
+    onUpdate: "cascade",
+    onDelete: "set null",
+  }),
 });
 
 export const friends = pgTable("friends", {

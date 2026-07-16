@@ -25,6 +25,19 @@ export const FriendsRepository = {
   },
 
   /**
+   * Busca um amigo pelo id (usado p/ resolver o autor de uma pergunta sugerida).
+   */
+  findById: async (id: string) => {
+    try {
+      const result = await db.select().from(friends).where(eq(friends.id, id));
+      return result[0] ?? null;
+    } catch (error) {
+      console.error("Erro ao buscar amigo:", error);
+      throw new Error("Erro no banco de dados ao buscar amigo.");
+    }
+  },
+
+  /**
    * Cria um novo amigo no banco de dados.
    */
   create: async ({

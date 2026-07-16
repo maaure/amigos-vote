@@ -30,3 +30,11 @@ export function generateAccessCode(length = 6): string {
   }
   return result;
 }
+
+/**
+ * Crédito de autoria exibido quando uma pergunta veio de uma sugestão.
+ * Formatter puro (client-safe): a resolução do nome acontece no servidor.
+ */
+export function creditLabel(authorName: string): string {
+  return `acusação proposta por @${authorName}`;
+}
