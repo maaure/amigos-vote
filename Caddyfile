@@ -1,0 +1,24 @@
+# Cada app mora num subpath e é roteado preservando o caminho (o Next.js
+# de cada app conhece seu próprio basePath). HTTPS automático (Let's Encrypt).
+
+{$DOMAIN} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubdomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "geolocation=(), microphone=(), camera=()"
+	}
+
+	# Tribunal do Dia
+	@tribunal path /tribunal-do-dia /tribunal-do-dia/*
+	handle @tribunal {
+		reverse_proxy next-app:3000
+	}
+
+	# Raiz do domínio (outros apps entram como novos blocos handle acima)
+	handle {
+		respond "your.domain" 200
+	}
+}

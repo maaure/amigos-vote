@@ -13,6 +13,8 @@ USER inimigos
 COPY --chown=inimigos:inimigos package.json pnpm-lock.yaml ./
 
 FROM base AS build
+ARG NEXT_PUBLIC_BASE_PATH=""
+ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 COPY --chown=inimigos:inimigos . .
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store,uid=1001,gid=1001 \

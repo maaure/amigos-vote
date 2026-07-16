@@ -1,0 +1,32 @@
+# Override de produção: adiciona o Caddy (HTTPS automático) ao stack base.
+# Uso:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+# ou:
+#   make prod-deploy
+#
+# O app (next-app) permanece publicado apenas em 127.0.0.1:3000 (definido no
+# base); o Caddy o alcança pela rede interna "inimigo-net" via service name.
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: inimigo-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      - DOMAIN=${DOMAIN}
+    networks:
+      - inimigo-net
+    depends_on:
+      - next-app
+
+volumes:
+  caddy_data:
+    driver: local
+  caddy_config:
+    driver: local
