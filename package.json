@@ -2,6 +2,15 @@
   "name": "ladeiros-vote",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.0.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@tailwindcss/oxide",
+      "esbuild",
+      "sharp",
+      "unrs-resolver"
+    ]
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
