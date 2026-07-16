@@ -2,6 +2,19 @@
 
 Aplicação web para votação entre amigos, permitindo que usuários criem questões e votem em diferentes opções. Inspirado pelo jogo "Amigos de M\*rda".
 
+## Documentação
+
+A documentação vive na pasta [`docs/`](./docs):
+
+- [`docs/SPEC.md`](./docs/SPEC.md) — produto base (modo diário), público e tom
+- [`docs/CONSTITUTION.md`](./docs/CONSTITUTION.md) — regras de arquitetura/estilo (SOLID/DRY/KISS)
+- [`docs/ROADMAP.md`](./docs/ROADMAP.md) — ordem de implementação
+- [`docs/SUGESTOES.md`](./docs/SUGESTOES.md) — feature: sugestão de perguntas
+- [`docs/LIVE.md`](./docs/LIVE.md) — feature: modo ao vivo (Jackbox-style)
+- [`docs/AUDITORIA.md`](./docs/AUDITORIA.md) — auditoria do estado atual
+
+Agentes de IA e contribuidores devem ler também o [`AGENTS.md`](./AGENTS.md) na raiz.
+
 ## Stack
 
 - Next.js 15 (App Router)
