@@ -54,7 +54,7 @@ export default function Welcome() {
             <div className="space-y-4">
               <h2 className="text-3xl font-semibold text-foreground">Pronto para começar?</h2>
               <p className="text-muted-foreground">
-                Entre com sua conta do GitHub e comece a se divertir com seus amigos!
+                Entre com sua conta e comece a se divertir com seus amigos!
               </p>
             </div>
 

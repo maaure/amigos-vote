@@ -9,7 +9,7 @@ POSTGRES_DB   ?= inimigo-db
 # Dev: banco no Docker, Next.js local com hot reload
 dev:
 	docker compose up db -d
-	pnpm dev
+	DB_ADDRESS=localhost pnpm dev
 
 # Produção: builda e sobe tudo
 prod:
@@ -24,7 +24,7 @@ reset:
 	docker compose down -v
 	docker compose up db -d
 	@sleep 2
-	pnpm db:push
+	DB_ADDRESS=localhost pnpm db:push
 
 # Segue os logs do banco
 logs:
@@ -39,6 +39,6 @@ generate:
 	pnpm db:generate
 
 push:
-	pnpm db:push
+	DB_ADDRESS=localhost pnpm db:push
 
 migrate: generate push
