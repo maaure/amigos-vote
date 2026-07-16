@@ -38,6 +38,7 @@ USER inimigos
 
 COPY --from=build --chown=inimigos:inimigos /app/package.json ./package.json
 COPY --from=build --chown=inimigos:inimigos /app/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=build --chown=inimigos:inimigos /app/next.config.ts ./next.config.ts
 COPY --from=build --chown=inimigos:inimigos /app/.next ./.next
 COPY --from=build --chown=inimigos:inimigos /app/public ./public
 COPY --from=build --chown=inimigos:inimigos /app/drizzle.config.ts ./drizzle.config.ts
