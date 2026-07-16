@@ -4,7 +4,7 @@ export
 POSTGRES_USER ?= inimigo-user
 POSTGRES_DB   ?= inimigo-db
 
-.PHONY: dev prod down reset logs db-shell generate push migrate prod-deploy prod-down prod-logs
+.PHONY: dev prod down reset logs db-shell generate push migrate prod-deploy prod-down prod-logs db-push
 
 # Dev: banco no Docker, Next.js local com hot reload
 dev:
@@ -54,3 +54,8 @@ prod-down:
 # Segue logs do proxy e do app em produção
 prod-logs:
 	docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f caddy next-app
+
+# Roda as migrations DENTRO do container de produção (drizzle-kit está nas deps)
+# Conecta ao serviço "db" via DB_ADDRESS=db (já no ambiente do container).
+db-push:
+	docker compose exec next-app pnpm db:push

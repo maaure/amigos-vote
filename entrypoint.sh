@@ -2,4 +2,4 @@
 set -e
 
 echo "🚀 Iniciando aplicação..."
-exec pnpm start
+exec node server.js
