@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Gavel, Lightbulb, LogOut, Users } from "lucide-react";
+import { Gavel, Lightbulb, LogOut, Skull, Users } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -40,6 +40,13 @@ export default function HeaderActions() {
         <Button variant="ghost" size="sm">
           <Gavel className="size-4" />
           Curadoria
+        </Button>
+      </Link>
+
+      <Link href={"/stats"} className="block">
+        <Button variant="ghost" size="sm">
+          <Skull className="size-4" />
+          Ranking
         </Button>
       </Link>
 
