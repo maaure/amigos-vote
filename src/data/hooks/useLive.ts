@@ -21,6 +21,7 @@ export function useLiveSessionState(sessionId: string | null, enabled = false) {
     queryFn: () => LiveService.getState(sessionId!),
     enabled: enabled && !!sessionId,
     staleTime: 60_000,
+    refetchInterval: 5000,
   });
 }
 

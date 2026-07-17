@@ -1,4 +1,6 @@
-const SOCKET_URL = process.env.SOCKET_URL ?? "http://socket:3001";
+// Em dev (pnpm dev local): o socket container publica em localhost:3001.
+// Em prod (Docker): o compose define SOCKET_URL=http://socket:3001.
+const SOCKET_URL = process.env.SOCKET_URL ?? "http://localhost:3001";
 
 /**
  * Notifica o servidor Socket.io para que ele emita `state:sync` ou `state:update`
