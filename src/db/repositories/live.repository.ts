@@ -178,6 +178,46 @@ export const LiveRepository = {
       .where(and(eq(liveVotes.roundId, roundId), eq(liveVotes.voterFriendId, voterFriendId)));
   },
 
+  /** Computa pontos de Jurado: 1 ponto por rodada em que o voto acertou o(a) mais votado(a). */
+  computeJuradoPoints: async (sessionId: string): Promise<Record<string, number>> => {
+    const rounds = await db
+      .select({ id: liveRounds.id })
+      .from(liveRounds)
+      .where(
+        and(
+          eq(liveRounds.sessionId, sessionId),
+          inArray(liveRounds.phase, ["reveal", "done"])
+        )
+      );
+
+    const points: Record<string, number> = {};
+
+    for (const round of rounds) {
+      const tally = await LiveRepository.getTally(round.id);
+      if (tally.length === 0) continue;
+      const maxVotes = Math.max(...tally.map((t: { votes: number }) => t.votes));
+      const winners = tally
+        .filter((t: { votes: number }) => t.votes === maxVotes)
+        .map((t: { targetFriendId: string }) => t.targetFriendId);
+
+      const votes = await db
+        .select({
+          voterFriendId: liveVotes.voterFriendId,
+          targetFriendId: liveVotes.targetFriendId,
+        })
+        .from(liveVotes)
+        .where(eq(liveVotes.roundId, round.id));
+
+      for (const v of votes) {
+        if (winners.includes(v.targetFriendId)) {
+          points[v.voterFriendId] = (points[v.voterFriendId] ?? 0) + 1;
+        }
+      }
+    }
+
+    return points;
+  },
+
   /** Soma cumulativa de guilt_received pra todos participantes da sessão (até o momento). */
   getAccumulatedResults: async (sessionId: string): Promise<LiveAccumulatedResult[]> => {
     const guilt = await db
@@ -191,6 +231,8 @@ export const LiveRepository = {
       .groupBy(liveVotes.targetFriendId)
       .orderBy(desc(sql`count(*)`));
 
+    const juradoPoints = await LiveRepository.computeJuradoPoints(sessionId);
+
     const participants = await LiveRepository.getParticipants(sessionId);
     const result: LiveAccumulatedResult[] = participants.map(
       (p: { id: string; name: string; urlPic: string | null }) => {
@@ -200,7 +242,7 @@ export const LiveRepository = {
           name: p.name,
           urlPic: p.urlPic,
           guiltReceived: g?.guiltReceived ?? 0,
-          juradoPoints: 0,
+          juradoPoints: juradoPoints[p.id] ?? 0,
         };
       }
     );
@@ -210,14 +252,17 @@ export const LiveRepository = {
   /** Salva snapshot do finale e retorna. */
   saveResults: async (sessionId: string): Promise<LiveAccumulatedResult[]> => {
     const acc = await LiveRepository.getAccumulatedResults(sessionId);
+    // Ordena por jurado para definir rankJurado
+    const byJurado = [...acc].sort((a, b) => b.juradoPoints - a.juradoPoints);
     for (let i = 0; i < acc.length; i++) {
+      const juradoRank = byJurado.findIndex((r) => r.friendId === acc[i].friendId) + 1;
       await db.insert(liveResults).values({
         sessionId,
         friendId: acc[i].friendId,
         guiltReceived: acc[i].guiltReceived,
         juradoPoints: acc[i].juradoPoints,
         rankGuilt: i + 1,
-        rankJurado: null,
+        rankJurado: juradoRank,
       });
     }
     return acc;

@@ -23,8 +23,8 @@ export const LiveService = {
   vote: (sessionId: string, targetFriendId: string): Promise<{ message: string }> =>
     apiClient.post(`/api/live/${sessionId}/vote`, { targetFriendId }),
 
-  advance: (sessionId: string): Promise<{ message: string }> =>
-    apiClient.post(`/api/live/${sessionId}/advance`),
+  advance: (sessionId: string, payload?: { customText?: string }): Promise<{ message: string }> =>
+    apiClient.post(`/api/live/${sessionId}/advance`, payload ?? {}),
 
   close: (sessionId: string): Promise<{ message: string }> =>
     apiClient.post(`/api/live/${sessionId}/close`),

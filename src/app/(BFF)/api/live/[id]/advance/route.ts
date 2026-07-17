@@ -10,7 +10,7 @@ import { authOptions } from "@/app/(BFF)/api/auth/[...nextauth]/route";
  * Para controlar o ritmo do jogo.
  * Se for a última rodada e a fase atual for reveal, encerra a sessão.
  */
-export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
@@ -26,12 +26,26 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
       return NextResponse.json({ message: "Apenas o anfitrião pode avançar." }, { status: 403 });
     }
 
+    // Aceita customText opcional do host para acusações improvisadas
+    let customText: string | undefined;
+    try {
+      const body = await request.json();
+      if (typeof body.customText === "string") customText = body.customText.trim();
+    } catch {
+      /* sem body = ok */
+    }
+
+    const pickQuestion = async () => {
+      if (customText) return { id: undefined, text: customText };
+      const q = await QuestionsRepository.getRandomForLive();
+      return q ? { id: q.id, text: q.text } : { id: undefined, text: undefined };
+    };
+
     if (liveSession.status === "lobby") {
-      // Primeiro avanço: sai do lobby, inicia a sessão e cria a rodada 1
       const now = new Date();
-      const question = await QuestionsRepository.getRandomForLive();
+      const q = await pickQuestion();
       await LiveRepository.updateSession(id, { status: "active", currentRound: 1, startedAt: now });
-      await LiveRepository.createRound(id, 1, question?.id);
+      await LiveRepository.createRound(id, 1, q.id, q.text);
       return NextResponse.json({ message: "Sessão iniciada!" }, { status: 200 });
     }
 
@@ -64,8 +78,8 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
 
       const nextRound = liveSession.currentRound + 1;
       await LiveRepository.updateSession(id, { currentRound: nextRound });
-      const question = await QuestionsRepository.getRandomForLive();
-      await LiveRepository.createRound(id, nextRound, question?.id);
+      const q = await pickQuestion();
+      await LiveRepository.createRound(id, nextRound, q.id, q.text);
       return NextResponse.json({ message: `Rodada ${nextRound} iniciada.` }, { status: 200 });
     }
 

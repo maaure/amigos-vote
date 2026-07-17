@@ -78,7 +78,7 @@ export function useAdvanceRound(
 ) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: () => LiveService.advance(sessionId),
+    mutationFn: (payload?: { customText?: string }) => LiveService.advance(sessionId, payload),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: STATE_KEY(sessionId) });
       onSuccess?.();

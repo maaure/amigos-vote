@@ -15,7 +15,7 @@ import {
 import { useGetFriendsQuery } from "@/data/hooks/useGetFriendsQuery";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { ArrowLeft, Play, LogIn, Loader2Icon, Users } from "lucide-react";
+import { ArrowLeft, Play, LogIn, Loader2Icon, Users, Swords, Scale } from "lucide-react";
 import { use, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -80,7 +80,7 @@ function LiveLobby({
         <div className="flex justify-center gap-3">
           <Button
             size="lg"
-            onClick={() => advance()}
+            onClick={() => advance(undefined)}
             disabled={isAdvancing || participants.length < 3}
             className="py-6"
           >
@@ -185,7 +185,7 @@ function LiveRound({
             {isVoting ? <Loader2Icon className="size-4 animate-spin" /> : "Proclamar voto"}
           </Button>
         )}
-        <Button variant="outline" size="lg" onClick={() => advance()} disabled={isAdvancing}>
+        <Button variant="outline" size="lg" onClick={() => advance(undefined)} disabled={isAdvancing}>
           {isAdvancing ? <Loader2Icon className="size-4 animate-spin" /> : "Avançar"}
         </Button>
       </div>
@@ -197,12 +197,15 @@ function LiveReveal({
   tally,
   participants,
   sessionId,
+  isHost,
 }: {
   tally: { targetFriendId: string; votes: number }[];
   participants: { id: string; name: string; urlPic: string | null }[];
   sessionId: string;
+  isHost: boolean;
 }) {
   const { mutate: advance, isPending: isAdvancing } = useAdvanceRound(sessionId);
+  const [customAccusation, setCustomAccusation] = useState("");
   const maxVotes = Math.max(...tally.map((t) => t.votes), 0);
   const enriched = tally.map((t) => ({
     ...t,
@@ -249,10 +252,28 @@ function LiveReveal({
         ))}
       </div>
 
-      <div className="flex justify-center">
-        <Button size="lg" onClick={() => advance()} disabled={isAdvancing} className="py-6">
-          {isAdvancing ? <Loader2Icon className="size-4 animate-spin" /> : "Próxima rodada"}
-        </Button>
+      <div className="space-y-3">
+        {isHost && (
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={customAccusation}
+              onChange={(e) => setCustomAccusation(e.target.value)}
+              placeholder="Acusação personalizada (opcional)"
+              className="flex-1 border-2 border-rule bg-background px-3 py-2 font-display text-sm uppercase tracking-wide outline-none focus:border-highlight"
+            />
+          </div>
+        )}
+        <div className="flex justify-center">
+          <Button
+            size="lg"
+            onClick={() => advance(customAccusation.trim() ? { customText: customAccusation.trim() } : undefined)}
+            disabled={isAdvancing}
+            className="py-6"
+          >
+            {isAdvancing ? <Loader2Icon className="size-4 animate-spin" /> : "Próxima rodada"}
+          </Button>
+        </div>
       </div>
     </div>
   );
@@ -263,7 +284,12 @@ function LiveFinale({
 }: {
   results: { friendId: string; name: string; urlPic: string | null; guiltReceived: number; juradoPoints: number }[];
 }) {
+  const [tab, setTab] = useState<"guilt" | "jurado">("guilt");
   const winner = results[0];
+  const sortedByGuilt = [...results].sort((a, b) => b.guiltReceived - a.guiltReceived);
+  const sortedByJurado = [...results].sort((a, b) => b.juradoPoints - a.juradoPoints);
+  const display = tab === "guilt" ? sortedByGuilt : sortedByJurado;
+
   return (
     <div className="space-y-8">
       <div className="space-y-4 text-center">
@@ -274,27 +300,63 @@ function LiveFinale({
         {winner && <h2 className="masthead text-4xl sm:text-5xl">{winner.name}</h2>}
       </div>
 
+      <div className="flex justify-center gap-1 border-2 border-rule bg-paper p-1">
+        <button
+          type="button"
+          onClick={() => setTab("guilt")}
+          className={cn(
+            "flex flex-1 items-center justify-center gap-2 px-4 py-2 font-mono text-xs uppercase tracking-widest transition-colors",
+            tab === "guilt"
+              ? "bg-highlight text-highlight-foreground"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <Scale className="size-4" /> Culpa
+        </button>
+        <button
+          type="button"
+          onClick={() => setTab("jurado")}
+          className={cn(
+            "flex flex-1 items-center justify-center gap-2 px-4 py-2 font-mono text-xs uppercase tracking-widest transition-colors",
+            tab === "jurado"
+              ? "bg-highlight text-highlight-foreground"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <Swords className="size-4" /> Jurado
+        </button>
+      </div>
+
       <div className="space-y-1">
-        {results.map((r, i) => (
-          <div
-            key={r.friendId}
-            className={cn(
-              "flex items-center justify-between border-2 px-4 py-3",
-              i === 0 ? "border-gold bg-gold/5" : "border-rule bg-paper"
-            )}
-          >
-            <div className="flex items-center gap-3">
-              <span className="masthead text-2xl text-muted-foreground">#{i + 1}</span>
-              <div>
-                <p className="font-bold leading-tight">{r.name}</p>
-                <p className="font-mono text-[0.6rem] uppercase tracking-widest text-muted-foreground">
-                  {r.guiltReceived} {r.guiltReceived === 1 ? "voto" : "votos"} de culpa
-                </p>
+        {display.map((r, i) => {
+          const isWinner = i === 0;
+          return (
+            <div
+              key={r.friendId}
+              className={cn(
+                "flex items-center justify-between border-2 px-4 py-3",
+                isWinner
+                  ? "border-gold bg-gold/5"
+                  : "border-rule bg-paper"
+              )}
+            >
+              <div className="flex items-center gap-3">
+                <span className="masthead text-2xl text-muted-foreground">#{i + 1}</span>
+                <div>
+                  <p className="font-bold leading-tight">{r.name}</p>
+                  <p className="font-mono text-[0.6rem] uppercase tracking-widest text-muted-foreground">
+                    {tab === "guilt"
+                      ? `${r.guiltReceived} ${r.guiltReceived === 1 ? "voto" : "votos"} de culpa`
+                      : `${r.juradoPoints} ${r.juradoPoints === 1 ? "acerto" : "acertos"} de maioria`}
+                  </p>
+                </div>
               </div>
+              <span className="font-display text-2xl">
+                {tab === "guilt" ? r.guiltReceived : r.juradoPoints}
+              </span>
             </div>
-            <span className="font-display text-2xl">{r.guiltReceived}</span>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="flex justify-center">
@@ -407,7 +469,12 @@ export default function LivePage({ params }: { params: Promise<{ id: string }> }
       ) : activeSession.status === "closed" ? (
         <LiveFinale results={state?.results ?? []} />
       ) : currentRound && (currentRound.phase === "reveal" || currentRound.phase === "done") ? (
-        <LiveReveal tally={state!.tally} participants={state!.participants} sessionId={sessionId!} />
+        <LiveReveal
+          tally={state!.tally}
+          participants={state!.participants}
+          sessionId={sessionId!}
+          isHost={session.data?.user?.id === activeSession.hostFriendId}
+        />
       ) : currentRound ? (
         <LiveRound
           accusation={currentRound.customText ?? currentRound.questionId ?? "Acusação do dia"}
