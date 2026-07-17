@@ -62,7 +62,7 @@ export function useCastVote(
 ) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (targetFriendId: string) => LiveService.vote(sessionId, targetFriendId),
+    mutationFn: (targetFriendIds: string[]) => LiveService.vote(sessionId, targetFriendIds),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: STATE_KEY(sessionId) });
       onSuccess?.();

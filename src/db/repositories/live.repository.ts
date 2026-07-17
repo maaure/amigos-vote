@@ -75,9 +75,9 @@ export const LiveRepository = {
     sessionId: string,
     roundNumber: number,
     questionId?: string,
-    customText?: string
+    customText?: string,
+    allowedVotes = 1
   ) => {
-    const allowedVotes = 1; // MVP: single vote
     const [round] = await db
       .insert(liveRounds)
       .values({ sessionId, roundNumber, questionId, customText, allowedVotes })

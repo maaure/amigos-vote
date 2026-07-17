@@ -36,16 +36,18 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     }
 
     const pickQuestion = async () => {
-      if (customText) return { id: undefined, text: customText };
+      if (customText) return { id: undefined, text: customText, allowedVotes: 1 };
       const q = await QuestionsRepository.getRandomForLive();
-      return q ? { id: q.id, text: q.text } : { id: undefined, text: undefined };
+      return q
+        ? { id: q.id, text: q.text, allowedVotes: q.allowedVotes }
+        : { id: undefined, text: undefined, allowedVotes: 1 };
     };
 
     if (liveSession.status === "lobby") {
       const now = new Date();
       const q = await pickQuestion();
       await LiveRepository.updateSession(id, { status: "active", currentRound: 1, startedAt: now });
-      await LiveRepository.createRound(id, 1, q.id, q.text);
+      await LiveRepository.createRound(id, 1, q.id, q.text, q.allowedVotes);
       return NextResponse.json({ message: "Sessão iniciada!" }, { status: 200 });
     }
 
@@ -79,7 +81,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       const nextRound = liveSession.currentRound + 1;
       await LiveRepository.updateSession(id, { currentRound: nextRound });
       const q = await pickQuestion();
-      await LiveRepository.createRound(id, nextRound, q.id, q.text);
+      await LiveRepository.createRound(id, nextRound, q.id, q.text, q.allowedVotes);
       return NextResponse.json({ message: `Rodada ${nextRound} iniciada.` }, { status: 200 });
     }
 

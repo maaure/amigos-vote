@@ -5,7 +5,7 @@ import { authOptions } from "@/app/(BFF)/api/auth/[...nextauth]/route";
 
 /**
  * Como participante de uma sessão ao vivo,
- * Quero votar em um suspeito na rodada atual,
+ * Quero votar em um ou mais suspeitos na rodada atual (até allowedVotes),
  * Para apontar quem é o culpado.
  */
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -16,9 +16,12 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     }
 
     const { id: sessionId } = await params;
-    const { targetFriendId } = await request.json();
-    if (!targetFriendId) {
-      return NextResponse.json({ message: "targetFriendId é obrigatório." }, { status: 400 });
+    const { targetFriendIds } = await request.json();
+    if (!Array.isArray(targetFriendIds) || targetFriendIds.length === 0) {
+      return NextResponse.json(
+        { message: "Informe ao menos um suspeito." },
+        { status: 400 }
+      );
     }
 
     const round = await LiveRepository.getCurrentRound(sessionId);
@@ -28,9 +31,23 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     if (round.phase !== "voting") {
       return NextResponse.json({ message: "Não é período de votação." }, { status: 400 });
     }
+    if (targetFriendIds.length > round.allowedVotes) {
+      return NextResponse.json(
+        { message: `Máximo de ${round.allowedVotes} ${round.allowedVotes === 1 ? "voto" : "votos"} permitidos nesta rodada.` },
+        { status: 422 }
+      );
+    }
 
-    const vote = await LiveRepository.insertVote(round.id, session.user.id, targetFriendId);
-    return NextResponse.json({ message: "Voto registrado.", data: vote }, { status: 201 });
+    const results = [];
+    for (const targetFriendId of targetFriendIds) {
+      const vote = await LiveRepository.insertVote(round.id, session.user.id, targetFriendId);
+      results.push(vote);
+    }
+
+    return NextResponse.json(
+      { message: `${results.length} ${results.length === 1 ? "voto" : "votos"} registrado(s).`, data: results },
+      { status: 201 }
+    );
   } catch (err) {
     const msg = err instanceof Error ? err.message : "";
     if (msg.startsWith("Você não pode") || msg.startsWith("Você já votou")) {

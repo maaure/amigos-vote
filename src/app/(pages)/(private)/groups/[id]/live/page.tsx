@@ -128,22 +128,39 @@ function LiveRound({
   myVotes,
   phase,
   sessionId,
+  allowedVotes,
 }: {
   accusation: string;
   participants: { id: string; name: string; urlPic: string | null }[];
   myVotes: { targetFriendId: string }[];
   phase: string;
   sessionId: string;
+  allowedVotes: number;
 }) {
   const { mutate: vote, isPending: isVoting } = useCastVote(sessionId);
   const { mutate: advance, isPending: isAdvancing } = useAdvanceRound(sessionId);
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string[]>([]);
   const session = useSession();
 
-  const handleVote = () => {
-    if (!selected) return;
-    vote(selected);
+  const toggle = (id: string) => {
+    if (phase !== "voting") return;
+    setSelected((prev) =>
+      prev.includes(id)
+        ? prev.filter((x) => x !== id)
+        : prev.length < allowedVotes
+          ? [...prev, id]
+          : prev
+    );
   };
+
+  const handleVote = () => {
+    if (selected.length === 0) return;
+    vote(selected, {
+      onSuccess: () => setSelected([]),
+    });
+  };
+
+  const myVotedIds = myVotes.map((v) => v.targetFriendId);
 
   return (
     <div className="space-y-6">
@@ -160,22 +177,26 @@ function LiveRound({
         <span className="block font-mono text-[0.6rem] uppercase tracking-widest text-highlight">
           {PHASE_LABEL[phase] ?? phase}
         </span>
+        {phase === "voting" && (
+          <span className="block font-mono text-[0.55rem] uppercase tracking-widest text-muted-foreground">
+            Selecione até {allowedVotes} {allowedVotes === 1 ? "suspeito" : "suspeitos"}
+            {selected.length > 0 && ` (${selected.length} selecionado${selected.length > 1 ? "s" : ""})`}
+          </span>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         {participants
           .filter((p) => p.id !== session.data?.user?.id)
           .map((p) => {
-            const isSelected = selected === p.id;
-            const hasVoted = myVotes.some((v) => v.targetFriendId === p.id);
+            const isSelected = selected.includes(p.id);
+            const hasVoted = myVotedIds.includes(p.id);
             return (
               <FriendCard
                 key={p.id}
                 name={p.name}
                 img={p.urlPic ?? undefined}
-                onClick={() => {
-                  if (phase === "voting") setSelected(isSelected ? null : p.id);
-                }}
+                onClick={() => toggle(p.id)}
                 selected={isSelected || hasVoted}
                 disabled={phase !== "voting"}
               />
@@ -188,18 +209,17 @@ function LiveRound({
           <Button
             size="lg"
             onClick={handleVote}
-            disabled={!selected || isVoting}
+            disabled={selected.length === 0 || isVoting}
             className="min-w-[200px] py-6"
           >
-            {isVoting ? <Loader2Icon className="size-4 animate-spin" /> : "Proclamar voto"}
+            {isVoting ? (
+              <Loader2Icon className="size-4 animate-spin" />
+            ) : (
+              `Proclamar ${selected.length > 1 ? "votos" : "voto"}`
+            )}
           </Button>
         )}
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={() => advance(undefined)}
-          disabled={isAdvancing}
-        >
+        <Button variant="outline" size="lg" onClick={() => advance(undefined)} disabled={isAdvancing}>
           {isAdvancing ? <Loader2Icon className="size-4 animate-spin" /> : "Avançar"}
         </Button>
       </div>
@@ -522,6 +542,7 @@ export default function LivePage({ params }: { params: Promise<{ id: string }> }
           myVotes={state!.votes}
           phase={currentRound.phase}
           sessionId={sessionId!}
+          allowedVotes={currentRound.allowedVotes}
         />
       ) : null}
     </PageShell>

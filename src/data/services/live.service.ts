@@ -20,8 +20,8 @@ export const LiveService = {
     results: LiveAccumulatedResult[];
   }> => apiClient.get(`/api/live/${sessionId}/state`),
 
-  vote: (sessionId: string, targetFriendId: string): Promise<{ message: string }> =>
-    apiClient.post(`/api/live/${sessionId}/vote`, { targetFriendId }),
+  vote: (sessionId: string, targetFriendIds: string[]): Promise<{ message: string }> =>
+    apiClient.post(`/api/live/${sessionId}/vote`, { targetFriendIds }),
 
   advance: (sessionId: string, payload?: { customText?: string }): Promise<{ message: string }> =>
     apiClient.post(`/api/live/${sessionId}/advance`, payload ?? {}),
