@@ -1,4 +1,5 @@
 import { LiveRepository } from "@/db/repositories/live.repository";
+import { notifySession } from "@/lib/socket";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "@/app/(BFF)/api/auth/[...nextauth]/route";
@@ -27,6 +28,7 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
     const now = new Date();
     await LiveRepository.updateSession(id, { status: "closed", closedAt: now });
     await LiveRepository.saveResults(id);
+    notifySession(id);
 
     return NextResponse.json({ message: "Sessão encerrada." }, { status: 200 });
   } catch {

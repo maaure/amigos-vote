@@ -1,5 +1,6 @@
 import { LiveRepository } from "@/db/repositories/live.repository";
 import { QuestionsRepository } from "@/db/repositories/questions.repository";
+import { notifySession } from "@/lib/socket";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "@/app/(BFF)/api/auth/[...nextauth]/route";
@@ -48,6 +49,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       const q = await pickQuestion();
       await LiveRepository.updateSession(id, { status: "active", currentRound: 1, startedAt: now });
       await LiveRepository.createRound(id, 1, q.id, q.text, q.allowedVotes);
+      notifySession(id);
       return NextResponse.json({ message: "Sessão iniciada!" }, { status: 200 });
     }
 
@@ -75,6 +77,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
         const now = new Date();
         await LiveRepository.updateSession(id, { status: "closed", closedAt: now });
         await LiveRepository.saveResults(id);
+        notifySession(id);
         return NextResponse.json({ message: "Sessão encerrada!" }, { status: 200 });
       }
 
@@ -82,6 +85,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       await LiveRepository.updateSession(id, { currentRound: nextRound });
       const q = await pickQuestion();
       await LiveRepository.createRound(id, nextRound, q.id, q.text, q.allowedVotes);
+      notifySession(id);
       return NextResponse.json({ message: `Rodada ${nextRound} iniciada.` }, { status: 200 });
     }
 
@@ -91,6 +95,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     } else {
       await LiveRepository.updateRoundPhase(round.id, nextPhase);
     }
+    notifySession(id);
 
     return NextResponse.json({ message: `Fase alterada para ${nextPhase}.` }, { status: 200 });
   } catch {

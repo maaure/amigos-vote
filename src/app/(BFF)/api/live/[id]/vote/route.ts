@@ -1,4 +1,5 @@
 import { LiveRepository } from "@/db/repositories/live.repository";
+import { notifySession } from "@/lib/socket";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "@/app/(BFF)/api/auth/[...nextauth]/route";
@@ -43,6 +44,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       const vote = await LiveRepository.insertVote(round.id, session.user.id, targetFriendId);
       results.push(vote);
     }
+
+    notifySession(sessionId);
 
     return NextResponse.json(
       { message: `${results.length} ${results.length === 1 ? "voto" : "votos"} registrado(s).`, data: results },

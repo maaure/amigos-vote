@@ -20,7 +20,7 @@ export function useLiveSessionState(sessionId: string | null, enabled = false) {
     queryKey: STATE_KEY(sessionId ?? ""),
     queryFn: () => LiveService.getState(sessionId!),
     enabled: enabled && !!sessionId,
-    refetchInterval: 1500,
+    refetchInterval: 3000,
     staleTime: 500,
   });
 }

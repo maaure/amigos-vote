@@ -1,4 +1,5 @@
 import { LiveRepository } from "@/db/repositories/live.repository";
+import { notifySession } from "@/lib/socket";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "@/app/(BFF)/api/auth/[...nextauth]/route";
@@ -25,6 +26,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     }
 
     await LiveRepository.addParticipant(id, session.user.id);
+    notifySession(id);
     return NextResponse.json({ message: "Você entrou na sessão." }, { status: 200 });
   } catch {
     return NextResponse.json({ message: "Erro interno ao entrar na sessão." }, { status: 500 });

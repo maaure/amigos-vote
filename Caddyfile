@@ -1,6 +1,3 @@
-# Cada app mora num subpath e é roteado preservando o caminho (o Next.js
-# de cada app conhece seu próprio basePath). HTTPS automático (Let's Encrypt).
-
 {$DOMAIN} {
 	encode zstd gzip
 
@@ -11,14 +8,20 @@
 		Permissions-Policy "geolocation=(), microphone=(), camera=()"
 	}
 
-	# Tribunal do Dia
+	# WebSocket / Socket.io (tempo real)
+	@tribunal-socket path /tribunal-do-dia/socket.io*
+	handle @tribunal-socket {
+		reverse_proxy socket:3001
+	}
+
+	# Tribunal do Dia (app Next)
 	@tribunal path /tribunal-do-dia /tribunal-do-dia/*
 	handle @tribunal {
 		reverse_proxy next-app:3000
 	}
 
-	# Raiz do domínio (outros apps entram como novos blocos handle acima)
+	# Raiz do domínio
 	handle {
-		respond "your.domain" 200
+		respond "maaure.fun" 200
 	}
 }

@@ -12,6 +12,7 @@ import {
   useCastVote,
   useAdvanceRound,
 } from "@/data/hooks/useLive";
+import { useSocketSubscription } from "@/data/hooks/useSocket";
 import { useGetFriendsQuery } from "@/data/hooks/useGetFriendsQuery";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -504,6 +505,9 @@ export default function LivePage({ params }: { params: Promise<{ id: string }> }
   const sessionId = activeSession?.id ?? null;
 
   const { data: state, isLoading: stateLoading } = useLiveSessionState(sessionId, !!sessionId);
+
+  // Conecta ao Socket.io para receber atualizações em tempo real
+  useSocketSubscription(state?.session?.id ?? null);
 
   const { mutate: createSession, isPending: isCreating } = useCreateLiveSession(
     () => toast.success("Sessão aberta!"),
