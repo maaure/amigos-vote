@@ -59,8 +59,7 @@ function SuggestionCard({
           </div>
           {s.status === "rejected" && s.rejectReason && (
             <p className="text-xs text-muted-foreground">
-              <span className="font-mono uppercase tracking-widest">Motivo:</span>{" "}
-              {s.rejectReason}
+              <span className="font-mono uppercase tracking-widest">Motivo:</span> {s.rejectReason}
             </p>
           )}
         </div>
@@ -133,12 +132,7 @@ export default function SuggestionsPage() {
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {suggestions.map((s) => (
-            <SuggestionCard
-              key={s.id}
-              s={s}
-              onCancel={handleCancel}
-              isCancelling={isCancelling}
-            />
+            <SuggestionCard key={s.id} s={s} onCancel={handleCancel} isCancelling={isCancelling} />
           ))}
         </div>
       )}

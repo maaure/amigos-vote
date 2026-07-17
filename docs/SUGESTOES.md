@@ -6,10 +6,10 @@ Permitir que qualquer jogador **proponha acusações** para alimentar o banco de
 
 O recurso atende **dois modos**, com regras diferentes:
 
-| Modo    | Pipeline          | Moderação       | Escopo     |
-| ------- | ----------------- | --------------- | ---------- |
-| Diário  | Fila → curadoria  | **Sim** (admin) | Global     |
-| Ao vivo | Livre, na sessão  | Não             | Privado (grupo/sessão) |
+| Modo    | Pipeline         | Moderação       | Escopo                 |
+| ------- | ---------------- | --------------- | ---------------------- |
+| Diário  | Fila → curadoria | **Sim** (admin) | Global                 |
+| Ao vivo | Livre, na sessão | Não             | Privado (grupo/sessão) |
 
 > Racional: conteúdo que vira **público** (banco diário compartilhado) precisa de curadoria; brincadeira de **rodinha** numa sessão privada não precisa.
 
@@ -100,6 +100,7 @@ PATCH  /api/suggestions/:id/review      # curador: { action: 'approve'|'reject',
 ```
 
 Autorização:
+
 - Rotas de autor: `session.user.id` deve bater com `authorFriendId`.
 - Rotas de curador: `session.user.githubId ∈ ADMIN_GITHUB_IDS`.
 
@@ -139,6 +140,7 @@ interface ModerationStrategy {
 ## Escopo MVP x depois
 
 **MVP**
+
 1. Tabela `question_suggestion` + extensão em `questions` (`mode`, `authorFriendId`).
 2. `POST /api/suggestions` + `GET /mine` + `DELETE`.
 3. `Dialog` de sugerir ligado ao botão existente.
@@ -147,6 +149,7 @@ interface ModerationStrategy {
 6. Filtro `mode` no picker diário + crédito de autoria na exibição.
 
 **Depois**
+
 - Estratégia de moderação por votação.
 - Sugestões no modo ao vivo (ephemeral/scoped).
 - Ranking de "autores mais aprovados".

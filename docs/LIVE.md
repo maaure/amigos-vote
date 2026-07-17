@@ -30,14 +30,14 @@ O modo **diário** continua como o ritual de fundo; o **ao vivo** é o momento d
 lobby → round.intro → round.voting → round.reveal → (loop ×N) → finale → closed
 ```
 
-| Fase      | Duração | O que acontece                                            |
-| --------- | ------- | -------------------------------------------------------- |
-| lobby     | aberto  | host abre; jogadores "entram no tribunal"; start só host |
-| intro     | ~5s     | revela a acusação com animação (3…2…1)                   |
-| voting    | ~25s    | cada jurado aponta suspeito(s); voto secreto; timer      |
-| reveal    | ~8s     | trava votação; barra de culpa animada; carimbo CULPADO   |
-| finale    | fixo    | placar final + Grande Culpado da Noite                   |
-| closed    | —       | arquivada (snapshot salvo)                               |
+| Fase   | Duração | O que acontece                                           |
+| ------ | ------- | -------------------------------------------------------- |
+| lobby  | aberto  | host abre; jogadores "entram no tribunal"; start só host |
+| intro  | ~5s     | revela a acusação com animação (3…2…1)                   |
+| voting | ~25s    | cada jurado aponta suspeito(s); voto secreto; timer      |
+| reveal | ~8s     | trava votação; barra de culpa animada; carimbo CULPADO   |
+| finale | fixo    | placar final + Grande Culpado da Noite                   |
+| closed | —       | arquivada (snapshot salvo)                               |
 
 Avanço de fase: **timer automático** (padrão) com botão de "pular" pro host.
 
@@ -121,17 +121,18 @@ Autorização: só membros do grupo (`GroupParticipationRepository.isMember`); t
 - **Rota**: `/groups/[id]/live` (a "cena", mobile-first).
 - **Entrada no grupo**: botão **"Abrir sessão ao vivo"** (cria sessão) e, quando há uma ativa, **"Sessão aberta — entrar"**.
 - **Views** (switch em `status`/`phase`):
-  - *Lobby*: quem entrou + controles do host.
-  - *Round*: pôster da acusação + grade de suspeitos + timer + barra de culpa.
-  - *Reveal*: carimbo **CULPADO** estampando no vencedor da rodada.
-  - *Finale*: placar duplo (culpa × jurado) + Grande Culpado da Noite.
+  - _Lobby_: quem entrou + controles do host.
+  - _Round_: pôster da acusação + grade de suspeitos + timer + barra de culpa.
+  - _Reveal_: carimbo **CULPADO** estampando no vencedor da rodada.
+  - _Finale_: placar duplo (culpa × jurado) + Grande Culpado da Noite.
 
 ## Reuso de UI (o modo é barato)
 
 A identidade do Tribunal já entrega a maior parte:
-- `FriendCard` → grade de suspeitos (já tem carimbo *Acusado* ao selecionar).
+
+- `FriendCard` → grade de suspeitos (já tem carimbo _Acusado_ ao selecionar).
 - `QuestionArea` → pôster da acusação.
-- `Stamp` → o *CULPADO* batendo na revelação.
+- `Stamp` → o _CULPADO_ batendo na revelação.
 - `Timer` / `Kicker` → countdown e rótulos.
 
 ## Integração
@@ -144,6 +145,7 @@ A identidade do Tribunal já entrega a maior parte:
 ## Escopo MVP x depois
 
 **MVP**
+
 1. Schema `live_*` (sessions/rounds/votes/participants/results).
 2. Estado no servidor + máquina de fases com timers.
 3. `POST/GET/join/vote/advance/close` + `active`.
@@ -152,6 +154,7 @@ A identidade do Tribunal já entrega a maior parte:
 6. Placar de culpa (jurado fica pra depois se apertar).
 
 **Depois**
+
 - Socket.io (tempo real real) + reações/emoji ao vivo.
 - Placar de **Jurado Implacável** (acerto de maioria).
 - Acusações improvisadas do host (cross-ref `SUGESTOES.md`).

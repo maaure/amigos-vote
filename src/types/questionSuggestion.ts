@@ -7,11 +7,7 @@ export type ReviewAction = "approve" | "reject";
 
 /** Validação compartilhada (formulário cliente + checagem servidor). */
 export const suggestionSchema = z.object({
-  text: z
-    .string()
-    .trim()
-    .min(10, "Mínimo de 10 caracteres")
-    .max(160, "Máximo de 160 caracteres"),
+  text: z.string().trim().min(10, "Mínimo de 10 caracteres").max(160, "Máximo de 160 caracteres"),
   mode: z.enum(["daily", "live", "both"]),
   allowedVotes: z.number().int().min(1, "Mínimo 1").max(5, "Máximo 5"),
 });

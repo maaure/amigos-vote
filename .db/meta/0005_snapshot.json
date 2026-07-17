@@ -48,9 +48,7 @@
         "friends_github_id_unique": {
           "name": "friends_github_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "github_id"
-          ]
+          "columns": ["github_id"]
         }
       },
       "policies": {},
@@ -94,12 +92,8 @@
           "name": "groupParticipation_friend_id_friends_id_fk",
           "tableFrom": "groupParticipation",
           "tableTo": "friends",
-          "columnsFrom": [
-            "friend_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["friend_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -107,12 +101,8 @@
           "name": "groupParticipation_group_id_group_id_fk",
           "tableFrom": "groupParticipation",
           "tableTo": "group",
-          "columnsFrom": [
-            "group_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["group_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -179,12 +169,8 @@
           "name": "group_created_by_friends_id_fk",
           "tableFrom": "group",
           "tableTo": "friends",
-          "columnsFrom": [
-            "created_by"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["created_by"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -194,9 +180,7 @@
         "group_access_code_unique": {
           "name": "group_access_code_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "access_code"
-          ]
+          "columns": ["access_code"]
         }
       },
       "policies": {},
@@ -246,12 +230,8 @@
           "name": "live_participant_session_id_live_session_id_fk",
           "tableFrom": "live_participant",
           "tableTo": "live_session",
-          "columnsFrom": [
-            "session_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["session_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -259,12 +239,8 @@
           "name": "live_participant_friend_id_friends_id_fk",
           "tableFrom": "live_participant",
           "tableTo": "friends",
-          "columnsFrom": [
-            "friend_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["friend_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -338,12 +314,8 @@
           "name": "live_result_session_id_live_session_id_fk",
           "tableFrom": "live_result",
           "tableTo": "live_session",
-          "columnsFrom": [
-            "session_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["session_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -351,12 +323,8 @@
           "name": "live_result_friend_id_friends_id_fk",
           "tableFrom": "live_result",
           "tableTo": "friends",
-          "columnsFrom": [
-            "friend_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["friend_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -436,12 +404,8 @@
           "name": "live_round_session_id_live_session_id_fk",
           "tableFrom": "live_round",
           "tableTo": "live_session",
-          "columnsFrom": [
-            "session_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["session_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -449,12 +413,8 @@
           "name": "live_round_question_id_questions_id_fk",
           "tableFrom": "live_round",
           "tableTo": "questions",
-          "columnsFrom": [
-            "question_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["question_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "cascade"
         }
@@ -535,12 +495,8 @@
           "name": "live_session_group_id_group_id_fk",
           "tableFrom": "live_session",
           "tableTo": "group",
-          "columnsFrom": [
-            "group_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["group_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -548,12 +504,8 @@
           "name": "live_session_host_friend_id_friends_id_fk",
           "tableFrom": "live_session",
           "tableTo": "friends",
-          "columnsFrom": [
-            "host_friend_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["host_friend_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -607,12 +559,8 @@
           "name": "live_vote_round_id_live_round_id_fk",
           "tableFrom": "live_vote",
           "tableTo": "live_round",
-          "columnsFrom": [
-            "round_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["round_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -620,12 +568,8 @@
           "name": "live_vote_voter_friend_id_friends_id_fk",
           "tableFrom": "live_vote",
           "tableTo": "friends",
-          "columnsFrom": [
-            "voter_friend_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["voter_friend_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -633,12 +577,8 @@
           "name": "live_vote_target_friend_id_friends_id_fk",
           "tableFrom": "live_vote",
           "tableTo": "friends",
-          "columnsFrom": [
-            "target_friend_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["target_friend_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -648,11 +588,7 @@
         "uq_live_vote": {
           "name": "uq_live_vote",
           "nullsNotDistinct": false,
-          "columns": [
-            "round_id",
-            "voter_friend_id",
-            "target_friend_id"
-          ]
+          "columns": ["round_id", "voter_friend_id", "target_friend_id"]
         }
       },
       "policies": {},
@@ -741,12 +677,8 @@
           "name": "question_suggestion_author_friend_id_friends_id_fk",
           "tableFrom": "question_suggestion",
           "tableTo": "friends",
-          "columnsFrom": [
-            "author_friend_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["author_friend_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -754,12 +686,8 @@
           "name": "question_suggestion_curator_friend_id_friends_id_fk",
           "tableFrom": "question_suggestion",
           "tableTo": "friends",
-          "columnsFrom": [
-            "curator_friend_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["curator_friend_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "cascade"
         },
@@ -767,12 +695,8 @@
           "name": "question_suggestion_question_id_questions_id_fk",
           "tableFrom": "question_suggestion",
           "tableTo": "questions",
-          "columnsFrom": [
-            "question_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["question_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "cascade"
         }
@@ -847,12 +771,8 @@
           "name": "questions_author_friend_id_friends_id_fk",
           "tableFrom": "questions",
           "tableTo": "friends",
-          "columnsFrom": [
-            "author_friend_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["author_friend_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "cascade"
         }
@@ -862,9 +782,7 @@
         "questions_text_unique": {
           "name": "questions_text_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "text"
-          ]
+          "columns": ["text"]
         }
       },
       "policies": {},
@@ -920,12 +838,8 @@
           "name": "vote_voter_id_friends_id_fk",
           "tableFrom": "vote",
           "tableTo": "friends",
-          "columnsFrom": [
-            "voter_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["voter_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -933,12 +847,8 @@
           "name": "vote_friend_id_friends_id_fk",
           "tableFrom": "vote",
           "tableTo": "friends",
-          "columnsFrom": [
-            "friend_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["friend_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -946,12 +856,8 @@
           "name": "vote_question_id_questions_id_fk",
           "tableFrom": "vote",
           "tableTo": "questions",
-          "columnsFrom": [
-            "question_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["question_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -959,12 +865,8 @@
           "name": "vote_group_id_group_id_fk",
           "tableFrom": "vote",
           "tableTo": "group",
-          "columnsFrom": [
-            "group_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["group_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }

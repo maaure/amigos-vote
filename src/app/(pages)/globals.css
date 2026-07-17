@@ -13,25 +13,25 @@
 
 :root {
   /* --- Papel & tinta (light = tabloide diurno) --- */
-  --background: #e8dec6;      /* jornal envelhecido */
-  --paper: #f5eeda;           /* a folha / card */
-  --foreground: #1c1714;      /* tinta preta quente */
+  --background: #e8dec6; /* jornal envelhecido */
+  --paper: #f5eeda; /* a folha / card */
+  --foreground: #1c1714; /* tinta preta quente */
   --muted: #ddcfaf;
   --muted-foreground: #7a6d4d;
   --accent: #efe5c9;
   --accent-foreground: #1c1714;
   --secondary: #e2d6b6;
   --secondary-foreground: #1c1714;
-  --border: #cdbf9b;          /* riso leve */
-  --rule: #1c1714;            /* filete de tinta pesado */
+  --border: #cdbf9b; /* riso leve */
+  --rule: #1c1714; /* filete de tinta pesado */
   --input: #cdbf9b;
 
   /* --- Marca / ação --- */
-  --primary: #1c1714;         /* botão de tinta */
+  --primary: #1c1714; /* botão de tinta */
   --primary-foreground: #f5eeda;
-  --highlight: #bf2a26;       /* vermelho de carimbo (ACUSAÇÃO) */
+  --highlight: #bf2a26; /* vermelho de carimbo (ACUSAÇÃO) */
   --highlight-foreground: #fff7e6;
-  --gold: #a9760f;            /* troféu / culpado */
+  --gold: #a9760f; /* troféu / culpado */
   --destructive: #b3261e;
   --destructive-foreground: #fff7e6;
   --ring: #bf2a26;
@@ -60,7 +60,7 @@
   --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-space-mono), ui-monospace, monospace;
 
-  --radius: 0.125rem;          /* cantos quase retos = cartaz */
+  --radius: 0.125rem; /* cantos quase retos = cartaz */
 
   --tracking-normal: 0.01em;
   --spacing: 0.25rem;
@@ -81,9 +81,9 @@
   --rule: #efe6cc;
   --input: #352f1f;
 
-  --primary: #efe6cc;          /* botão creme sobre tinta */
+  --primary: #efe6cc; /* botão creme sobre tinta */
   --primary-foreground: #14110d;
-  --highlight: #ef4650;        /* carimbo mais vivo no escuro */
+  --highlight: #ef4650; /* carimbo mais vivo no escuro */
   --highlight-foreground: #1a0d0a;
   --gold: #e6b54a;
   --destructive: #cf3a2c;
@@ -185,11 +185,22 @@
     color: var(--foreground);
     background-color: var(--background);
     background-image:
-      radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--highlight) 5%, transparent), transparent 38%),
-      radial-gradient(circle at 86% 88%, color-mix(in srgb, var(--gold) 6%, transparent), transparent 42%),
+      radial-gradient(
+        circle at 18% 12%,
+        color-mix(in srgb, var(--highlight) 5%, transparent),
+        transparent 38%
+      ),
+      radial-gradient(
+        circle at 86% 88%,
+        color-mix(in srgb, var(--gold) 6%, transparent),
+        transparent 42%
+      ),
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
     background-attachment: fixed;
-    background-size: 220px 220px, 220px 220px, 220px 220px;
+    background-size:
+      220px 220px,
+      220px 220px,
+      220px 220px;
     background-blend-mode: normal, normal, multiply;
   }
 
@@ -220,11 +231,17 @@
 
   /* Meio-tom (pontilhismo) para detalhes de quadrinho/tabloide */
   .halftone {
-    background-image: radial-gradient(color-mix(in srgb, var(--rule) 75%, transparent) 1.4px, transparent 1.5px);
+    background-image: radial-gradient(
+      color-mix(in srgb, var(--rule) 75%, transparent) 1.4px,
+      transparent 1.5px
+    );
     background-size: 10px 10px;
   }
   .halftone-highlight {
-    background-image: radial-gradient(color-mix(in srgb, var(--highlight) 70%, transparent) 1.6px, transparent 1.7px);
+    background-image: radial-gradient(
+      color-mix(in srgb, var(--highlight) 70%, transparent) 1.6px,
+      transparent 1.7px
+    );
     background-size: 9px 9px;
   }
 
@@ -283,35 +300,68 @@
     box-shadow: 0 1px 4px rgb(0 0 0 / 0.2);
   }
 
-  .font-display { font-family: var(--font-display); }
-  .font-mono { font-family: var(--font-mono); }
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-mono {
+    font-family: var(--font-mono);
+  }
 
-  .text-balance { text-wrap: balance; }
+  .text-balance {
+    text-wrap: balance;
+  }
 
   /* Entradas encadeadas — aplica animate-reveal + delay via style inline */
-  .reveal { animation: var(--animate-reveal); }
+  .reveal {
+    animation: var(--animate-reveal);
+  }
 }
 
 /* ====================== KEYFRAMES ====================== */
 @keyframes stamp-slam {
-  0%   { opacity: 0; transform: rotate(-18deg) scale(2.4); filter: blur(4px); }
-  60%  { opacity: 1; transform: rotate(-9deg) scale(0.92); filter: blur(0); }
-  100% { transform: rotate(-7deg) scale(1); }
+  0% {
+    opacity: 0;
+    transform: rotate(-18deg) scale(2.4);
+    filter: blur(4px);
+  }
+  60% {
+    opacity: 1;
+    transform: rotate(-9deg) scale(0.92);
+    filter: blur(0);
+  }
+  100% {
+    transform: rotate(-7deg) scale(1);
+  }
 }
 
 @keyframes reveal-up {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes tick {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
 }
 
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

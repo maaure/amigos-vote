@@ -25,7 +25,9 @@ export const QuestionSuggestionRepository = {
     text,
     mode,
     allowedVotes,
-  }: QuestionSuggestionSchemaIn & { authorFriendId: string }): Promise<QuestionSuggestionSchemaOut> => {
+  }: QuestionSuggestionSchemaIn & {
+    authorFriendId: string;
+  }): Promise<QuestionSuggestionSchemaOut> => {
     const normalized = normalize(text);
     try {
       const pending = await db
@@ -167,8 +169,7 @@ export const QuestionSuggestionRepository = {
           .from(questionSuggestions)
           .where(eq(questionSuggestions.id, id));
         if (!current) throw new Error("Sugestão não encontrada.");
-        if (current.status !== "pending")
-          throw new Error("Essa sugestão já foi revisada.");
+        if (current.status !== "pending") throw new Error("Essa sugestão já foi revisada.");
 
         const reviewedAt = new Date();
 
@@ -217,7 +218,10 @@ export const QuestionSuggestionRepository = {
         return updated;
       });
     } catch (error) {
-      if (error instanceof Error && (error.message === "Sugestão não encontrada." || error.message.startsWith("Essa sugestão"))) {
+      if (
+        error instanceof Error &&
+        (error.message === "Sugestão não encontrada." || error.message.startsWith("Essa sugestão"))
+      ) {
         throw error;
       }
       console.error("Erro ao revisar sugestão:", error);

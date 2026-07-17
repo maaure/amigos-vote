@@ -1,4 +1,13 @@
-import { pgTable, uuid, timestamp, text, boolean, date, integer, unique } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  uuid,
+  timestamp,
+  text,
+  boolean,
+  date,
+  integer,
+  unique,
+} from "drizzle-orm/pg-core";
 
 export const questions = pgTable("questions", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -7,10 +16,7 @@ export const questions = pgTable("questions", {
   allowedVotes: integer("allowed_votes").notNull().default(1),
   used: boolean("used").notNull().default(false),
   publishedWhen: date("published_when"),
-  mode: text("mode")
-    .notNull()
-    .default("daily")
-    .$type<"daily" | "live" | "both">(),
+  mode: text("mode").notNull().default("daily").$type<"daily" | "live" | "both">(),
   authorFriendId: uuid("author_friend_id").references(() => friends.id, {
     onUpdate: "cascade",
     onDelete: "set null",
@@ -94,10 +100,7 @@ export const questionSuggestions = pgTable("question_suggestion", {
   text: text("text").notNull(),
   mode: text("mode").notNull().default("daily").$type<"daily" | "live" | "both">(),
   allowedVotes: integer("allowed_votes").notNull().default(1),
-  status: text("status")
-    .notNull()
-    .default("pending")
-    .$type<"pending" | "approved" | "rejected">(),
+  status: text("status").notNull().default("pending").$type<"pending" | "approved" | "rejected">(),
   rejectReason: text("reject_reason"),
   curatorFriendId: uuid("curator_friend_id").references(() => friends.id, {
     onUpdate: "cascade",
@@ -141,10 +144,7 @@ export const liveRounds = pgTable("live_round", {
   }),
   customText: text("custom_text"),
   allowedVotes: integer("allowed_votes").notNull().default(1),
-  phase: text("phase")
-    .notNull()
-    .default("intro")
-    .$type<"intro" | "voting" | "reveal" | "done">(),
+  phase: text("phase").notNull().default("intro").$type<"intro" | "voting" | "reveal" | "done">(),
   votingDeadlineAt: timestamp("voting_deadline_at", { withTimezone: true }),
 });
 

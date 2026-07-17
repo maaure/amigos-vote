@@ -23,10 +23,7 @@ const reviewSchema = z.object({
  * Regras: apenas curadores; ao aprovar pode editar texto/modo/votos
  * (a pergunta promovida usa os valores finais).
  */
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user?.id) {
@@ -46,10 +43,7 @@ export async function PATCH(
 
     const payload: ReviewPayload = parsed.data;
     if (payload.action === "reject" && !payload.reason) {
-      return NextResponse.json(
-        { message: "Informe o motivo da rejeição." },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "Informe o motivo da rejeição." }, { status: 400 });
     }
     if (payload.action === "approve" && payload.text) {
       const textCheck = suggestionSchema.shape.text.safeParse(payload.text);
@@ -61,14 +55,13 @@ export async function PATCH(
       }
     }
 
-    const reviewed = await QuestionSuggestionRepository.review(
-      id,
-      session.user.id,
-      payload
-    );
+    const reviewed = await QuestionSuggestionRepository.review(id, session.user.id, payload);
 
     return NextResponse.json(
-      { message: payload.action === "approve" ? "Aprovada e promovida." : "Rejeitada.", data: reviewed },
+      {
+        message: payload.action === "approve" ? "Aprovada e promovida." : "Rejeitada.",
+        data: reviewed,
+      },
       { status: 200 }
     );
   } catch (error) {
@@ -80,9 +73,6 @@ export async function PATCH(
       return NextResponse.json({ message: msg }, { status: 409 });
     }
     console.error("Erro ao revisar sugestão:", error);
-    return NextResponse.json(
-      { message: "Erro interno ao revisar sugestão." },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Erro interno ao revisar sugestão." }, { status: 500 });
   }
 }

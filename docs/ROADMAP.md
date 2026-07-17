@@ -5,6 +5,7 @@ Ordem de implementação para o agente (humano ou IA). Cada fase é **entregáve
 ## Contexto
 
 Três specs definem o produto:
+
 - `SPEC.md` — modo **diário** (já implementado)
 - `SUGESTOES.md` — **sugestões** de perguntas (curadoria admin)
 - `LIVE.md` — modo **ao vivo** (Jackbox-style)
@@ -27,6 +28,7 @@ Três specs definem o produto:
 **Depende de**: nada.
 
 **Entregáveis**
+
 - `src/db/schema.ts`: adicionar em `questions` → `mode` (`'daily'|'live'|'both'`, default `'daily'`) e `authorFriendId` (FK → `friends`, nullable).
 - Migration: `pnpm db:generate` (revise o `up`).
 - `src/lib/auth.ts`: helper `isCurator(session)` lendo `ADMIN_GITHUB_IDS` (vírgula-separado) + `session.user.githubId`.
@@ -44,6 +46,7 @@ Três specs definem o produto:
 **Depende de**: Fase 0 (`mode`, `authorFriendId`, `isCurator`).
 
 **Entregáveis**
+
 - **Schema**: tabela `question_suggestion` (ver `SUGESTOES.md`); migration.
 - **Repository**: `questionSuggestion.repository.ts` — `create`, `findMine`, `findPending`, `cancel`, `review`, `promoteToQuestion`. Inclui cota (≤3 pendentes/autor) e dedup.
 - **Types**: `questionSuggestion.ts` (`*SchemaIn/Out`, `ReviewAction`).
@@ -72,6 +75,7 @@ Três specs definem o produto:
 **Depende de**: Fase 0 (`mode`). Independente da Fase 1.
 
 **Entregáveis**
+
 - **Schema**: `live_sessions`, `live_rounds`, `live_votes`, `live_participants`, `live_results`; migration.
 - **Repository**: `live.repository.ts` — criação de sessão, join, registro de voto, computo de totais, snapshot do finale. (Máquina de estados = **servidor autoritário**.)
 - **BFF** (`src/app/(BFF)/api/live`): `POST /` (host cria), `POST /:id/join`, `GET /:id/state`, `POST /:id/vote`, `POST /:id/advance` (host), `POST /:id/close`, `GET /groups/:id/live/active`.
@@ -96,6 +100,7 @@ Três specs definem o produto:
 **Depende de**: Fases 1 e 2 estáveis.
 
 **Entregáveis (pick by priority)**
+
 - **Tempo real real**: serviço **Socket.io** em container separado (`docker-compose`); eventos `state:sync`, `vote:cast`, `reaction`, `round:advance`. Substitui o polling.
 - **Placar Jurado Implacável** (acerto de maioria) — `LIVE.md`.
 - **Reações/emoji** ao vivo com rate-limit.
@@ -111,12 +116,12 @@ Três specs definem o produto:
 
 ## Tabela de dependências
 
-| Fase | Depende de | Habilita |
-| ---- | ---------- | -------- |
-| 0 — Fundações | — | Fase 1, Fase 2 |
-| 1 — Sugestões | 0 | (independente do live) |
-| 2 — Live | 0 | Fase 3 (live) |
-| 3 — Refinos | 1, 2 estáveis | — |
+| Fase          | Depende de    | Habilita               |
+| ------------- | ------------- | ---------------------- |
+| 0 — Fundações | —             | Fase 1, Fase 2         |
+| 1 — Sugestões | 0             | (independente do live) |
+| 2 — Live      | 0             | Fase 3 (live)          |
+| 3 — Refinos   | 1, 2 estáveis | —                      |
 
 > Ordem sugerida: **0 → 1 → 2 → 3**. Fase 1 e 2 podem ocorrer em paralelo por pessoas diferentes após a 0 (não se tocam).
 

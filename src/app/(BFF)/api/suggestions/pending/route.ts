@@ -24,9 +24,6 @@ export async function GET() {
     const pending = await QuestionSuggestionRepository.findPending();
     return NextResponse.json(pending, { status: 200 });
   } catch {
-    return NextResponse.json(
-      { message: "Erro interno ao buscar a fila." },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Erro interno ao buscar a fila." }, { status: 500 });
   }
 }

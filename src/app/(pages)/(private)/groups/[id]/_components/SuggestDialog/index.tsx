@@ -107,7 +107,9 @@ export default function SuggestDialog({ children }: { children: React.ReactNode 
           </div>
 
           <div className="space-y-2">
-            <Label className="font-mono text-xs uppercase tracking-widest">Votos permitidos *</Label>
+            <Label className="font-mono text-xs uppercase tracking-widest">
+              Votos permitidos *
+            </Label>
             <div className="flex gap-1">
               {[1, 2, 3, 4, 5].map((n) => (
                 <button

@@ -40,9 +40,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: msg }, { status: 409 });
     }
     console.error("Erro ao criar sugestão:", error);
-    return NextResponse.json(
-      { message: "Erro interno ao criar sugestão." },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Erro interno ao criar sugestão." }, { status: 500 });
   }
 }

@@ -28,10 +28,17 @@ export async function POST(request: NextRequest) {
 
     const existing = await LiveRepository.findActiveByGroup(groupId);
     if (existing) {
-      return NextResponse.json({ message: "Já existe uma sessão ativa neste grupo." }, { status: 409 });
+      return NextResponse.json(
+        { message: "Já existe uma sessão ativa neste grupo." },
+        { status: 409 }
+      );
     }
 
-    const liveSession = await LiveRepository.createSession(groupId, session.user.id, roundCount ?? 5);
+    const liveSession = await LiveRepository.createSession(
+      groupId,
+      session.user.id,
+      roundCount ?? 5
+    );
     return NextResponse.json({ message: "Sessão criada.", data: liveSession }, { status: 201 });
   } catch {
     return NextResponse.json({ message: "Erro interno ao criar sessão." }, { status: 500 });

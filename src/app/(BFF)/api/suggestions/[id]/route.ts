@@ -10,10 +10,7 @@ import { authOptions } from "@/app/(BFF)/api/auth/[...nextauth]/route";
  *
  * Regras: autenticado; só o autor; só enquanto pending.
  */
-export async function DELETE(
-  _req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user?.id) {
@@ -32,9 +29,6 @@ export async function DELETE(
 
     return NextResponse.json({ message: "Sugestão cancelada." }, { status: 200 });
   } catch {
-    return NextResponse.json(
-      { message: "Erro interno ao cancelar sugestão." },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Erro interno ao cancelar sugestão." }, { status: 500 });
   }
 }

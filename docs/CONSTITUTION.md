@@ -7,6 +7,7 @@ Princípios e regras **obrigatórios** neste codebase. Toda contribuição (huma
 ## 1. Princípios
 
 ### SOLID
+
 - **S** — Responsabilidade única: cada módulo/função/componente faz **uma** coisa. Um `repository` só acessa dados; um `route handler` só orquestra; um componente só apresenta.
 - **O** — Aberto p/ extensão, fechado p/ modificação: novas variações via **CVA variants** (botões, badges), novas estratégias via **interfaces** (ex.: `ModerationStrategy`), nunca por `if` derrubando código existente.
 - **L** — Subtipos substituíveis: componentes/funções que compartilham interface devem ser intercambiáveis sem surpresa.
@@ -14,10 +15,12 @@ Princípios e regras **obrigatórios** neste codebase. Toda contribuição (huma
 - **D** — Dependa de abstrações: componentes dependem dos **tokens de design** (CSS vars), não de cores hex; a UI depende de hooks, não de chamadas HTTP diretas.
 
 ### DRY
+
 - Um único dono por responsabilidade. Antes de criar, **procure** o equivalente: `PageShell`, `Stamp`, `Kicker`, `Marquee`, `getInitials`, `cn`, repositórios.
 - Decisões repetidas viram **tokens** (cores, raios, fontes) ou **componentes**. Três repetições = refactorar.
 
 ### KISS
+
 - Escolha a solução mais simples que funcione. Sem antecipar necessidades não pedidas.
 - Composição rasa em vez de herança profunda. Funções curtas e nomeadas.
 
@@ -38,16 +41,16 @@ UI (src/app/(pages))
 
 ### Responsabilidades por pasta
 
-| Pasta | Responsabilidade | Regras |
-| ----- | ---------------- | ----- |
-| `src/db/schema.ts` | Definição das tabelas Drizzle | Fonte única do modelo. Sem lógica. |
-| `src/db/repositories/*.repository.ts` | CRUD e queries | **Único** lugar que toca `db`. Expõe `*SchemaIn`/`*SchemaOut`. Try/catch → `throw new Error(...)`. |
-| `src/types/*.ts` | Zod schemas + interfaces de domínio | `*SchemaIn` (entrada), `*SchemaOut` (saída), `Response<T>` p/ respostas HTTP. |
-| `src/data/services/*.service.ts` | Clientes HTTP (axios) | Thin wrappers em volta do `apiClient`. Sem lógica de negócio. |
-| `src/data/hooks/*` | React Query (`useQuery`/`useMutation`) | Encapsulam services. Recebem `onSuccess/onError/onSettled`. |
-| `src/app/(BFF)/api/**/route.ts` | Route handlers (lógica + auth) | `getServerSession` → chama repositories → `NextResponse.json`. **Um header BDD** (ver §5). |
-| `src/app/(pages)` | UI + `_components` colocados | Route groups `(public)`/`(private)`/`(BFF)`. Componentes de página em `_components/`. |
-| `src/components/{ui,shared,layout,visual}` | Biblioteca de UI | `ui`=shadcn, `visual`/`layout`=primitivos do tema. |
+| Pasta                                      | Responsabilidade                       | Regras                                                                                             |
+| ------------------------------------------ | -------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `src/db/schema.ts`                         | Definição das tabelas Drizzle          | Fonte única do modelo. Sem lógica.                                                                 |
+| `src/db/repositories/*.repository.ts`      | CRUD e queries                         | **Único** lugar que toca `db`. Expõe `*SchemaIn`/`*SchemaOut`. Try/catch → `throw new Error(...)`. |
+| `src/types/*.ts`                           | Zod schemas + interfaces de domínio    | `*SchemaIn` (entrada), `*SchemaOut` (saída), `Response<T>` p/ respostas HTTP.                      |
+| `src/data/services/*.service.ts`           | Clientes HTTP (axios)                  | Thin wrappers em volta do `apiClient`. Sem lógica de negócio.                                      |
+| `src/data/hooks/*`                         | React Query (`useQuery`/`useMutation`) | Encapsulam services. Recebem `onSuccess/onError/onSettled`.                                        |
+| `src/app/(BFF)/api/**/route.ts`            | Route handlers (lógica + auth)         | `getServerSession` → chama repositories → `NextResponse.json`. **Um header BDD** (ver §5).         |
+| `src/app/(pages)`                          | UI + `_components` colocados           | Route groups `(public)`/`(private)`/`(BFF)`. Componentes de página em `_components/`.              |
+| `src/components/{ui,shared,layout,visual}` | Biblioteca de UI                       | `ui`=shadcn, `visual`/`layout`=primitivos do tema.                                                 |
 
 > **Proibido**: UI chamando `fetch`/`axios` direto; route handler sem passar por repository; repository retornando objetos crus do Drizzle (sempre tipar com `*SchemaOut`).
 

@@ -48,9 +48,7 @@
         "friends_github_id_unique": {
           "name": "friends_github_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "github_id"
-          ]
+          "columns": ["github_id"]
         }
       },
       "policies": {},
@@ -94,12 +92,8 @@
           "name": "groupParticipation_friend_id_friends_id_fk",
           "tableFrom": "groupParticipation",
           "tableTo": "friends",
-          "columnsFrom": [
-            "friend_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["friend_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -107,12 +101,8 @@
           "name": "groupParticipation_group_id_group_id_fk",
           "tableFrom": "groupParticipation",
           "tableTo": "group",
-          "columnsFrom": [
-            "group_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["group_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -179,12 +169,8 @@
           "name": "group_created_by_friends_id_fk",
           "tableFrom": "group",
           "tableTo": "friends",
-          "columnsFrom": [
-            "created_by"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["created_by"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -194,9 +180,7 @@
         "group_access_code_unique": {
           "name": "group_access_code_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "access_code"
-          ]
+          "columns": ["access_code"]
         }
       },
       "policies": {},
@@ -267,12 +251,8 @@
           "name": "questions_author_friend_id_friends_id_fk",
           "tableFrom": "questions",
           "tableTo": "friends",
-          "columnsFrom": [
-            "author_friend_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["author_friend_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "cascade"
         }
@@ -282,9 +262,7 @@
         "questions_text_unique": {
           "name": "questions_text_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "text"
-          ]
+          "columns": ["text"]
         }
       },
       "policies": {},
@@ -340,12 +318,8 @@
           "name": "vote_voter_id_friends_id_fk",
           "tableFrom": "vote",
           "tableTo": "friends",
-          "columnsFrom": [
-            "voter_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["voter_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -353,12 +327,8 @@
           "name": "vote_friend_id_friends_id_fk",
           "tableFrom": "vote",
           "tableTo": "friends",
-          "columnsFrom": [
-            "friend_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["friend_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -366,12 +336,8 @@
           "name": "vote_question_id_questions_id_fk",
           "tableFrom": "vote",
           "tableTo": "questions",
-          "columnsFrom": [
-            "question_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["question_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -379,12 +345,8 @@
           "name": "vote_group_id_group_id_fk",
           "tableFrom": "vote",
           "tableTo": "group",
-          "columnsFrom": [
-            "group_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["group_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }

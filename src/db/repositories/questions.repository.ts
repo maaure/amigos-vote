@@ -43,12 +43,7 @@ export const QuestionsRepository = {
       const [result] = await db
         .select()
         .from(questions)
-        .where(
-          and(
-            eq(questions.used, false),
-            inArray(questions.mode, ["daily", "both"])
-          )
-        )
+        .where(and(eq(questions.used, false), inArray(questions.mode, ["daily", "both"])))
         .orderBy(sql`random()`)
         .limit(1);
       return result;

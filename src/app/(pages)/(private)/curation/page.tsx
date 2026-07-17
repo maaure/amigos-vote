@@ -5,10 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import PageShell from "@/components/layout/PageShell";
 import Kicker from "@/components/visual/Kicker";
-import {
-  usePendingSuggestions,
-  useReviewSuggestion,
-} from "@/data/hooks/useSuggestions";
+import { usePendingSuggestions, useReviewSuggestion } from "@/data/hooks/useSuggestions";
 import type { QuestionSuggestionSchemaOut, ReviewAction } from "@/types/questionSuggestion";
 import { suggestionSchema } from "@/types/questionSuggestion";
 import { ArrowLeft, CheckIcon, Loader2Icon, XIcon } from "lucide-react";
@@ -51,7 +48,7 @@ export default function CurationPage() {
   const handleReview = (id: string, action: ReviewAction) => {
     if (action === "approve") {
       const textCheck = suggestionSchema.shape.text.safeParse(
-        editing.id === id ? editing.text : pending?.find((s) => s.id === id)?.text ?? ""
+        editing.id === id ? editing.text : (pending?.find((s) => s.id === id)?.text ?? "")
       );
       if (!textCheck.success) {
         toast.error(textCheck.error.issues[0]?.message ?? "Texto inválido.");
@@ -148,9 +145,7 @@ export default function CurationPage() {
                     <div className="space-y-2">
                       <Input
                         value={editing.text}
-                        onChange={(e) =>
-                          setEditing((prev) => ({ ...prev, text: e.target.value }))
-                        }
+                        onChange={(e) => setEditing((prev) => ({ ...prev, text: e.target.value }))}
                         className="rounded-none font-display text-lg"
                       />
                       <div className="flex gap-1">
@@ -175,9 +170,7 @@ export default function CurationPage() {
                           <button
                             key={n}
                             type="button"
-                            onClick={() =>
-                              setEditing((prev) => ({ ...prev, allowedVotes: n }))
-                            }
+                            onClick={() => setEditing((prev) => ({ ...prev, allowedVotes: n }))}
                             className={cn(
                               "flex-1 border px-2 py-1 font-mono text-xs",
                               editing.allowedVotes === n

@@ -57,5 +57,5 @@ prod-logs:
 
 # Roda as migrations DENTRO do container de produção (drizzle-kit está nas deps)
 # Conecta ao serviço "db" via DB_ADDRESS=db (já no ambiente do container).
-db-push:
+prod-db-push:
 	docker compose exec next-app pnpm db:push
