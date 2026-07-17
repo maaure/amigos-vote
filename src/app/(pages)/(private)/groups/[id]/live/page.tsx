@@ -131,6 +131,7 @@ function LiveRound({
   phase,
   sessionId,
   allowedVotes,
+  isHost,
 }: {
   accusation: string;
   participants: { id: string; name: string; urlPic: string | null }[];
@@ -138,14 +139,16 @@ function LiveRound({
   phase: string;
   sessionId: string;
   allowedVotes: number;
+  isHost: boolean;
 }) {
   const { mutate: vote, isPending: isVoting } = useCastVote(sessionId);
   const { mutate: advance, isPending: isAdvancing } = useAdvanceRound(sessionId);
   const [selected, setSelected] = useState<string[]>([]);
   const session = useSession();
+  const alreadyVoted = myVotes.length > 0;
 
   const toggle = (id: string) => {
-    if (phase !== "voting") return;
+    if (phase !== "voting" || alreadyVoted) return;
     setSelected((prev) =>
       prev.includes(id)
         ? prev.filter((x) => x !== id)
@@ -179,10 +182,15 @@ function LiveRound({
         <span className="block font-mono text-[0.6rem] uppercase tracking-widest text-highlight">
           {PHASE_LABEL[phase] ?? phase}
         </span>
-        {phase === "voting" && (
+        {phase === "voting" && !alreadyVoted && (
           <span className="block font-mono text-[0.55rem] uppercase tracking-widest text-muted-foreground">
             Selecione até {allowedVotes} {allowedVotes === 1 ? "suspeito" : "suspeitos"}
             {selected.length > 0 && ` (${selected.length} selecionado${selected.length > 1 ? "s" : ""})`}
+          </span>
+        )}
+        {alreadyVoted && (
+          <span className="block font-mono text-[0.55rem] uppercase tracking-widest text-gold">
+            Voto registrado
           </span>
         )}
       </div>
@@ -200,14 +208,14 @@ function LiveRound({
                 img={p.urlPic ?? undefined}
                 onClick={() => toggle(p.id)}
                 selected={isSelected || hasVoted}
-                disabled={phase !== "voting"}
+                disabled={phase !== "voting" || alreadyVoted}
               />
             );
           })}
       </div>
 
       <div className="flex justify-center gap-3">
-        {phase === "voting" && (
+        {phase === "voting" && !alreadyVoted && (
           <Button
             size="lg"
             onClick={handleVote}
@@ -221,9 +229,11 @@ function LiveRound({
             )}
           </Button>
         )}
-        <Button variant="outline" size="lg" onClick={() => advance(undefined)} disabled={isAdvancing}>
-          {isAdvancing ? <Loader2Icon className="size-4 animate-spin" /> : "Avançar"}
-        </Button>
+        {isHost && (
+          <Button variant="outline" size="lg" onClick={() => advance(undefined)} disabled={isAdvancing}>
+            {isAdvancing ? <Loader2Icon className="size-4 animate-spin" /> : "Avançar"}
+          </Button>
+        )}
       </div>
     </div>
   );
@@ -292,28 +302,30 @@ function LiveReveal({
 
       <div className="space-y-3">
         {isHost && (
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={customAccusation}
-              onChange={(e) => setCustomAccusation(e.target.value)}
-              placeholder="Acusação personalizada (opcional)"
-              className="flex-1 border-2 border-rule bg-background px-3 py-2 font-display text-sm uppercase tracking-wide outline-none focus:border-highlight"
-            />
-          </div>
+          <>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={customAccusation}
+                onChange={(e) => setCustomAccusation(e.target.value)}
+                placeholder="Acusação personalizada (opcional)"
+                className="flex-1 border-2 border-rule bg-background px-3 py-2 font-display text-sm uppercase tracking-wide outline-none focus:border-highlight"
+              />
+            </div>
+            <div className="flex justify-center">
+              <Button
+                size="lg"
+                onClick={() =>
+                  advance(customAccusation.trim() ? { customText: customAccusation.trim() } : undefined)
+                }
+                disabled={isAdvancing}
+                className="py-6"
+              >
+                {isAdvancing ? <Loader2Icon className="size-4 animate-spin" /> : "Próxima rodada"}
+              </Button>
+            </div>
+          </>
         )}
-        <div className="flex justify-center">
-          <Button
-            size="lg"
-            onClick={() =>
-              advance(customAccusation.trim() ? { customText: customAccusation.trim() } : undefined)
-            }
-            disabled={isAdvancing}
-            className="py-6"
-          >
-            {isAdvancing ? <Loader2Icon className="size-4 animate-spin" /> : "Próxima rodada"}
-          </Button>
-        </div>
       </div>
     </div>
   );
@@ -625,6 +637,7 @@ export default function LivePage({ params }: { params: Promise<{ id: string }> }
           phase={currentRound.phase}
           sessionId={sessionId!}
           allowedVotes={currentRound.allowedVotes}
+          isHost={session.data?.user?.id === activeSession.hostFriendId}
         />
       ) : null}
 
