@@ -16,10 +16,11 @@ import { useGetFriendsQuery } from "@/data/hooks/useGetFriendsQuery";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { ArrowLeft, Play, LogIn, Loader2Icon, Swords, Scale } from "lucide-react";
-import { use, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { LiveRoundOut } from "@/types/live";
+import { LiveService } from "@/data/services/live.service";
 
 const PHASE_LABEL: Record<string, string> = {
   intro: "Preparando...",
@@ -417,6 +418,83 @@ function LiveFinale({
   );
 }
 
+const REACTIONS = ["😂", "😱", "🔥", "😭", "👍", "🤡"];
+
+function ReactBar({
+  sessionId,
+  reactions,
+}: {
+  sessionId: string;
+  reactions: { reaction: string; friendName: string }[];
+}) {
+  const [sending, setSending] = useState<string | null>(null);
+  const [floating, setFloating] = useState<{ id: number; reaction: string; key: number }[]>([]);
+  const floatingRef = useRef(floating);
+  floatingRef.current = floating;
+  const nextId = useRef(0);
+
+  // New reactions from state trigger floating animation
+  useEffect(() => {
+    if (reactions.length > 0) {
+      const latest = reactions[0];
+      if (!floatingRef.current.some((f) => f.reaction === latest.reaction)) {
+        const id = nextId.current++;
+        setFloating((prev) => [...prev.slice(-8), { id, reaction: latest.reaction, key: id }]);
+        setTimeout(() => {
+          setFloating((prev) => prev.filter((f) => f.id !== id));
+        }, 3000);
+      }
+    }
+  }, [reactions]);
+
+  const handleReact = async (emoji: string) => {
+    setSending(emoji);
+    try {
+      await LiveService.react(sessionId, emoji);
+    } catch {
+      toast.error("Erro ao enviar reação.");
+    }
+    setSending(null);
+  };
+
+  return (
+    <div className="relative">
+      {/* Floating reactions */}
+      {floating.length > 0 && (
+        <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center">
+          {floating.map((f) => (
+            <span
+              key={f.id}
+              className="animate-reveal text-4xl"
+              style={{
+                animation: "float-up 2.5s ease-out both",
+                position: "absolute",
+                bottom: "20%",
+              }}
+            >
+              {f.reaction}
+            </span>
+          ))}
+        </div>
+      )}
+      {/* Reaction buttons */}
+      <div className="flex justify-center gap-1.5 border-t-2 border-rule pt-4">
+        {REACTIONS.map((emoji) => (
+          <button
+            key={emoji}
+            type="button"
+            onClick={() => handleReact(emoji)}
+            disabled={sending !== null}
+            className="border-2 border-rule bg-paper px-3 py-1.5 text-xl transition-transform hover:-translate-y-1 hover:border-highlight hover:shadow-[2px_2px_0_0_var(--highlight)] disabled:opacity-50"
+          >
+            {emoji}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function LivePage({ params }: { params: Promise<{ id: string }> }) {
   const groupId = use(params).id;
   const session = useSession();
@@ -545,6 +623,10 @@ export default function LivePage({ params }: { params: Promise<{ id: string }> }
           allowedVotes={currentRound.allowedVotes}
         />
       ) : null}
+
+      {(currentRound && currentRound.phase !== "intro") && (
+        <ReactBar sessionId={sessionId!} reactions={state?.reactions ?? []} />
+      )}
     </PageShell>
   );
 }

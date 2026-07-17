@@ -18,6 +18,7 @@ export const LiveService = {
     votes: { targetFriendId: string }[];
     tally: { targetFriendId: string; votes: number }[];
     results: LiveAccumulatedResult[];
+    reactions: { reaction: string; friendName: string }[];
   }> => apiClient.get(`/api/live/${sessionId}/state`),
 
   vote: (sessionId: string, targetFriendIds: string[]): Promise<{ message: string }> =>
@@ -28,4 +29,7 @@ export const LiveService = {
 
   close: (sessionId: string): Promise<{ message: string }> =>
     apiClient.post(`/api/live/${sessionId}/close`),
+
+  react: (sessionId: string, reaction: string): Promise<{ message: string }> =>
+    apiClient.post(`/api/live/${sessionId}/react`, { reaction }),
 };

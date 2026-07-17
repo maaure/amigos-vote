@@ -28,6 +28,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     let votes: { targetFriendId: string }[] = [];
     let tally: LiveTallyItem[] = [];
     let results: LiveAccumulatedResult[] = [];
+    let reactions: { reaction: string; friendName: string }[] = [];
 
     if (liveSession.status === "active" && liveSession.currentRound > 0) {
       currentRound = await LiveRepository.getCurrentRound(id);
@@ -36,6 +37,12 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
         if (currentRound.phase === "reveal" || currentRound.phase === "done") {
           tally = await LiveRepository.getTally(currentRound.id);
         }
+        reactions = (await LiveRepository.getReactions(currentRound.id)).map(
+          (r: { reaction: string; friendName: string }) => ({
+            reaction: r.reaction,
+            friendName: r.friendName,
+          })
+        );
       }
     }
 
@@ -52,6 +59,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
         votes,
         tally,
         results,
+        reactions,
       },
       { status: 200 }
     );

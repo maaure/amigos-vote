@@ -43,6 +43,13 @@
       "when": 1784250174357,
       "tag": "0005_wakeful_mantis",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1784266806796,
+      "tag": "0006_wealthy_zaran",
+      "breakpoints": true
     }
   ]
 }

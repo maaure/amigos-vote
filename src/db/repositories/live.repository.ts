@@ -5,6 +5,7 @@ import {
   liveVotes,
   liveParticipants,
   liveResults,
+  liveReactions,
   friends,
 } from "@/db/schema";
 import { and, desc, eq, inArray, sql, isNull } from "drizzle-orm";
@@ -266,5 +267,39 @@ export const LiveRepository = {
       });
     }
     return acc;
+  },
+
+  addReaction: async (roundId: string, friendId: string, reaction: string) => {
+    try {
+      const [r] = await db
+        .insert(liveReactions)
+        .values({ roundId, friendId, reaction })
+        .returning();
+      return r;
+    } catch (error) {
+      console.error("Erro ao salvar reação:", error);
+      throw new Error("Erro ao salvar reação.");
+    }
+  },
+
+  getReactions: async (roundId: string, limit = 20) => {
+    try {
+      return await db
+        .select({
+          id: liveReactions.id,
+          reaction: liveReactions.reaction,
+          friendId: liveReactions.friendId,
+          friendName: friends.name,
+          createdAt: liveReactions.createdAt,
+        })
+        .from(liveReactions)
+        .innerJoin(friends, eq(liveReactions.friendId, friends.id))
+        .where(eq(liveReactions.roundId, roundId))
+        .orderBy(desc(liveReactions.createdAt))
+        .limit(limit);
+    } catch (error) {
+      console.error("Erro ao buscar reações:", error);
+      throw new Error("Erro ao buscar reações.");
+    }
   },
 };

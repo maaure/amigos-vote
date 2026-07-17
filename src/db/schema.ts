@@ -194,3 +194,15 @@ export const liveResults = pgTable("live_result", {
   rankGuilt: integer("rank_guilt"),
   rankJurado: integer("rank_jurado"),
 });
+
+export const liveReactions = pgTable("live_reaction", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  roundId: uuid("round_id")
+    .references(() => liveRounds.id, { onUpdate: "cascade", onDelete: "cascade" })
+    .notNull(),
+  friendId: uuid("friend_id")
+    .references(() => friends.id, { onUpdate: "cascade", onDelete: "cascade" })
+    .notNull(),
+  reaction: text("reaction").notNull(),
+});
