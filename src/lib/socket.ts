@@ -19,7 +19,7 @@ export async function notifySession(
       headers: { "Content-Type": "application/json" },
       body: data ? JSON.stringify(data) : undefined,
     });
-  } catch {
-    // fallback: polling continua funcionando normalmente
+  } catch (e) {
+    console.error("[socket] notifySession falhou:", e);
   }
 }

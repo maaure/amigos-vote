@@ -28,20 +28,24 @@ export function useSocketSubscription(sessionId: string | null) {
     });
 
     socket.on("connect", () => {
+      console.log("[socket] conectado", socket.id);
       socket.emit("join", sessionId);
-      // Reconnect: refetch para garantir que não perdeu atualizações
-      qc.invalidateQueries({ queryKey: ["live", "state", sessionId] });
-    });
-
-    socket.on("state:update", () => {
       qc.invalidateQueries({ queryKey: ["live", "state", sessionId] });
     });
 
     socket.on("state:sync", (data) => {
+      console.log("[socket] state:sync recebido", data?.currentRound?.phase);
       qc.setQueryData(["live", "state", sessionId], data);
     });
 
-    socket.on("connect_error", () => {});
+    socket.on("state:update", () => {
+      console.log("[socket] state:update");
+      qc.invalidateQueries({ queryKey: ["live", "state", sessionId] });
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("[socket] erro de conexao:", err.message);
+    });
 
     socketRef.current = socket;
 
