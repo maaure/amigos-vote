@@ -1,5 +1,6 @@
 import { QuestionsRepository } from "@/db/repositories/questions.repository";
 import { VotesRepository } from "@/db/repositories/votes.repository";
+import { FriendsRepository } from "@/db/repositories/friends.repository";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/route";
@@ -55,9 +56,15 @@ export async function GET(request: Request) {
       );
     }
 
+    let authorName: string | null = null;
+    if (questionData?.authorFriendId) {
+      const author = await FriendsRepository.findById(questionData.authorFriendId);
+      authorName = author?.name ?? null;
+    }
+
     return NextResponse.json(
       {
-        data: questionData,
+        data: questionData ? { ...questionData, authorName } : questionData,
         alreadyVotedToday,
       },
       { status: 200 }

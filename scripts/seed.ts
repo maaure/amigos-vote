@@ -8,7 +8,8 @@ import path from "path";
 // ponytail: one-off seed script
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const dbUrl = "postgresql://inimigo-user:inimigo-pass@localhost:5432/inimigo-db";
+const dbPassword = process.env.POSTGRES_PASSWORD ?? "inimigo-pass";
+const dbUrl = `postgresql://inimigo-user:${dbPassword}@localhost:5432/inimigo-db`;
 const client = postgres(dbUrl, { prepare: false });
 const db = drizzle(client, { schema: { questions } });
 

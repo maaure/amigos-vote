@@ -11,6 +11,7 @@ import VotingSectionLoading from "./loading";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ErrorResponse } from "@/data/types";
+import SuggestDialog from "../SuggestDialog";
 
 export interface IVoteSectionProps {
   groupId: string;
@@ -128,15 +129,11 @@ export default function VotingSection({ groupId }: IVoteSectionProps) {
       </div>
 
       <div className="flex flex-col items-center justify-center gap-4 border-t-2 border-rule pt-8 sm:flex-row">
-        <Button
-          variant="ghost"
-          className="min-w-[200px]"
-          onClick={() => {
-            toast("Em desenvolvimento...");
-          }}
-        >
-          <span className="font-mono text-xs uppercase tracking-widest">Sugerir acusação</span>
-        </Button>
+        <SuggestDialog>
+          <Button variant="ghost" className="min-w-[200px]">
+            <span className="font-mono text-xs uppercase tracking-widest">Sugerir acusação</span>
+          </Button>
+        </SuggestDialog>
 
         <Button
           variant="ghost"

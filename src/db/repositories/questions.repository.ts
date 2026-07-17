@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { questions } from "@/db/schema";
-import { eq, lt, isNotNull, desc, sql, and } from "drizzle-orm";
+import { eq, lt, isNotNull, desc, sql, and, inArray } from "drizzle-orm";
 
 export const QuestionsRepository = {
   /**
@@ -36,20 +36,44 @@ export const QuestionsRepository = {
   },
 
   /**
-   * Busca uma questão aleatória que ainda não foi usada.
+   * Busca uma questão aleatória que ainda não foi usada e serve pro modo diário.
    */
   getRandom: async () => {
     try {
       const [result] = await db
         .select()
         .from(questions)
-        .where(eq(questions.used, false))
+        .where(
+          and(
+            eq(questions.used, false),
+            inArray(questions.mode, ["daily", "both"])
+          )
+        )
         .orderBy(sql`random()`)
         .limit(1);
       return result;
     } catch (error) {
       console.error("Erro ao buscar questão aleatória:", error);
       throw new Error("Erro no banco de dados ao buscar questão aleatória.");
+    }
+  },
+
+  /**
+   * Busca uma questão aleatória para o modo ao vivo (mode live|both).
+   * NÃO marca como usada (o vivo reaproveita perguntas entre sessões).
+   */
+  getRandomForLive: async () => {
+    try {
+      const [result] = await db
+        .select()
+        .from(questions)
+        .where(inArray(questions.mode, ["live", "both"]))
+        .orderBy(sql`random()`)
+        .limit(1);
+      return result;
+    } catch (error) {
+      console.error("Erro ao buscar questão aleatória para modo ao vivo:", error);
+      throw new Error("Erro no banco de dados ao buscar questão para modo ao vivo.");
     }
   },
 

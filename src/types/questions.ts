@@ -3,6 +3,7 @@ export interface QuestionSchemaOut {
   text: string;
   allowedVotes: number;
   publishedWhen: string;
+  authorName?: string | null;
 }
 
 export interface TodayQuestionResponse {

@@ -2,6 +2,7 @@
 
 import { useGetTodayQuestionQuery } from "@/data/hooks/useGetTodayQuestionQuery";
 import Kicker from "@/components/visual/Kicker";
+import { creditLabel } from "@/lib/utils";
 import QuestionAreaLoading from "./loading";
 
 interface IQuestionArea {
@@ -28,6 +29,11 @@ export default function QuestionArea({ groupId }: IQuestionArea) {
           <span className="size-2 rotate-45 bg-highlight" />
           <span className="h-[3px] flex-1 bg-highlight" />
         </div>
+        {todayQuestion?.data?.authorName && (
+          <span className="block font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">
+            {creditLabel(todayQuestion.data.authorName)}
+          </span>
+        )}
       </div>
     </section>
   );
