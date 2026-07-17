@@ -26,7 +26,8 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     }
 
     await LiveRepository.addParticipant(id, session.user.id);
-    notifySession(id);
+    const state = await LiveRepository.getFullState(id, session.user.id);
+    notifySession(id, state ?? undefined);
     return NextResponse.json({ message: "Você entrou na sessão." }, { status: 200 });
   } catch {
     return NextResponse.json({ message: "Erro interno ao entrar na sessão." }, { status: 500 });

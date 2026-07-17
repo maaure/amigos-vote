@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { LiveService } from "../services/live.service";
 import type { ErrorResponse } from "../types";
 
@@ -20,8 +20,7 @@ export function useLiveSessionState(sessionId: string | null, enabled = false) {
     queryKey: STATE_KEY(sessionId ?? ""),
     queryFn: () => LiveService.getState(sessionId!),
     enabled: enabled && !!sessionId,
-    refetchInterval: 3000,
-    staleTime: 500,
+    staleTime: 60_000,
   });
 }
 
@@ -29,14 +28,10 @@ export function useCreateLiveSession(
   onSuccess?: () => void,
   onError?: (error: ErrorResponse) => void
 ) {
-  const qc = useQueryClient();
   return useMutation({
     mutationFn: (payload: { groupId: string; roundCount?: number }) =>
       LiveService.create(payload),
-    onSuccess: (_data, vars) => {
-      qc.invalidateQueries({ queryKey: ACTIVE_KEY(vars.groupId) });
-      onSuccess?.();
-    },
+    onSuccess: () => onSuccess?.(),
     onError,
   });
 }
@@ -45,13 +40,9 @@ export function useJoinLiveSession(
   onSuccess?: () => void,
   onError?: (error: ErrorResponse) => void
 ) {
-  const qc = useQueryClient();
   return useMutation({
     mutationFn: (sessionId: string) => LiveService.join(sessionId),
-    onSuccess: (_data, sessionId) => {
-      qc.invalidateQueries({ queryKey: STATE_KEY(sessionId) });
-      onSuccess?.();
-    },
+    onSuccess: () => onSuccess?.(),
     onError,
   });
 }
@@ -61,13 +52,9 @@ export function useCastVote(
   onSuccess?: () => void,
   onError?: (error: ErrorResponse) => void
 ) {
-  const qc = useQueryClient();
   return useMutation({
     mutationFn: (targetFriendIds: string[]) => LiveService.vote(sessionId, targetFriendIds),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: STATE_KEY(sessionId) });
-      onSuccess?.();
-    },
+    onSuccess: () => onSuccess?.(),
     onError,
   });
 }
@@ -77,13 +64,9 @@ export function useAdvanceRound(
   onSuccess?: () => void,
   onError?: (error: ErrorResponse) => void
 ) {
-  const qc = useQueryClient();
   return useMutation({
     mutationFn: (payload?: { customText?: string }) => LiveService.advance(sessionId, payload),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: STATE_KEY(sessionId) });
-      onSuccess?.();
-    },
+    onSuccess: () => onSuccess?.(),
     onError,
   });
 }
@@ -93,13 +76,9 @@ export function useCloseSession(
   onSuccess?: () => void,
   onError?: (error: ErrorResponse) => void
 ) {
-  const qc = useQueryClient();
   return useMutation({
     mutationFn: () => LiveService.close(sessionId),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: STATE_KEY(sessionId) });
-      onSuccess?.();
-    },
+    onSuccess: () => onSuccess?.(),
     onError,
   });
 }

@@ -28,7 +28,8 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
     const now = new Date();
     await LiveRepository.updateSession(id, { status: "closed", closedAt: now });
     await LiveRepository.saveResults(id);
-    notifySession(id);
+    const state = await LiveRepository.getFullState(id, session.user.id);
+    notifySession(id, state ?? undefined);
 
     return NextResponse.json({ message: "Sessão encerrada." }, { status: 200 });
   } catch {

@@ -45,7 +45,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       results.push(vote);
     }
 
-    notifySession(sessionId);
+    const state = await LiveRepository.getFullState(sessionId, session.user.id);
+    notifySession(sessionId, state ?? undefined);
 
     return NextResponse.json(
       { message: `${results.length} ${results.length === 1 ? "voto" : "votos"} registrado(s).`, data: results },

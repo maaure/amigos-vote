@@ -9,7 +9,7 @@ import {
   friends,
 } from "@/db/schema";
 import { and, desc, eq, inArray, sql, isNull } from "drizzle-orm";
-import type { LiveSessionStatus, LiveRoundPhase, LiveAccumulatedResult } from "@/types/live";
+import type { LiveSessionStatus, LiveRoundPhase, LiveAccumulatedResult, LiveRoundOut, LiveTallyItem } from "@/types/live";
 
 export const LiveRepository = {
   /** Cria sessão (lobby) e adiciona o host como primeiro participante. */
@@ -312,7 +312,6 @@ export const LiveRepository = {
           closedAt: liveSessions.closedAt,
           createdAt: liveSessions.createdAt,
           roundCount: liveSessions.roundCount,
-          // winner (rankGuilt = 1)
           winnerId: liveResults.friendId,
           winnerName: friends.name,
           guiltReceived: liveResults.guiltReceived,
@@ -327,5 +326,48 @@ export const LiveRepository = {
       console.error("Erro ao buscar histórico ao vivo:", error);
       throw new Error("Erro ao buscar histórico ao vivo.");
     }
+  },
+
+  /** Monta o estado completo da sessão (mesma lógica do GET /state). */
+  getFullState: async (sessionId: string, friendId: string) => {
+    const liveSession = await LiveRepository.findById(sessionId);
+    if (!liveSession) return null;
+
+    const participants = await LiveRepository.getParticipants(sessionId);
+    let currentRound: LiveRoundOut | null = null;
+    let votes: { targetFriendId: string }[] = [];
+    let tally: LiveTallyItem[] = [];
+    let results: LiveAccumulatedResult[] = [];
+    let reactions: { reaction: string; friendName: string }[] = [];
+
+    if (liveSession.status === "active" && liveSession.currentRound > 0) {
+      currentRound = (await LiveRepository.getCurrentRound(sessionId)) as LiveRoundOut | null;
+      if (currentRound) {
+        votes = await LiveRepository.getUserVotesInRound(currentRound.id, friendId);
+        if (currentRound.phase === "reveal" || currentRound.phase === "done") {
+          tally = await LiveRepository.getTally(currentRound.id);
+        }
+        reactions = (await LiveRepository.getReactions(currentRound.id)).map(
+          (r: { reaction: string; friendName: string }) => ({
+            reaction: r.reaction,
+            friendName: r.friendName,
+          })
+        );
+      }
+    }
+
+    if (liveSession.status === "closed") {
+      results = await LiveRepository.getAccumulatedResults(sessionId);
+    }
+
+    return {
+      session: liveSession,
+      participants,
+      currentRound,
+      votes,
+      tally,
+      results,
+      reactions,
+    };
   },
 };

@@ -29,6 +29,8 @@ export function useSocketSubscription(sessionId: string | null) {
 
     socket.on("connect", () => {
       socket.emit("join", sessionId);
+      // Reconnect: refetch para garantir que não perdeu atualizações
+      qc.invalidateQueries({ queryKey: ["live", "state", sessionId] });
     });
 
     socket.on("state:update", () => {
