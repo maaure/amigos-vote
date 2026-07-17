@@ -15,7 +15,7 @@ import {
 import { useGetFriendsQuery } from "@/data/hooks/useGetFriendsQuery";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { ArrowLeft, Play, LogIn, Loader2Icon, Users, Swords, Scale } from "lucide-react";
+import { ArrowLeft, Play, LogIn, Loader2Icon, Swords, Scale } from "lucide-react";
 import { use, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -42,9 +42,8 @@ function LiveLobby({
   const session = useSession();
   const { data: friends } = useGetFriendsQuery(groupId);
   const { mutate: advance, isPending: isAdvancing } = useAdvanceRound(sessionId);
-  const { mutate: join, isPending: isJoining } = useJoinLiveSession(
-    undefined,
-    (err) => toast.error(err.message)
+  const { mutate: join, isPending: isJoining } = useJoinLiveSession(undefined, (err) =>
+    toast.error(err.message)
   );
   const isHost = session.data?.user?.id === hostFriendId;
   const isParticipant = participants.some((p) => p.id === session.data?.user?.id);
@@ -84,14 +83,22 @@ function LiveLobby({
             disabled={isAdvancing || participants.length < 3}
             className="py-6"
           >
-            {isAdvancing ? <Loader2Icon className="size-4 animate-spin" /> : <Play className="size-4" />}
+            {isAdvancing ? (
+              <Loader2Icon className="size-4 animate-spin" />
+            ) : (
+              <Play className="size-4" />
+            )}
             {participants.length < 3 ? "Mínimo 3 jurados" : "Iniciar sessão"}
           </Button>
         </div>
       ) : !isParticipant ? (
         <div className="flex justify-center">
           <Button size="lg" onClick={() => join(sessionId)} disabled={isJoining} className="py-6">
-            {isJoining ? <Loader2Icon className="size-4 animate-spin" /> : <LogIn className="size-4" />}
+            {isJoining ? (
+              <Loader2Icon className="size-4 animate-spin" />
+            ) : (
+              <LogIn className="size-4" />
+            )}
             Entrar no tribunal
           </Button>
         </div>
@@ -104,7 +111,9 @@ function LiveLobby({
           </p>
           <div className="mt-2 flex flex-wrap justify-center gap-1 font-mono text-xs text-muted-foreground">
             {nonParticipants.map((f) => (
-              <span key={f.id} className="border border-rule px-2 py-0.5">{f.name}</span>
+              <span key={f.id} className="border border-rule px-2 py-0.5">
+                {f.name}
+              </span>
             ))}
           </div>
         </div>
@@ -185,7 +194,12 @@ function LiveRound({
             {isVoting ? <Loader2Icon className="size-4 animate-spin" /> : "Proclamar voto"}
           </Button>
         )}
-        <Button variant="outline" size="lg" onClick={() => advance(undefined)} disabled={isAdvancing}>
+        <Button
+          variant="outline"
+          size="lg"
+          onClick={() => advance(undefined)}
+          disabled={isAdvancing}
+        >
           {isAdvancing ? <Loader2Icon className="size-4 animate-spin" /> : "Avançar"}
         </Button>
       </div>
@@ -217,7 +231,9 @@ function LiveReveal({
     <div className="space-y-6">
       <div className="space-y-3 text-center">
         <div className="mx-auto w-fit">
-          <Stamp tone="highlight" rotate={-9}>Culpado</Stamp>
+          <Stamp tone="highlight" rotate={-9}>
+            Culpado
+          </Stamp>
         </div>
         {enriched.length > 0 && (
           <p className="masthead text-2xl">{enriched.find((e) => e.isWinner)?.name ?? "Ninguém"}</p>
@@ -267,7 +283,9 @@ function LiveReveal({
         <div className="flex justify-center">
           <Button
             size="lg"
-            onClick={() => advance(customAccusation.trim() ? { customText: customAccusation.trim() } : undefined)}
+            onClick={() =>
+              advance(customAccusation.trim() ? { customText: customAccusation.trim() } : undefined)
+            }
             disabled={isAdvancing}
             className="py-6"
           >
@@ -282,7 +300,13 @@ function LiveReveal({
 function LiveFinale({
   results,
 }: {
-  results: { friendId: string; name: string; urlPic: string | null; guiltReceived: number; juradoPoints: number }[];
+  results: {
+    friendId: string;
+    name: string;
+    urlPic: string | null;
+    guiltReceived: number;
+    juradoPoints: number;
+  }[];
 }) {
   const [tab, setTab] = useState<"guilt" | "jurado">("guilt");
   const winner = results[0];
@@ -295,7 +319,11 @@ function LiveFinale({
       <div className="space-y-4 text-center">
         <Kicker>Julgamento encerrado</Kicker>
         <div className="mx-auto w-fit">
-          {winner && <Stamp tone="gold" rotate={-7}>Grande Culpado</Stamp>}
+          {winner && (
+            <Stamp tone="gold" rotate={-7}>
+              Grande Culpado
+            </Stamp>
+          )}
         </div>
         {winner && <h2 className="masthead text-4xl sm:text-5xl">{winner.name}</h2>}
       </div>
@@ -335,9 +363,7 @@ function LiveFinale({
               key={r.friendId}
               className={cn(
                 "flex items-center justify-between border-2 px-4 py-3",
-                isWinner
-                  ? "border-gold bg-gold/5"
-                  : "border-rule bg-paper"
+                isWinner ? "border-gold bg-gold/5" : "border-rule bg-paper"
               )}
             >
               <div className="flex items-center gap-3">
@@ -386,9 +412,8 @@ export default function LivePage({ params }: { params: Promise<{ id: string }> }
     (err) => toast.error(err.message)
   );
 
-  const { mutate: joinSession, isPending: isJoining } = useJoinLiveSession(
-    undefined,
-    (err) => toast.error(err.message)
+  const { mutate: joinSession, isPending: isJoining } = useJoinLiveSession(undefined, (err) =>
+    toast.error(err.message)
   );
 
   const alreadyJoined = state?.participants?.some((p) => p.id === session.data?.user?.id);
@@ -422,8 +447,17 @@ export default function LivePage({ params }: { params: Promise<{ id: string }> }
                 Voltar ao grupo
               </Button>
             </Link>
-            <Button size="lg" onClick={() => createSession({ groupId })} disabled={isCreating} className="py-6">
-              {isCreating ? <Loader2Icon className="size-4 animate-spin" /> : <Play className="size-4" />}
+            <Button
+              size="lg"
+              onClick={() => createSession({ groupId })}
+              disabled={isCreating}
+              className="py-6"
+            >
+              {isCreating ? (
+                <Loader2Icon className="size-4 animate-spin" />
+              ) : (
+                <Play className="size-4" />
+              )}
               Abrir sessão ao vivo
             </Button>
           </div>
@@ -448,18 +482,24 @@ export default function LivePage({ params }: { params: Promise<{ id: string }> }
         </span>
       </div>
 
-      {!canSeeContent ? (
-        <div className="flex min-h-[40vh] flex-col items-center justify-center gap-4">
-          <Users className="size-8 text-rule" />
-          <p className="text-center text-muted-foreground">
-            A sessão já começou. Entre para participar.
+      {!canSeeContent && (
+        <div className="flex items-center justify-between border-2 border-highlight bg-highlight/5 px-4 py-3">
+          <p className="font-mono text-xs uppercase tracking-widest text-foreground">
+            Você não está participando desta rodada.
           </p>
-          <Button size="lg" onClick={() => joinSession(sessionId!)} disabled={isJoining}>
+          <Button
+            size="sm"
+            variant="submit"
+            onClick={() => joinSession(sessionId!)}
+            disabled={isJoining}
+          >
             {isJoining ? <Loader2Icon className="size-4 animate-spin" /> : <LogIn className="size-4" />}
-            Entrar agora
+            Entrar
           </Button>
         </div>
-      ) : activeSession.status === "lobby" ? (
+      )}
+
+      {activeSession.status === "lobby" ? (
         <LiveLobby
           sessionId={sessionId!}
           hostFriendId={activeSession.hostFriendId}
@@ -477,7 +517,7 @@ export default function LivePage({ params }: { params: Promise<{ id: string }> }
         />
       ) : currentRound ? (
         <LiveRound
-          accusation={currentRound.customText ?? currentRound.questionId ?? "Acusação do dia"}
+          accusation={currentRound.customText ?? "Acusação do dia"}
           participants={state!.participants}
           myVotes={state!.votes}
           phase={currentRound.phase}
