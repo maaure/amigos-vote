@@ -8,6 +8,19 @@ export const LiveService = {
   getActive: (groupId: string): Promise<{ data: LiveSessionOut | null }> =>
     apiClient.get(`/api/groups/${groupId}/live/active`),
 
+  getHistory: (groupId: string): Promise<
+    {
+      sessionId: string;
+      closedAt: Date;
+      createdAt: Date;
+      roundCount: number;
+      winnerId: string;
+      winnerName: string;
+      guiltReceived: number;
+      juradoPoints: number;
+    }[]
+  > => apiClient.get(`/api/groups/${groupId}/live/history`),
+
   join: (sessionId: string): Promise<{ message: string }> =>
     apiClient.post(`/api/live/${sessionId}/join`),
 

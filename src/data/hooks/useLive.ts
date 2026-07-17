@@ -4,6 +4,7 @@ import type { ErrorResponse } from "../types";
 
 const ACTIVE_KEY = (gid: string) => ["live", "active", gid] as const;
 const STATE_KEY = (sid: string) => ["live", "state", sid] as const;
+const HISTORY_KEY = (gid: string) => ["live", "history", gid] as const;
 
 export function useActiveLiveSession(groupId: string | null) {
   return useQuery({
@@ -100,5 +101,13 @@ export function useCloseSession(
       onSuccess?.();
     },
     onError,
+  });
+}
+
+export function useLiveHistory(groupId: string | null) {
+  return useQuery({
+    queryKey: HISTORY_KEY(groupId ?? ""),
+    queryFn: () => LiveService.getHistory(groupId!),
+    enabled: !!groupId,
   });
 }

@@ -302,4 +302,30 @@ export const LiveRepository = {
       throw new Error("Erro ao buscar reações.");
     }
   },
+
+  /** Busca sessões encerradas de um grupo para o histórico. */
+  findHistoryByGroup: async (groupId: string) => {
+    try {
+      return await db
+        .select({
+          sessionId: liveSessions.id,
+          closedAt: liveSessions.closedAt,
+          createdAt: liveSessions.createdAt,
+          roundCount: liveSessions.roundCount,
+          // winner (rankGuilt = 1)
+          winnerId: liveResults.friendId,
+          winnerName: friends.name,
+          guiltReceived: liveResults.guiltReceived,
+          juradoPoints: liveResults.juradoPoints,
+        })
+        .from(liveSessions)
+        .innerJoin(liveResults, eq(liveSessions.id, liveResults.sessionId))
+        .innerJoin(friends, eq(liveResults.friendId, friends.id))
+        .where(and(eq(liveSessions.groupId, groupId), eq(liveSessions.status, "closed"), eq(liveResults.rankGuilt, 1)))
+        .orderBy(desc(liveSessions.closedAt));
+    } catch (error) {
+      console.error("Erro ao buscar histórico ao vivo:", error);
+      throw new Error("Erro ao buscar histórico ao vivo.");
+    }
+  },
 };
