@@ -4,12 +4,16 @@ export
 POSTGRES_USER ?= inimigo-user
 POSTGRES_DB   ?= inimigo-db
 
-.PHONY: dev prod down reset logs db-shell generate push migrate prod-deploy prod-down prod-logs db-push
+.PHONY: dev dev-down prod down reset logs db-shell generate push migrate prod-deploy prod-down prod-logs prod-db-push
 
-# Dev: banco no Docker, Next.js local com hot reload
+# Dev: banco + socket no Docker, Next.js local com hot reload
 dev:
-	docker compose up db -d
-	DB_ADDRESS=localhost pnpm dev
+	docker compose up db socket -d
+	DB_ADDRESS=localhost NEXT_PUBLIC_SOCKET_URL=http://localhost:3001 pnpm dev
+
+# Derruba os containers de dev (db + socket)
+dev-down:
+	docker compose down
 
 # Produção: builda e sobe tudo
 prod:
