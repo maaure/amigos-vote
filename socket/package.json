@@ -1,0 +1,7 @@
+{
+  "name": "inimigo-socket",
+  "private": true,
+  "dependencies": {
+    "socket.io": "^4.8.3"
+  }
+}
