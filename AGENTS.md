@@ -21,7 +21,7 @@ Next.js 15 (App Router, Turbopack) · TypeScript · PostgreSQL 15 · Drizzle ORM
 | Gerar migration                     | `pnpm db:generate`                                                        |
 | Aplicar schema (dev)                | `make push` (`DB_ADDRESS=localhost`)                                      |
 | Aplicar schema (prod, no container) | `make db-push`                                                            |
-| Deploy prod (Caddy + HTTPS)         | `make prod-deploy` → depois `make db-push`                                |
+| Deploy prod                         | `make prod` → depois `make db-push` (proxy nativo na VPS)                 |
 
 > **Sempre valide o trabalho**: `pnpm lint` **e** `pnpm exec tsc --noEmit` antes de considerar pronto.
 

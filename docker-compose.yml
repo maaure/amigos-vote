@@ -9,7 +9,7 @@ services:
     container_name: inimigo-app
     restart: unless-stopped
     ports:
-      # Apenas loopback — o acesso público vem pelo Caddy (ver docker-compose.prod.yml)
+      # Apenas loopback — o acesso público vem pelo reverse proxy nativo da VPS
       - "127.0.0.1:3000:3000"
     networks:
       - inimigo-net
