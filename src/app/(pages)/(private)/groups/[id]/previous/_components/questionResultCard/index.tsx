@@ -94,12 +94,6 @@ export default function QuestionResultsCard({
                     isWinner ? "border-highlight bg-highlight/5" : "border-rule bg-paper"
                   }`}
                 >
-                  {isWinner && (
-                    <span className="stamp absolute -right-2 -top-3 z-10 px-1.5 py-0.5 text-[0.6rem]">
-                      Culpado
-                    </span>
-                  )}
-
                   <div className="flex min-w-0 items-center gap-3">
                     <span
                       className={`masthead text-2xl leading-none ${
@@ -109,16 +103,29 @@ export default function QuestionResultsCard({
                       {index + 1}
                     </span>
 
-                    <Avatar
-                      className={`size-9 shrink-0 rounded-none border-2 ${
-                        isWinner ? "border-highlight" : "border-rule"
-                      }`}
-                    >
-                      <AvatarImage src={result.image} />
-                      <AvatarFallback className="rounded-none bg-secondary font-display text-xs">
-                        {getInitials(result.name)}
-                      </AvatarFallback>
-                    </Avatar>
+                    {/* .stamp força position:relative (::after de ruído) — embrulha em span posicionado pra sobrepor */}
+                    <div className="relative shrink-0">
+                      <Avatar
+                        className={`size-9 rounded-none border-2 ${
+                          isWinner ? "border-highlight" : "border-rule"
+                        }`}
+                      >
+                        <AvatarImage src={result.image} />
+                        <AvatarFallback className="rounded-none bg-secondary font-display text-xs">
+                          {getInitials(result.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                      {isWinner && (
+                        <span className="absolute z-10 -left-4 top-1 -rotate-45">
+                          <span
+                            className="stamp px-1.5 py-0.5 text-[0.6rem]"
+                            style={{ rotate: "-5deg" }}
+                          >
+                            Culpado
+                          </span>
+                        </span>
+                      )}
+                    </div>
 
                     <div className="min-w-0">
                       <h3 className="truncate font-bold leading-tight">{result.name}</h3>

@@ -31,8 +31,9 @@ export default function FriendCard({
       )}
     >
       {selected && (
-        <span className="stamp animate-stamp absolute right-1 top-1 z-10 px-1.5 py-0.5 text-[0.6rem]">
-          Acusado
+        // .stamp força position:relative (::after de ruído) — embrulha em span posicionado pra sobrepor
+        <span className="absolute right-1 top-1 z-10">
+          <span className="stamp animate-stamp px-1.5 py-0.5 text-[0.6rem]">Acusado</span>
         </span>
       )}
 
