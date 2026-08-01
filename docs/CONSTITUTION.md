@@ -104,11 +104,11 @@ export async function POST(request: NextRequest) { ... }
 
 ## 7. Autorização & segurança
 
-- `session.user.id` = `friendId`; `session.user.githubId` disponível.
+- `session.user.id` = `friendId`; `session.user.googleId` disponível.
 - Acesso a grupo validado por `GroupParticipationRepository.isMember(groupId, friendId)`.
 - **Nunca** exponha segredos; `.env` **nunca** commitado.
 - Em produção: portas DB/app atadas a `127.0.0.1`; acesso público só via reverse proxy nativo da VPS.
-- (A implementar) `isCurator(session)` lê `ADMIN_GITHUB_IDS` — ponto único p/ checagem de curadoria.
+- (A implementar) `isCurator(session)` lê `ADMIN_GOOGLE_IDS` — ponto único p/ checagem de curadoria.
 
 ---
 

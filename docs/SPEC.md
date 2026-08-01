@@ -24,7 +24,7 @@ O humor está na premissa, não na interface. A UI é limpa e funcional — o co
 
 ### Autenticação
 
-- Login via **GitHub OAuth** (NextAuth). Nada de email/senha — é um app de nicho, GitHub como gatekeeper já filtra o público.
+- Login via **Google OAuth** (NextAuth). Nada de email/senha — é um app de nicho, Google como gatekeeper já filtra o público.
 
 ### Grupos privados
 
@@ -70,7 +70,7 @@ O humor está na premissa, não na interface. A UI é limpa e funcional — o co
 | Linguagem       | TypeScript                         |
 | Banco           | PostgreSQL 15                      |
 | ORM             | Drizzle ORM                        |
-| Autenticação    | NextAuth v4 (GitHub OAuth)         |
+| Autenticação    | NextAuth v4 (Google OAuth)         |
 | UI              | Tailwind CSS 4 + shadcn/ui (Radix) |
 | Gráficos        | Recharts                           |
 | Data fetching   | TanStack React Query + Axios       |
@@ -83,7 +83,7 @@ O humor está na premissa, não na interface. A UI é limpa e funcional — o co
 Quatro entidades principais:
 
 - **questions** — banco de perguntas. Cada uma tem texto, número de votos permitidos, flag `used`, e data de publicação.
-- **friends** — usuários (atrelados ao GitHub ID). Nome, foto, github_id único.
+- **friends** — usuários (atrelados ao Google ID). Nome, foto, google_id único.
 - **groups** — grupos privados. Nome, descrição, código de acesso único, contagem de membros.
 - **votes** — registros de voto (quem votou, em quem, em qual pergunta, em qual grupo).
 

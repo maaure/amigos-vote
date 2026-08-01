@@ -6,7 +6,7 @@ declare module "next-auth" {
       id: string;
       name: string;
       urlPic: string | null;
-      githubId: string | null;
+      googleId: string | null;
     } & DefaultSession["user"];
   }
 }
@@ -17,7 +17,7 @@ declare module "next-auth/jwt" {
       id: string;
       name: string;
       urlPic: string | null;
-      githubId: string | null;
+      googleId: string | null;
     };
   }
 }

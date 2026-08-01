@@ -29,8 +29,8 @@ Três specs definem o produto:
 **Entregáveis**
 - `src/db/schema.ts`: adicionar em `questions` → `mode` (`'daily'|'live'|'both'`, default `'daily'`) e `authorFriendId` (FK → `friends`, nullable).
 - Migration: `pnpm db:generate` (revise o `up`).
-- `src/lib/auth.ts`: helper `isCurator(session)` lendo `ADMIN_GITHUB_IDS` (vírgula-separado) + `session.user.githubId`.
-- `.env.example`: adicionar `ADMIN_GITHUB_IDS=`.
+- `src/lib/auth.ts`: helper `isCurator(session)` lendo `ADMIN_GOOGLE_IDS` (vírgula-separado) + `session.user.googleId`.
+- `.env.example`: adicionar `ADMIN_GOOGLE_IDS=`.
 - `src/lib/utils.ts` (ou visual): util de crédito — dado `authorFriendId`, formatar "acusação proposta por @nome" (busca nome via `FriendsRepository` quando necessário; cacheie).
 
 **Validação**: migration aplica limpa (`make push`); `isCurator` coberto por teste rápido; crédito rendera num card existente.

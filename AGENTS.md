@@ -8,7 +8,7 @@
 
 ## Stack
 
-Next.js 15 (App Router, Turbopack) · TypeScript · PostgreSQL 15 · Drizzle ORM · NextAuth v4 (GitHub/Google) · Tailwind v4 + shadcn/ui · TanStack Query + Axios · React Hook Form + Zod · Recharts · Docker · pnpm 10.
+Next.js 15 (App Router, Turbopack) · TypeScript · PostgreSQL 15 · Drizzle ORM · NextAuth v4 (Google) · Tailwind v4 + shadcn/ui · TanStack Query + Axios · React Hook Form + Zod · Recharts · Docker · pnpm 10.
 
 ## Comandos
 

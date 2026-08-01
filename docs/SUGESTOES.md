@@ -28,7 +28,7 @@ O recurso atende **dois modos**, com regras diferentes:
 ## Papéis
 
 - **Autor**: qualquer `friend` autenticado. Cria sugestões e acompanha o status das suas.
-- **Curador**: `friend` cujo `githubId` está em `ADMIN_GITHUB_IDS` (env). Vê a fila, aprova/rejeita, edita texto/modo ao aprovar.
+- **Curador**: `friend` cujo `googleId` está em `ADMIN_GOOGLE_IDS` (env). Vê a fila, aprova/rejeita, edita texto/modo ao aprovar.
 
 ## Modelo de dados
 
@@ -101,11 +101,11 @@ PATCH  /api/suggestions/:id/review      # curador: { action: 'approve'|'reject',
 
 Autorização:
 - Rotas de autor: `session.user.id` deve bater com `authorFriendId`.
-- Rotas de curador: `session.user.githubId ∈ ADMIN_GITHUB_IDS`.
+- Rotas de curador: `session.user.googleId ∈ ADMIN_GOOGLE_IDS`.
 
 ## Curadoria & admin
 
-- `ADMIN_GITHUB_IDS` é lido de env (vírgula-separado). Ex.: `ADMIN_GITHUB_IDS=maaure,outro`.
+- `ADMIN_GOOGLE_IDS` é lido de env (vírgula-separado). Ex.: `ADMIN_GOOGLE_IDS=maaure,outro`.
 - Um helper `isCurator(session)` centraliza a checagem (ponto único de mudança — facilita trocar o modelo de curadoria depois).
 - O menu "Curadoria" só renderiza se `isCurator(session)`.
 

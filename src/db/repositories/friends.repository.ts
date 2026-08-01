@@ -15,9 +15,9 @@ export const FriendsRepository = {
     }
   },
 
-  findByGithubId: async ({ id }: { id: string }) => {
+  findByGoogleId: async ({ id }: { id: string }) => {
     try {
-      return await db.select().from(friends).where(eq(friends.githubId, id));
+      return await db.select().from(friends).where(eq(friends.googleId, id));
     } catch (error) {
       console.error("Erro ao buscar amigos:", error);
       throw new Error("Erro no banco de dados ao buscar amigos.");
@@ -30,14 +30,14 @@ export const FriendsRepository = {
   create: async ({
     name,
     urlPic,
-    githubId,
+    googleId,
   }: {
     name: string;
     urlPic: string | null;
-    githubId: string;
+    googleId: string;
   }) => {
     try {
-      return await db.insert(friends).values({ name, urlPic, githubId });
+      return await db.insert(friends).values({ name, urlPic, googleId });
     } catch (error) {
       console.error("Erro ao criar amigo:", error);
       throw new Error("Erro no banco de dados ao criar amigo.");
@@ -51,7 +51,7 @@ export const FriendsRepository = {
           id: friends.id,
           name: friends.name,
           urlPic: friends.urlPic,
-          githubId: friends.githubId,
+          googleId: friends.googleId,
         })
         .from(groupParticipation)
         .innerJoin(friends, eq(groupParticipation.user, friends.id))

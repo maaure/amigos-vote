@@ -1,6 +1,6 @@
 import { Github, MessageCircle, Gavel, Users, ScrollText, Heart } from "lucide-react";
 import Link from "next/link";
-import GitHubLoginButton from "./_components/GithubLoginButton";
+import GoogleLoginButton from "./_components/GoogleLoginButton";
 import Marquee from "@/components/visual/Marquee";
 import Stamp from "@/components/visual/Stamp";
 import Kicker from "@/components/visual/Kicker";
@@ -85,7 +85,7 @@ export default function Welcome() {
               uma brincadeira — mas ser eleito o <em>Culpado do Dia</em> dói de verdade.
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-2">
-              <GitHubLoginButton />
+              <GoogleLoginButton />
             </div>
           </section>
 

@@ -1,15 +1,10 @@
 import NextAuth, { NextAuthOptions, Session, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
-import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { FriendsRepository } from "@/db/repositories/friends.repository";
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
-    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_ID!,
       clientSecret: process.env.GOOGLE_SECRET!,
@@ -20,13 +15,13 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user }) {
-      const [existing] = await FriendsRepository.findByGithubId({ id: user.id! });
+      const [existing] = await FriendsRepository.findByGoogleId({ id: user.id! });
 
       if (!existing) {
         await FriendsRepository.create({
           name: user.name!,
           urlPic: user.image!,
-          githubId: user.id!,
+          googleId: user.id!,
         });
       }
       return true;
@@ -34,13 +29,13 @@ export const authOptions: NextAuthOptions = {
 
     async jwt({ token, user }: { token: JWT; user?: User }) {
       if (user) {
-        const [friend] = await FriendsRepository.findByGithubId({ id: user.id! });
+        const [friend] = await FriendsRepository.findByGoogleId({ id: user.id! });
         if (friend) {
           token.friend = {
             id: friend.id,
             name: friend.name,
             urlPic: friend.urlPic,
-            githubId: friend.githubId,
+            googleId: friend.googleId,
           };
         }
       }

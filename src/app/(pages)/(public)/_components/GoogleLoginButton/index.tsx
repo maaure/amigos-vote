@@ -26,27 +26,16 @@ function GoogleIcon({ className }: { className?: string }) {
   );
 }
 
-export default function GitHubLoginButton() {
+export default function GoogleLoginButton() {
   return (
-    <div className="flex flex-col gap-3">
-      {/* <Button
-        size="lg"
-        onClick={() => signIn("github")}
-        className="group gap-3 px-8 py-6"
-      >
-        <Github className="size-5 transition-transform group-hover:rotate-12" />
-        <span className="font-display text-lg normal-case tracking-normal">Entrar no Tribunal</span>
-      </Button> */}
-
-      <Button
-        size="lg"
-        variant="outline"
-        onClick={() => signIn("google")}
-        className="gap-3 px-8 py-6"
-      >
-        <GoogleIcon className="size-5" />
-        <span className="font-display text-lg normal-case tracking-normal">Entrar no Tribunal</span>
-      </Button>
-    </div>
+    <Button
+      size="lg"
+      variant="outline"
+      onClick={() => signIn("google")}
+      className="gap-3 px-8 py-6"
+    >
+      <GoogleIcon className="size-5" />
+      <span className="font-display text-lg normal-case tracking-normal">Entrar no Tribunal</span>
+    </Button>
   );
 }
