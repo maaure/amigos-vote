@@ -16,7 +16,9 @@ axiosInstance.interceptors.response.use(
   (response) => response.data,
   (error: AxiosError) => {
     const errorMessage = (error.response?.data as ErrorResponse)?.message || error.message;
-    return Promise.reject(new Error(errorMessage));
+    const apiError = new Error(errorMessage) as Error & { status?: number };
+    apiError.status = error.response?.status;
+    return Promise.reject(apiError);
   }
 );
 

@@ -2,7 +2,7 @@ import { VotesRepository } from "@/db/repositories/votes.repository";
 import { VoteSchemaIn } from "@/types/votes";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { GroupParticipationRepository } from "@/db/repositories/groupParticipation.repository";
 
 export async function POST(request: NextRequest) {

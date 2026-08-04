@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/(BFF)/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { GroupParticipationRepository } from "@/db/repositories/groupParticipation.repository";
 import { redirect } from "next/navigation";
 import NotFound from "./not-found";

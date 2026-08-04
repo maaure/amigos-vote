@@ -1,7 +1,7 @@
 import { FriendsRepository } from "@/db/repositories/friends.repository";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../../../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { GroupParticipationRepository } from "@/db/repositories/groupParticipation.repository";
 
 export async function GET(

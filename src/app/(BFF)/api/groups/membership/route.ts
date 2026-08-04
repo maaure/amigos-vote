@@ -2,7 +2,7 @@ import { GroupsRepository } from "@/db/repositories/group.repository";
 import { GroupParticipationRepository } from "@/db/repositories/groupParticipation.repository";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/(BFF)/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 /**
  * Como usuário cadastrado e logado,

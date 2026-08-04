@@ -26,12 +26,12 @@ function GoogleIcon({ className }: { className?: string }) {
   );
 }
 
-export default function GoogleLoginButton() {
+export default function GoogleLoginButton({ callbackUrl }: { callbackUrl?: string }) {
   return (
     <Button
       size="lg"
       variant="outline"
-      onClick={() => signIn("google")}
+      onClick={() => signIn("google", callbackUrl ? { callbackUrl } : undefined)}
       className="gap-3 px-8 py-6"
     >
       <GoogleIcon className="size-5" />

@@ -10,13 +10,17 @@ import { GroupSchemaOut, NewGroupResponse } from "@/types/groups";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Check } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import PageShell from "@/components/layout/PageShell";
 import Kicker from "@/components/visual/Kicker";
 import Stamp from "@/components/visual/Stamp";
+import GoogleLoginButton from "@/app/(pages)/(public)/_components/GoogleLoginButton";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { Spinner } from "@/components/ui/shadcn-io/spinner";
 
 const schema = z.object({
   accessCode: z.string().length(6, "O código de acesso deve ter exatamente 6 caracteres"),
@@ -25,7 +29,30 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 export default function JoinGroup() {
+  return (
+    <Suspense
+      fallback={
+        <PageShell width="prose" centered>
+          <div className="flex justify-center py-24">
+            <Spinner variant="ring" />
+          </div>
+        </PageShell>
+      }
+    >
+      <JoinGroupContent />
+    </Suspense>
+  );
+}
+
+function JoinGroupContent() {
   const [joinedGroup, setJoinedGroup] = useState<GroupSchemaOut>();
+  const [needsLogin, setNeedsLogin] = useState(false);
+  const { status } = useSession();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const codeParam = searchParams.get("code");
+  const autoJoinRan = useRef(false);
+  const isAutoJoin = useRef(false);
 
   const {
     register,
@@ -40,13 +67,40 @@ export default function JoinGroup() {
   const { mutate: joinGroup, isPending } = useJoinGroupService(onSuccess, onError);
 
   function onSuccess(joinedGroup: NewGroupResponse) {
+    if (isAutoJoin.current) {
+      router.push(`/groups/${joinedGroup.data.id}`);
+      return;
+    }
     setJoinedGroup(joinedGroup.data);
     toast.success("Você entrou no tribunal!");
   }
 
   function onError(error: ErrorResponse) {
+    const status = (error as { status?: number }).status;
+    if (isAutoJoin.current) {
+      isAutoJoin.current = false;
+      if (status === 409) {
+        router.replace("/groups");
+        return;
+      }
+      toast.error(error?.message ?? "Houve um erro ao entrar no grupo.");
+      router.replace("/groups/join");
+      return;
+    }
+    if (status === 401) {
+      setNeedsLogin(true);
+      return;
+    }
     toast.error(error?.message ?? "Houve um erro ao entrar no grupo.");
   }
+
+  // Vindo do login com Google (?code=...): entra no grupo e cai direto na sessão.
+  useEffect(() => {
+    if (status !== "authenticated" || !codeParam || isPending || autoJoinRan.current) return;
+    autoJoinRan.current = true;
+    isAutoJoin.current = true;
+    joinGroup(codeParam);
+  }, [status, codeParam, isPending, joinGroup]);
 
   const onSubmit = (data: FormValues) => {
     joinGroup(data.accessCode);
@@ -140,16 +194,31 @@ export default function JoinGroup() {
               )}
             </div>
 
-            <div className="border-2 border-dashed border-rule bg-background/40 p-4 text-sm">
-              <p className="font-mono text-xs font-bold uppercase tracking-widest text-highlight">
-                Como conseguir um código
-              </p>
-              <ul className="mt-2 space-y-1 text-muted-foreground">
-                <li>— Peça a um amigo que já está no tribunal.</li>
-                <li>— Quem abre o grupo recebe o código.</li>
-                <li>— Cada código é único e permanente.</li>
-              </ul>
-            </div>
+            {needsLogin ? (
+              <div className="space-y-3 border-2 border-rule bg-background/40 p-4 text-center">
+                <p className="font-mono text-xs font-bold uppercase tracking-widest text-highlight">
+                  Credencial exigida
+                </p>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  O tribunal só admite réus cadastrados. Entre com o Google e o código entra
+                  sozinho.
+                </p>
+                <GoogleLoginButton
+                  callbackUrl={`/groups/join?code=${encodeURIComponent(watch("accessCode").trim())}`}
+                />
+              </div>
+            ) : (
+              <div className="border-2 border-dashed border-rule bg-background/40 p-4 text-sm">
+                <p className="font-mono text-xs font-bold uppercase tracking-widest text-highlight">
+                  Como conseguir um código
+                </p>
+                <ul className="mt-2 space-y-1 text-muted-foreground">
+                  <li>— Peça a um amigo que já está no tribunal.</li>
+                  <li>— Quem abre o grupo recebe o código.</li>
+                  <li>— Cada código é único e permanente.</li>
+                </ul>
+              </div>
+            )}
 
             <Button
               type="submit"

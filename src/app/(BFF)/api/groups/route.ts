@@ -1,7 +1,7 @@
 import { GroupsRepository } from "@/db/repositories/group.repository";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/(BFF)/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { generateAccessCode } from "@/lib/utils";
 import { GroupParticipationRepository } from "@/db/repositories/groupParticipation.repository";
 
