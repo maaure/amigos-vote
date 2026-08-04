@@ -25,7 +25,7 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tribunal do Dia — O Júri dos Amigos",
+  title: "Tribunal do Dia | O Júri dos Amigos",
   description:
     "Todo dia uma nova acusação. Reúna seu grupo, vote e descubra quem é o Culpado do Dia.",
 };

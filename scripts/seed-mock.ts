@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { friends, groups, groupParticipation, questions, votes } from "../src/db/schema";
 
-// ponytail: seeder de dev — APAGA todo o banco e recria com dados mock.
+// ponytail: seeder de dev, apaga o banco e recria com dados mock.
 // Rode com: npx tsx scripts/seed-mock.ts  (banco local do docker compose)
 
 const dbUrl =
@@ -22,7 +22,7 @@ if (!YOUR_GOOGLE_ID) {
   process.exit(1);
 }
 
-// RNG determinístico (mulberry32) — os dados ficam idênticos entre execuções
+// RNG determinístico (mulberry32); os dados ficam idênticos entre execuções
 function lcg(seed: number) {
   let a = seed;
   return () => {

@@ -1,4 +1,4 @@
-import { Github, MessageCircle, Gavel, Users, ScrollText, Heart } from "lucide-react";
+import { Gavel, Github, Heart, MessageCircle, ScrollText, Users } from "lucide-react";
 import Link from "next/link";
 import GoogleLoginButton from "./_components/GoogleLoginButton";
 import Marquee from "@/components/visual/Marquee";
@@ -9,7 +9,7 @@ const ACCUSATIONS = [
   "Quem sumiria do grupo sem avisar?",
   "Quem tem mais chance de ser preso por engano?",
   "Quem mente sobre ter chegado em casa?",
-  "Quem fala ' tô chegando' mas ainda tá no chuveiro?",
+  "Quem fala 'tô chegando' mas ainda tá no chuveiro?",
   "Quem foi o culpado pela última budega?",
 ];
 
@@ -62,7 +62,7 @@ export default function Welcome() {
           <div className="mt-3 flex items-center gap-3">
             <span className="h-[3px] flex-1 bg-rule" />
             <span className="font-mono text-[0.7rem] uppercase tracking-widest text-muted-foreground">
-              Não leve pro lado — leve pro tribunal
+              Não leve pro lado, leve pro tribunal
             </span>
             <span className="h-[3px] flex-1 bg-rule" />
           </div>
@@ -81,8 +81,9 @@ export default function Welcome() {
               <span className="text-highlight">o pior</span>.
             </p>
             <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Perguntas capciosas todo dia. Voto secreto. Um veredito implacável ao meio-dia. É só
-              uma brincadeira — mas ser eleito o <em>Culpado do Dia</em> dói de verdade.
+              Todo dia uma pergunta capciosa nova. Os votos são secretos e o veredito sai à
+              meia-noite, com o nome do culpado e a contagem de votos. É só brincadeira, mas ser
+              eleito o Culpado do Dia dói de verdade.
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <GoogleLoginButton />
@@ -102,7 +103,7 @@ export default function Welcome() {
                 </Stamp>
               </div>
               <p className="font-mono text-[0.7rem] uppercase tracking-widest text-muted-foreground">
-                Sessão do júri — caso nº&nbsp;diário
+                Sessão do júri · caso nº&nbsp;diário
               </p>
               <p className="masthead text-2xl leading-tight text-foreground">
                 “Quem sumiria do grupo sem avisar?”
@@ -127,12 +128,12 @@ export default function Welcome() {
         </div>
       </main>
 
-      {/* === COMO FUNCIONA — colunas de jornal === */}
+      {/* === COMO FUNCIONA: colunas de jornal === */}
       <section className="border-t-2 border-rule bg-paper px-4 py-16 paper-grain">
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 text-center">
             <Kicker>Como funciona o julgamento</Kicker>
-            <h2 className="masthead mt-2 text-4xl sm:text-5xl">Três etapas. Zero escapatória.</h2>
+            <h2 className="masthead mt-2 text-4xl sm:text-5xl">Três etapas, zero mistério.</h2>
           </div>
 
           <div className="grid gap-px overflow-hidden border-2 border-rule bg-rule sm:grid-cols-3">
@@ -150,6 +151,34 @@ export default function Welcome() {
         </div>
       </section>
 
+      {/* === O QUE FICA === */}
+      <section className="border-t-2 border-rule px-4 py-20">
+        <div className="mx-auto max-w-2xl space-y-6 text-center">
+          <Kicker>O que fica</Kicker>
+          <h2 className="masthead text-4xl sm:text-5xl">O histórico guarda tudo.</h2>
+          <p className="mx-auto max-w-xl leading-relaxed text-muted-foreground">
+            Todo julgamento fica salvo no histórico do grupo, com placar, porcentagem e o nome do
+            culpado. Os votos são secretos, então ninguém fica sabendo quem votou em quem. E o
+            tribunal é fechado: só entra quem tem o código, e o que rola lá dentro não vaza.
+          </p>
+        </div>
+      </section>
+
+      {/* === SENTENÇA: CTA === */}
+      <section className="border-t-2 border-rule px-4 py-20">
+        <div className="mx-auto max-w-3xl space-y-6 text-center">
+          <Kicker>Sentença</Kicker>
+          <h2 className="masthead text-4xl sm:text-5xl">Pronto pra eleger o pior da turma?</h2>
+          <p className="mx-auto max-w-xl leading-relaxed text-muted-foreground">
+            De graça, com a conta Google. Cria o tribunal, manda o código pros amigos e a acusação
+            do dia já tá no ar.
+          </p>
+          <div className="flex justify-center pt-2">
+            <GoogleLoginButton />
+          </div>
+        </div>
+      </section>
+
       {/* === RODAPÉ === */}
       <footer className="border-t-2 border-rule px-4 py-12">
         <div className="mx-auto max-w-6xl space-y-6 text-center">
@@ -158,9 +187,8 @@ export default function Welcome() {
             <h3 className="masthead text-3xl">Sobre a publicação</h3>
           </div>
           <p className="mx-auto max-w-2xl text-balance leading-relaxed text-muted-foreground">
-            <strong>Tribunal do Dia</strong> é um projeto de código aberto, feito pra estudo e pra
-            zoeira. Não há propósito produtivo aqui — só o sagrado dever de eleger, diariamente, o
-            amigo mais suspeito da turma.
+            <strong>Tribunal do Dia</strong> é um projeto de código aberto, feito de graça. Não
+            tem propósito produtivo nenhum, só eleger, todo dia, o amigo mais suspeito da turma.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-6 pt-2 font-mono text-xs uppercase tracking-widest">

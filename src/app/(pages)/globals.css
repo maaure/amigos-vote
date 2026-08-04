@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 
 /* ============================================================
-   INIMIGO DO DIA — Design System "TRIBUNAL / PROCURADO"
+   INIMIGO DO DIA | Design System "TRIBUNAL / PROCURADO"
    Conceito: todo dia é um julgamento. A pergunta é a acusação,
    os amigos são suspeitos, o mais votado é o culpado. Estética
    de tabloide + cartaz de procurado: tipografia condensada
@@ -256,7 +256,7 @@
 
   /* Carimbo de tinta (CULPADO / ARQUIVADO) */
   /* position:relative aqui é obrigatório pro ::after (ruído). Consequência: NUNCA
-     adicione `absolute` direto na .stamp — a classe vence e o selo vira fluxo.
+     adicione `absolute` direto na .stamp; a classe vence e o selo vira fluxo.
      Para sobrepor, embrulhe em <span className="absolute ...">. */
   .stamp {
     font-family: var(--font-display);
@@ -291,7 +291,7 @@
 
   .text-balance { text-wrap: balance; }
 
-  /* Entradas encadeadas — aplica animate-reveal + delay via style inline */
+  /* Entradas encadeadas: aplica animate-reveal + delay via style inline */
   .reveal { animation: var(--animate-reveal); }
 }
 

@@ -113,8 +113,8 @@ export default function NewGroupPage() {
                 Regras do tribunal
               </p>
               <ul className="mt-2 space-y-1 text-muted-foreground">
-                <li>— Só membros veem as acusações e os vereditos.</li>
-                <li>— Você recebe um código de 6 caracteres para chamar os réus.</li>
+                <li>• Só membros veem as acusações e os vereditos.</li>
+                <li>• Você recebe um código de 6 caracteres para chamar os réus.</li>
               </ul>
             </div>
 

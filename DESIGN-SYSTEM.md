@@ -1,4 +1,4 @@
-# Design System — Tribunal do Dia
+# Design System: Tribunal do Dia
 
 > Instruções para agentes de IA (e humanos) entenderem e continuarem a identidade visual do projeto **sem descaracterizá-la**.
 
@@ -6,7 +6,7 @@
 
 Todo dia é um **julgamento**. A pergunta do dia é a **acusação**, os amigos são **réus/suspeitos**, o mais votado é o **Culpado do Dia**, o histórico é o **arquivo de vereditos**.
 
-A estética é de **tabloide + cartaz de procurado**: tipografia condensada pesada, carimbo de tinta vermelha, textura de papel/jornal, molduras dramáticas de tinta, avatares em preto-e-branco (grayscale). Nada de cantos arredondados, gradientes suaves, glows ou glassmorphism — isso é proibido aqui.
+A estética é de **tabloide + cartaz de procurado**: tipografia condensada pesada, carimbo de tinta vermelha, textura de papel/jornal, molduras dramáticas de tinta, avatares em preto-e-branco (grayscale). Nada de cantos arredondados, gradientes suaves, glows ou glassmorphism: isso é proibido aqui.
 
 O contraste é a graça: superfície de papel envelhecido, mas a cópia é de tribunal mesmo ("Acuse o suspeito", "Proclamar veredito", "Júri em sessão").
 
@@ -51,9 +51,9 @@ O contraste é a graça: superfície de papel envelhecido, mas a cópia é de tr
 | `--gold` | `#e6b54a` |
 | `--rule` | `#efe6cc` |
 
-Todos os tokens são mapeados em `@theme inline` → classes `bg-background`, `bg-paper`, `text-highlight`, `border-rule`, `bg-gold`, etc. **Use `paper` para superfícies de card, `background` para o fundo da página — são diferentes de propósito.**
+Todos os tokens são mapeados em `@theme inline` → classes `bg-background`, `bg-paper`, `text-highlight`, `border-rule`, `bg-gold`, etc. **Use `paper` para superfícies de card, `background` para o fundo da página: são diferentes de propósito.**
 
-## 4. Tipografia — três papéis
+## 4. Tipografia: três papéis
 
 | Papel | Fonte | Classe/token | Uso |
 |---|---|---|---|
@@ -72,7 +72,7 @@ Todos os tokens são mapeados em `@theme inline` → classes `bg-background`, `b
 }
 ```
 
-**Qualquer título grande em tela deve usar `masthead`** (com tamanho via `text-*`). Nunca `font-bold` + fonte sans para títulos grandes — quebra a identidade.
+**Qualquer título grande em tela deve usar `masthead`** (com tamanho via `text-*`). Nunca `font-bold` + fonte sans para títulos grandes: quebra a identidade.
 
 Padrão de escala usada nas telas: hero `text-[18vw] sm:text-[12rem]`, seção `text-4xl/5xl`, título de card `text-2xl/3xl`.
 
@@ -85,7 +85,7 @@ Padrão de escala usada nas telas: hero `text-[18vw] sm:text-[12rem]`, seção `
 | `.halftone` / `.halftone-highlight` | pontilhismo de quadrinho (rule ou highlight) | overlay decorativo em cards (`opacity-10`), poster |
 | `.stamp` | carimbo de tinta com ruído (borda 3px, textura) | selos: "Procurado", "Culpado", "Veredito lacrado", "Acusado" |
 
-> ⚠️ **Gotcha do `.stamp`:** a classe declara `position: relative` (obrigatório pro `::after` de ruído) e **vence** a classe `absolute` do Tailwind. Para posicionar um selo sobre outro elemento, embrulhe-o em `<span className="absolute ...">` — nunca adicione `absolute` direto na `.stamp`.
+> ⚠️ **Gotcha do `.stamp`:** a classe declara `position: relative` (obrigatório pro `::after` de ruído) e **vence** a classe `absolute` do Tailwind. Para posicionar um selo sobre outro elemento, embrulhe-o em `<span className="absolute ...">`: nunca adicione `absolute` direto na `.stamp`.
 | `.rule-thick` | filete triplo de tabloide | divisórias decorativas pesadas |
 | `.tape` | fita de papel dourada translúcida | (disponível, usado em cartazes) |
 | `.reveal` | animação de entrada `reveal-up` (opacity + translateY 14px) | encadeamento de entradas com `style={{ animationDelay: "60ms" }}` |
@@ -98,7 +98,7 @@ shadow-[4px_4px_0_0_var(--rule)]   // hover: -translate-y-1 amplia o efeito de c
 
 ### Fundo do body (globals.css)
 
-O `body` já tem gradientes radiais sutis de `highlight`/`gold` + textura de ruído via `background-image` no CSS base. **Não adicione mais texturas de fundo em páginas** — apenas `bg-background` simples e deixe o body trabalhar.
+O `body` já tem gradientes radiais sutis de `highlight`/`gold` + textura de ruído via `background-image` no CSS base. **Não adicione mais texturas de fundo em páginas**: apenas `bg-background` simples e deixe o body trabalhar.
 
 ## 6. Componentes visuais (`src/components/visual/`)
 
@@ -106,13 +106,13 @@ O `body` já tem gradientes radiais sutis de `highlight`/`gold` + textura de ru�
 Rótulo de seção: `font-mono`, 0.7rem, uppercase, tracking-widest, `text-highlight`. Uso: "Acusação do dia", "Júri em sessão", "Processos arquivados".
 
 ### Stamp
-Carimbo de tinta com tons `highlight` | `gold` | `ink`, rotação opcional (default `-7deg`), animação `stamp-slam` ao montar. Uso: estados dramáticos — "Procurado", "Culpado", "Veredito lacrado", "Acusado" (no FriendCard selecionado).
+Carimbo de tinta com tons `highlight` | `gold` | `ink`, rotação opcional (default `-7deg`), animação `stamp-slam` ao montar. Uso: estados dramáticos, tipo "Procurado", "Culpado", "Veredito lacrado", "Acusado" (no FriendCard selecionado).
 
 ### Marquee
 Fita rolante com bordas `rule` e texto `background` sobre fundo `rule`. Uso: tira de acusações na landing. Itens = strings; duplica o array internamente (loop contínuo). Pausa no hover.
 
 ### PageShell (`src/components/layout/PageShell.tsx`)
-Envelope padrão de página: larguras `prose` (max-w-md) | `default` (max-w-4xl) | `wide` (max-w-6xl), opção `centered`. **Toda página privada usa PageShell — não reinvente o padding.**
+Envelope padrão de página: larguras `prose` (max-w-md) | `default` (max-w-4xl) | `wide` (max-w-6xl), opção `centered`. **Toda página privada usa PageShell: não reinvente o padding.**
 
 ## 7. Movimento
 
@@ -125,7 +125,7 @@ Envelope padrão de página: larguras `prose` (max-w-md) | `default` (max-w-4xl)
 
 `prefers-reduced-motion` já é respeitado globalmente no globals.css.
 
-## 8. Linguagem e cópia — o universo do tribunal
+## 8. Linguagem e cópia: o universo do tribunal
 
 Toda cópia de interface pertence ao universo:
 
@@ -146,9 +146,9 @@ O tom é **zoeira autoconsciente de tribunal**: solene na forma, absurdo no cont
 
 ## 9. Regras de ouro (não-negociáveis)
 
-1. **Cantos:** raio máximo `0.125rem` (ou `rounded-none`). Nunca `rounded-lg/xl/full` em superfícies de cartaz. (Exceção: avatares em círculo não são usados — avatares são `rounded-none` com borda `rule`.)
+1. **Cantos:** raio máximo `0.125rem` (ou `rounded-none`). Nunca `rounded-lg/xl/full` em superfícies de cartaz. (Exceção: avatares em círculo não são usados: avatares são `rounded-none` com borda `rule`.)
 2. **Sombra:** dura (`4px_4px_0_0`), nunca blur suave, nunca `shadow-lg/xl/2xl` default do Tailwind.
-3. **Avatares:** `grayscale` por padrão, `grayscale-0` em hover/seleção — linguagem de cartaz de procurado.
+3. **Avatares:** `grayscale` por padrão, `grayscale-0` em hover/seleção: linguagem de cartaz de procurado.
 4. **Bordas:** pesadas (`border-2 border-rule`) para estrutura; `border` + `--border` apenas para risos leves.
 5. **Títulos grandes:** sempre `masthead` (Anton, uppercase, leading 0.86). 
 6. **Textos de etiqueta/dados:** sempre `font-mono`, uppercase, `tracking-widest`, tamanhos `text-[0.7rem]`–`text-xs`.

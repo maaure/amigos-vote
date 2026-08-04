@@ -1,4 +1,4 @@
-# Inimigo do Dia — Spec
+# Inimigo do Dia: Spec
 
 ## O que é
 
@@ -15,16 +15,16 @@ Grupos de amigos que já têm intimidade o suficiente para rir de si mesmos. O a
 O tom é de **zoeira autoconsciente**. A landing page já entrega:
 
 - O nome **"Inimigo do Dia"** em vez de algo neutro como "Votação entre amigos"
-- O subtítulo fala em _"perguntas capciosas"_ e _"descubra o que seus amigos pensam sobre você"_ — um convite ao caos
+- O subtítulo fala em _"perguntas capciosas"_ e _"descubra o que seus amigos pensam sobre você"_: um convite ao caos
 - O footer tem um disclaimer sincero: _"Lembre-se: é apenas uma brincadeira para se divertir com os amigos!"_
 
-O humor está na premissa, não na interface. A UI é limpa e funcional — o contraste entre o design sóbrio (Tailwind, shadcn/ui, dark mode) e a natureza absurda das perguntas é parte da graça.
+O humor está na premissa, não na interface. A UI é limpa e funcional: o contraste entre o design sóbrio (Tailwind, shadcn/ui, dark mode) e a natureza absurda das perguntas é parte da graça.
 
 ## Funcionalidades principais
 
 ### Autenticação
 
-- Login via **Google OAuth** (NextAuth). Nada de email/senha — é um app de nicho, Google como gatekeeper já filtra o público.
+- Login via **Google OAuth** (NextAuth). Nada de email/senha: é um app de nicho, Google como gatekeeper já filtra o público.
 
 ### Grupos privados
 
@@ -44,7 +44,7 @@ O humor está na premissa, não na interface. A UI é limpa e funcional — o co
 ### Votação
 
 - O usuário vê a lista de amigos do grupo e seleciona quantos a pergunta permitir.
-- Um voto por pessoa por dia por grupo — depois de votar, vê a tela de "Você já votou! Volte amanhã."
+- Um voto por pessoa por dia por grupo: depois de votar, vê a tela de "Você já votou! Volte amanhã."
 - Feedbacks com toast (sonner): sucesso, erro, "em desenvolvimento".
 
 ### Resultados
@@ -82,9 +82,9 @@ O humor está na premissa, não na interface. A UI é limpa e funcional — o co
 
 Quatro entidades principais:
 
-- **questions** — banco de perguntas. Cada uma tem texto, número de votos permitidos, flag `used`, e data de publicação.
-- **friends** — usuários (atrelados ao Google ID). Nome, foto, google_id único.
-- **groups** — grupos privados. Nome, descrição, código de acesso único, contagem de membros.
-- **votes** — registros de voto (quem votou, em quem, em qual pergunta, em qual grupo).
+- **questions**: banco de perguntas. Cada uma tem texto, número de votos permitidos, flag `used`, e data de publicação.
+- **friends**: usuários (atrelados ao Google ID). Nome, foto, google_id único.
+- **groups**: grupos privados. Nome, descrição, código de acesso único, contagem de membros.
+- **votes**: registros de voto (quem votou, em quem, em qual pergunta, em qual grupo).
 
 Uma pergunta é publicada uma única vez globalmente (campo `publishedWhen`), mas os votos são segregados por grupo (`groupId` na tabela `votes`).

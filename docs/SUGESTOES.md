@@ -1,4 +1,4 @@
-# Sugestão de Perguntas — Spec
+# Sugestão de Perguntas: Spec
 
 ## O que é
 
@@ -72,7 +72,7 @@ pending ──aprovar──► approved ──(promovida)──► question(used
 - **pending**: na fila de curadoria.
 - **approved**: promovida → cria/liga uma linha em `questions` (`questionId` setado, `authorFriendId` setado, `mode` herdado).
 - **rejected**: arquivada com motivo; visível só pro autor.
-- Após promovida, a pergunta segue o fluxo normal (`used`/`publishedWhen`) — **zero mudança na lógica de publicação diária existente**.
+- Após promovida, a pergunta segue o fluxo normal (`used`/`publishedWhen`): **zero mudança na lógica de publicação diária existente**.
 
 ## Regras de negócio
 
@@ -89,7 +89,7 @@ pending ──aprovar──► approved ──(promovida)──► question(used
 - **"Minhas sugestões"** (novo item no menu do grupo): lista as sugestões do usuário com status (`em análise` / `aprovada` / `rejeitada: motivo` / `já entrou em jogo em DD/MM`).
 - **"Curadoria"** (visível só para curador): fila de `pending` → aprovar (com edição inline) ou rejeitar (com motivo).
 
-## API (BFF — App Router)
+## API (BFF: App Router)
 
 ```
 POST   /api/suggestions                 # cria (auth obrigatório; valida cota/dedup)
@@ -106,7 +106,7 @@ Autorização:
 ## Curadoria & admin
 
 - `ADMIN_GOOGLE_IDS` é lido de env (vírgula-separado). Ex.: `ADMIN_GOOGLE_IDS=maaure,outro`.
-- Um helper `isCurator(session)` centraliza a checagem (ponto único de mudança — facilita trocar o modelo de curadoria depois).
+- Um helper `isCurator(session)` centraliza a checagem (ponto único de mudança: facilita trocar o modelo de curadoria depois).
 - O menu "Curadoria" só renderiza se `isCurator(session)`.
 
 ## Extensibilidade (SOLID)
@@ -121,7 +121,7 @@ interface ModerationStrategy {
 ```
 
 - Hoje: `AdminModerationStrategy` (curador decide).
-- Depois: `CommunityVoteStrategy` (N upvotes promove) — basta trocar a estratégia, sem reescrever o pipeline de sugestão/publicação.
+- Depois: `CommunityVoteStrategy` (N upvotes promove): basta trocar a estratégia, sem reescrever o pipeline de sugestão/publicação.
 
 ## Anti-abuso
 
@@ -133,7 +133,7 @@ interface ModerationStrategy {
 ## Integração
 
 - **Picker diário**: filtro atual `WHERE used = false` ganha `AND mode IN ('daily','both')`. Sugestões aprovadas entram na rotação automaticamente.
-- **Modo ao vivo**: o anfitrião cria acusações **ephemeral/scoped** direto na sessão (`mode = 'live'`, sem fila) — detalhes no spec do modo ao vivo. Este doc cobre apenas o caminho que vira `question` permanente.
+- **Modo ao vivo**: o anfitrião cria acusações **ephemeral/scoped** direto na sessão (`mode = 'live'`, sem fila): detalhes no spec do modo ao vivo. Este doc cobre apenas o caminho que vira `question` permanente.
 - **Crédito**: `QuestionArea` e cards de histórico exibem o autor quando `authorFriendId` estiver setado.
 
 ## Escopo MVP x depois

@@ -1,4 +1,4 @@
-# 🔍 Auditoria White-Box — Inimigo do Dia
+# 🔍 Auditoria White-Box: Inimigo do Dia
 
 **Data**: 2026-07-15  
 **Escopo**: Backend (API routes, autenticação, repositórios, schema DB), Frontend (componentes, hooks, estado, UI), Infraestrutura (Docker, configurações)  
@@ -8,7 +8,7 @@
 
 ## 🔴 Críticas (corrigir imediatamente)
 
-### 1. Rotas sem autenticação — vazamento de dados
+### 1. Rotas sem autenticação: vazamento de dados
 
 **Arquivos**:
 
@@ -21,17 +21,17 @@
 
 ---
 
-### 2. `useMemo` com side-effect — comportamento imprevisível
+### 2. `useMemo` com side-effect: comportamento imprevisível
 
 **Arquivo**: `src/app/(pages)/(private)/groups/[id]/_components/VotingSection/index.tsx:64-66`
 
 ```typescript
-// ❌ Errado — useMemo para side effect
+// ❌ Errado: useMemo para side effect
 useMemo(() => {
   setMaxSelectedFriends(question?.allowedVotes ?? 1);
 }, [question]);
 
-// ✅ Correto — useEffect para side effect
+// ✅ Correto: useEffect para side effect
 useEffect(() => {
   setMaxSelectedFriends(question?.allowedVotes ?? 1);
 }, [question]);
@@ -61,7 +61,7 @@ Não há atomicidade na operação "selecionar + publicar".
 
 ### 4. `next-auth` v4 com Next.js 15
 
-**Arquivo**: `package.json:32` — `"next-auth": "^4.24.11"`  
+**Arquivo**: `package.json:32` · `"next-auth": "^4.24.11"`  
 **Next.js**: `15.5.0`
 
 **Problema**: NextAuth v4 não tem suporte oficial para Next.js 15 App Router. O padrão `[...nextauth]/route.ts` funciona por retrocompatibilidade, mas podem surgir problemas com cookies, edge runtime e middlewares. A API `auth()` server-side da v5 é mais idiomática para App Router.
@@ -89,8 +89,8 @@ const parsed = groupSchema.parse(body); // lança em caso inválido
 
 **Arquivos**:
 
-- `src/db/schema.ts:17` — `githubId: text("github_id").unique()`
-- `src/app/(BFF)/api/auth/[...nextauth]/route.ts:23,29` — `user.id!` salvo como `githubId` independente do provider
+- `src/db/schema.ts:17`: `githubId: text("github_id").unique()`
+- `src/app/(BFF)/api/auth/[...nextauth]/route.ts:23,29`: `user.id!` salvo como `githubId` independente do provider
 
 **Problema**: Google e GitHub usam formatos de ID distintos. Embora ambos gerem strings únicas, o nome do campo é enganoso e, em caso de colisão futura (improvável mas possível), um usuário sobrescreveria o outro.
 
@@ -102,8 +102,8 @@ const parsed = groupSchema.parse(body); // lança em caso inválido
 
 **Arquivos**:
 
-- `src/db/schema.ts:57` — `membersCount: integer("members_count").default(0).notNull()`
-- `src/db/repositories/groupParticipation.repository.ts:37-39` — incremento manual dentro da transação
+- `src/db/schema.ts:57`: `membersCount: integer("members_count").default(0).notNull()`
+- `src/db/repositories/groupParticipation.repository.ts:37-39`: incremento manual dentro da transação
 
 **Problema**: O contador desnormalizado pode divergir da realidade se houver falhas parciais na transação, ou se futuramente for implementada remoção de membros. Não há mecanismo de reconciliação.
 
@@ -113,7 +113,7 @@ const parsed = groupSchema.parse(body); // lança em caso inválido
 
 ## 🟡 Médias (planejar para próximas sprints)
 
-### 8. Query key sem `groupId` — cache inconsistente entre grupos
+### 8. Query key sem `groupId`: cache inconsistente entre grupos
 
 **Arquivo**: `src/data/hooks/useGetPreviousResultsQuery.ts:6`
 
@@ -151,7 +151,7 @@ Sem o `return`, o componente continua a execução e renderiza o timer com `time
 
 ### 10. Sem rate limiting em nenhum endpoint
 
-**Problema**: Nenhum endpoint possui rate limiting. O endpoint de voto (`POST /api/vote`) é particularmente sensível — pode ser abusado para enviar votos em loop. A criação de grupos (`POST /api/groups`) também está desprotegida contra abuso.
+**Problema**: Nenhum endpoint possui rate limiting. O endpoint de voto (`POST /api/vote`) é particularmente sensível: pode ser abusado para enviar votos em loop. A criação de grupos (`POST /api/groups`) também está desprotegida contra abuso.
 
 **Correção**: Implementar rate limiting com `@upstash/ratelimit` (Redis) ou middleware simples com contagem em memória.
 
@@ -183,7 +183,7 @@ Embora o impacto prático seja baixo (códigos de acesso vs tokens de segurança
 
 ---
 
-### 13. Blocos `catch` vazios — debug impossível em produção
+### 13. Blocos `catch` vazios: debug impossível em produção
 
 **Arquivos**:
 
@@ -210,7 +210,7 @@ Embora o impacto prático seja baixo (códigos de acesso vs tokens de segurança
 **Arquivo**: `src/app/(pages)/globals.css:43`
 
 ```css
-/* ❌ Três traços — nome de variável inválido */
+/* ❌ Três traços: nome de variável inválido */
 --font-mono: var(---font-jetbrains-mono);
 
 /* ✅ Dois traços */
@@ -226,7 +226,7 @@ A variável `---font-jetbrains-mono` não é uma custom property CSS válida. O 
 **Arquivo**: `src/app/(BFF)/api/groups/[groupId]/question/previous/route.ts`
 
 ```typescript
-// A função GET não recebe params — o groupId do path é ignorado
+// A função GET não recebe params: o groupId do path é ignorado
 export async function GET() {
   const data = await QuestionsRepository.getPrevious(); // retorna TODAS as perguntas
   ...
@@ -286,13 +286,13 @@ Nenhum arquivo `error.tsx` ou componente `<ErrorBoundary>` no projeto. Um erro n
 
 **Arquivo**: `src/app/(pages)/(private)/groups/[id]/_components/Header/HeaderActions.tsx:44`
 
-O botão "Continuar por aqui" não possui `onClick` para fechar o diálogo — ele simplesmente não faz nada. É necessário envolver com `<DialogClose>` ou controlar o estado `open`.
+O botão "Continuar por aqui" não possui `onClick` para fechar o diálogo: ele simplesmente não faz nada. É necessário envolver com `<DialogClose>` ou controlar o estado `open`.
 
 ---
 
 ### 21. Arquivos mortos
 
-- **`src/app/(pages)/(private)/question/vote/page.tsx`**: Stub — retorna apenas `<> Vote aqui em uma questão!</>`. Remover ou implementar.
+- **`src/app/(pages)/(private)/question/vote/page.tsx`**: Stub: retorna apenas `<> Vote aqui em uma questão!</>`. Remover ou implementar.
 - **`src/app/(pages)/(private)/groups/_components/GroupCard/emptyState.tsx`**: Arquivo completamente vazio. Remover.
 
 ---
@@ -323,7 +323,7 @@ Não há testes unitários, de integração ou E2E no projeto. Para uma aplicaç
 
 **Arquivo**: `src/app/(pages)/globals.css:43`
 
-Já coberto no item #14 — mesmo problema, listado separadamente por afetar também o tema dark.
+Já coberto no item #14: mesmo problema, listado separadamente por afetar também o tema dark.
 
 ---
 

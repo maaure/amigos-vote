@@ -103,7 +103,7 @@ export default function QuestionResultsCard({
                       {index + 1}
                     </span>
 
-                    {/* .stamp força position:relative (::after de ruído) — embrulha em span posicionado pra sobrepor */}
+                    {/* .stamp força position:relative (::after de ruído); embrulha em span posicionado pra sobrepor */}
                     <div className="relative shrink-0">
                       <Avatar
                         className={`size-9 rounded-none border-2 ${

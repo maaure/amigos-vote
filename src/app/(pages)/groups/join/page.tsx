@@ -213,9 +213,9 @@ function JoinGroupContent() {
                   Como conseguir um código
                 </p>
                 <ul className="mt-2 space-y-1 text-muted-foreground">
-                  <li>— Peça a um amigo que já está no tribunal.</li>
-                  <li>— Quem abre o grupo recebe o código.</li>
-                  <li>— Cada código é único e permanente.</li>
+                  <li>• Peça a um amigo que já está no tribunal.</li>
+                  <li>• Quem abre o grupo recebe o código.</li>
+                  <li>• Cada código é único e permanente.</li>
                 </ul>
               </div>
             )}

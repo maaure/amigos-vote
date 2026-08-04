@@ -1,10 +1,10 @@
-# AGENTS.md — Guia do agente (opencode)
+# AGENTS.md: Guia do agente (opencode)
 
 > Leia primeiro: **docs/CONSTITUTION.md** (regras), **docs/SPEC.md** (produto), e os specs de feature conforme a **docs/ROADMAP.md**.
 
 ## O projeto
 
-**Tribunal do Dia** (repo `amigos-vote` / `ladeiros-vote`) — app de votação entre amigos com tom de zoeira. Modo **diário** (async, 1x/dia) + modos planejados: **sugestões** e **ao vivo**.
+**Tribunal do Dia** (repo `amigos-vote` / `ladeiros-vote`): app de votação entre amigos com tom de zoeira. Modo **diário** (async, 1x/dia) + modos planejados: **sugestões** e **ao vivo**.
 
 ## Stack
 
@@ -31,13 +31,13 @@ Camadas: `UI → hooks (React Query) → services (axios) → BFF routes → rep
 
 Mapa de pastas:
 
-- `src/app/(pages)` — UI, route groups `(public)`/`(private)`; componentes de página em `_components/`
-- `src/app/(BFF)/api/**/route.ts` — route handlers (auth + lógica), com **header BDD**
-- `src/db/{schema.ts, repositories/}` — modelo + acesso a dados
-- `src/data/{http.ts, services/, hooks/, types.ts}` — cliente HTTP + React Query
-- `src/types/` — Zod + interfaces (`*SchemaIn/Out`, `Response<T>`)
-- `src/components/{ui,shared,layout,visual}` — biblioteca de UI (`PageShell`, `Stamp`, `Kicker`, `Marquee`)
-- `src/app/(pages)/globals.css` — **tokens do design system** (fonte da verdade visual)
+- `src/app/(pages)`: UI, route groups `(public)`/`(private)`; componentes de página em `_components/`
+- `src/app/(BFF)/api/**/route.ts`: route handlers (auth + lógica), com **header BDD**
+- `src/db/{schema.ts, repositories/}`: modelo + acesso a dados
+- `src/data/{http.ts, services/, hooks/, types.ts}`: cliente HTTP + React Query
+- `src/types/`: Zod + interfaces (`*SchemaIn/Out`, `Response<T>`)
+- `src/components/{ui,shared,layout,visual}`: biblioteca de UI (`PageShell`, `Stamp`, `Kicker`, `Marquee`)
+- `src/app/(pages)/globals.css`: **tokens do design system** (fonte da verdade visual)
 
 ## Convenções essenciais
 
@@ -51,19 +51,19 @@ Mapa de pastas:
 
 1. **`basePath` é build + runtime**: `NEXT_PUBLIC_BASE_PATH` deve estar no `.env` e é lido em **build** (next.config.ts/axios/SessionProvider) **e runtime** (`next start` reavalia next.config.ts). Mudar o prefixo exige **rebuild**.
 2. **NextAuth sob subpath**: `SessionProvider` precisa `basePath=".../api/auth"`; `NEXTAUTH_URL` deve ir **até `/api/auth`**.
-3. **pnpm**: `packageManager` travado em `pnpm@10.0.0`. `onlyBuiltDependencies` aprova `@tailwindcss/oxide, esbuild, sharp, unrs-resolver` — **não remova**.
+3. **pnpm**: `packageManager` travado em `pnpm@10.0.0`. `onlyBuiltDependencies` aprova `@tailwindcss/oxide, esbuild, sharp, unrs-resolver`: **não remova**.
 4. **`drizzle-kit` está em `dependencies`** (não devDeps) para rodar migrations no container via `make db-push`.
-5. **Portas em `127.0.0.1`** em dev/prod — nunca exponha o Postgres publicamente.
+5. **Portas em `127.0.0.1`** em dev/prod: nunca exponha o Postgres publicamente.
 6. **Turbopack** em build/dev; mantenha compatibilidade.
 
 ## Documentação de referência
 
-- `docs/SPEC.md` — produto base (modo diário), público, tom
-- `docs/CONSTITUTION.md` — regras de arquitetura/estilo (SOLID/DRY/KISS)
-- `docs/SUGESTOES.md` — feature: sugestão de perguntas (curadoria admin)
-- `docs/LIVE.md` — feature: modo ao vivo (Jackbox-style)
-- `docs/ROADMAP.md` — ordem de implementação
-- `docs/AUDITORIA.md` — auditoria do estado atual
+- `docs/SPEC.md`: produto base (modo diário), público, tom
+- `docs/CONSTITUTION.md`: regras de arquitetura/estilo (SOLID/DRY/KISS)
+- `docs/SUGESTOES.md`: feature: sugestão de perguntas (curadoria admin)
+- `docs/LIVE.md`: feature: modo ao vivo (Jackbox-style)
+- `docs/ROADMAP.md`: ordem de implementação
+- `docs/AUDITORIA.md`: auditoria do estado atual
 
 ## Fluxo de trabalho padrão
 

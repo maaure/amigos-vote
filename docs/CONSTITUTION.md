@@ -1,4 +1,4 @@
-# Constitution — Regras de Arquitetura e Estilo
+# Constitution: Regras de Arquitetura e Estilo
 
 Princípios e regras **obrigatórios** neste codebase. Toda contribuição (humana ou de IA) deve respeitar este documento. Em caso de conflito com um atalho "mais rápido", **o princípio vence**.
 
@@ -7,11 +7,11 @@ Princípios e regras **obrigatórios** neste codebase. Toda contribuição (huma
 ## 1. Princípios
 
 ### SOLID
-- **S** — Responsabilidade única: cada módulo/função/componente faz **uma** coisa. Um `repository` só acessa dados; um `route handler` só orquestra; um componente só apresenta.
-- **O** — Aberto p/ extensão, fechado p/ modificação: novas variações via **CVA variants** (botões, badges), novas estratégias via **interfaces** (ex.: `ModerationStrategy`), nunca por `if` derrubando código existente.
-- **L** — Subtipos substituíveis: componentes/funções que compartilham interface devem ser intercambiáveis sem surpresa.
-- **I** — Interfaces segregadas: prefira vários hooks/repos pequenos e específicos a um "gerente" que faz tudo.
-- **D** — Dependa de abstrações: componentes dependem dos **tokens de design** (CSS vars), não de cores hex; a UI depende de hooks, não de chamadas HTTP diretas.
+- **S**: Responsabilidade única. Cada módulo/função/componente faz **uma** coisa. Um `repository` só acessa dados; um `route handler` só orquestra; um componente só apresenta.
+- **O**: Aberto p/ extensão, fechado p/ modificação. Novas variações via **CVA variants** (botões, badges), novas estratégias via **interfaces** (ex.: `ModerationStrategy`), nunca por `if` derrubando código existente.
+- **L**: Subtipos substituíveis. Componentes/funções que compartilham interface devem ser intercambiáveis sem surpresa.
+- **I**: Interfaces segregadas. Prefira vários hooks/repos pequenos e específicos a um "gerente" que faz tudo.
+- **D**: Dependa de abstrações. Componentes dependem dos **tokens de design** (CSS vars), não de cores hex; a UI depende de hooks, não de chamadas HTTP diretas.
 
 ### DRY
 - Um único dono por responsabilidade. Antes de criar, **procure** o equivalente: `PageShell`, `Stamp`, `Kicker`, `Marquee`, `getInitials`, `cn`, repositórios.
@@ -68,7 +68,7 @@ UI (src/app/(pages))
 
 - **Tokens são a fonte da verdade**: use classes do tema (`bg-paper`, `text-highlight`, `border-rule`, `text-gold`...) definidas em `src/app/(pages)/globals.css`. **Nunca** hardcoded `#hex` em componentes.
 - **Reutilize primitivos**: `PageShell` (container de página), `Stamp`, `Kicker`, `Marquee`. Não reinvente wrappers repetidos.
-- **Variantes via CVA**: novas variações de botão/badge/card entram no `cva(...)` do componente — extensíveis, não editadas caso a caso.
+- **Variantes via CVA**: novas variações de botão/badge/card entram no `cva(...)` do componente: extensíveis, não editadas caso a caso.
 - **Tipografia**: `font-display` (Anton, títulos), corpo (Hanken Grotesk), `font-mono` (códigos/timer/carimbos). Use `.masthead` para títulos tabloide.
 - **Identidade**: estética "Tribunal / Procurado". Copy em **pt-BR**, tom de zoeira autoconsciente (ver `SPEC.md`).
 - **Sem emojis** no código/copy salvo pedido explícito.
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) { ... }
 - Acesso a grupo validado por `GroupParticipationRepository.isMember(groupId, friendId)`.
 - **Nunca** exponha segredos; `.env` **nunca** commitado.
 - Em produção: portas DB/app atadas a `127.0.0.1`; acesso público só via reverse proxy nativo da VPS.
-- (A implementar) `isCurator(session)` lê `ADMIN_GOOGLE_IDS` — ponto único p/ checagem de curadoria.
+- (A implementar) `isCurator(session)` lê `ADMIN_GOOGLE_IDS`: ponto único p/ checagem de curadoria.
 
 ---
 

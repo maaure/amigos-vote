@@ -22,7 +22,7 @@ export default function GroupInviteCard({ accessCode, groupName }: Props) {
 
   const buildInviteText = () =>
     [
-      "⚖️ CONVOCAÇÃO — Tribunal do Dia",
+      "⚖️ CONVOCAÇÃO · Tribunal do Dia",
       "",
       `Tribunal: ${groupName}`,
       `Código de acesso: ${accessCode}`,
@@ -43,7 +43,7 @@ export default function GroupInviteCard({ accessCode, groupName }: Props) {
     const text = buildInviteText();
     if (navigator.share) {
       try {
-        await navigator.share({ title: "Convite — Tribunal do Dia", text });
+        await navigator.share({ title: "Convite · Tribunal do Dia", text });
         return;
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return;
@@ -112,7 +112,7 @@ export default function GroupInviteCard({ accessCode, groupName }: Props) {
       </Button>
 
       <p className="text-center font-mono text-xs uppercase tracking-widest text-muted-foreground">
-        O convite sai com o código e o link — é só colar no WhatsApp.
+        O convite sai com o código e o link, é só colar no WhatsApp.
       </p>
     </section>
   );

@@ -12,7 +12,7 @@ RUN chown inimigos:inimigos /app
 USER inimigos
 RUN mkdir -p .next
 
-# --- deps (cacheável — só invalida se package.json ou lock mudar) ---
+# --- deps (cacheável (só invalida se package.json ou lock mudar) ---
 COPY --chown=inimigos:inimigos package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store,uid=1001,gid=1001 \
     pnpm install --frozen-lockfile

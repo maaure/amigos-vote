@@ -25,9 +25,9 @@ export default async function NotFound() {
             Você não tem permissão para acessar este grupo ou ele não existe nos registros.
           </p>
           <ul className="mx-auto max-w-sm space-y-1 text-left font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            <li>— Você não é membro deste tribunal.</li>
-            <li>— O grupo foi removido.</li>
-            <li>— O link está incorreto.</li>
+            <li>• Você não é membro deste tribunal.</li>
+            <li>• O grupo foi removido.</li>
+            <li>• O link está incorreto.</li>
           </ul>
           <div className="flex flex-col gap-3 pt-2">
             <Link href="/groups" className="w-full">

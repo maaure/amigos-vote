@@ -1,4 +1,4 @@
-# Tribunal Ao Vivo — Spec
+# Tribunal Ao Vivo: Spec
 
 ## O que é
 
@@ -37,23 +37,23 @@ lobby → round.intro → round.voting → round.reveal → (loop ×N) → final
 | voting    | ~25s    | cada jurado aponta suspeito(s); voto secreto; timer      |
 | reveal    | ~8s     | trava votação; barra de culpa animada; carimbo CULPADO   |
 | finale    | fixo    | placar final + Grande Culpado da Noite                   |
-| closed    | —       | arquivada (snapshot salvo)                               |
+| closed    | -       | arquivada (snapshot salvo)                               |
 
 Avanço de fase: **timer automático** (padrão) com botão de "pular" pro host.
 
 ## Mecânicas de rodada
 
-- **Fonte de acusações**: sorteia de `questions WHERE mode IN ('live','both')`. O modo ao vivo **não marca `used`** (esse flag é da lógica diária de uso único) — perguntas podem reaparecer em sessões diferentes.
+- **Fonte de acusações**: sorteia de `questions WHERE mode IN ('live','both')`. O modo ao vivo **não marca `used`** (esse flag é da lógica diária de uso único): perguntas podem reaparecer em sessões diferentes.
 - **Votação**: cada jurado pode votar em até `allowedVotes` suspeitos distintos. **Não pode votar em si mesmo.**
 - **Voto secreto durante `voting`**: ninguém vê a barra individual; só a barra agregada (ou só na reveal). Tensão de convenção do júri.
-- **Barra de culpa ao vivo**: atualiza conforme os votos chegam — o suspense é ver seu nome subir.
+- **Barra de culpa ao vivo**: atualiza conforme os votos chegam: o suspense é ver seu nome subir.
 
 ## Os dois placares (o pulo do gato)
 
 - **Índice de culpa** = Σ votos recebidos → coroa o **Grande Culpado da Noite**.
 - **Jurado afiado** = pontos por ter votado no **mais votado da rodada** (1 pt/acerto) → coroa o **Jurado Implacável**.
 
-Mesma pessoa pode vencer os dois (o "réu do ano" que também lê a sala) — é a tensão que faz querer reviver.
+Mesma pessoa pode vencer os dois (o "réu do ano" que também lê a sala): é a tensão que faz querer reviver.
 
 ## Casos de borda / regras
 
@@ -92,17 +92,17 @@ live_results              // snapshot do finale
   guiltReceived int, juradoPoints int, rankGuilt int, rankJurado int
 ```
 
-> Votos ao vivo ficam em `live_votes` — **separados** da tabela `vote` do modo diário (ciclos de vida/semântica diferentes).
+> Votos ao vivo ficam em `live_votes`: **separados** da tabela `vote` do modo diário (ciclos de vida/semântica diferentes).
 
 ## Tempo real (transporte)
 
-- **MVP — polling**: cliente faz `GET /api/live/:sessionId/state` a cada **1.5s**; vota via `POST`. Sem ops, valida o funil.
-- **Fase 2 — WebSocket**: serviço **Socket.io num container separado** no `docker-compose` (ou Supabase Realtime). Salas por `sessionId`.
+- **MVP: polling**: cliente faz `GET /api/live/:sessionId/state` a cada **1.5s**; vota via `POST`. Sem ops, valida o funil.
+- **Fase 2: WebSocket**: serviço **Socket.io num container separado** no `docker-compose` (ou Supabase Realtime). Salas por `sessionId`.
 - **Autoridade**: o servidor detém o estado e computa transições/totais; o cliente só **rendera** o estado e **emite** votos. Clientes nunca decidem fase nem contagem.
 
 Eventos (fase 2): `state:sync`, `vote:cast`, `reaction`, `round:advance`.
 
-## API (BFF — App Router)
+## API (BFF: App Router)
 
 ```
 POST   /api/live                          # cria sessão (host) -> { sessionId }
@@ -119,7 +119,7 @@ Autorização: só membros do grupo (`GroupParticipationRepository.isMember`); t
 ## Fluxo de tela / rotas
 
 - **Rota**: `/groups/[id]/live` (a "cena", mobile-first).
-- **Entrada no grupo**: botão **"Abrir sessão ao vivo"** (cria sessão) e, quando há uma ativa, **"Sessão aberta — entrar"**.
+- **Entrada no grupo**: botão **"Abrir sessão ao vivo"** (cria sessão) e, quando há uma ativa, **"Sessão aberta: entrar"**.
 - **Views** (switch em `status`/`phase`):
   - *Lobby*: quem entrou + controles do host.
   - *Round*: pôster da acusação + grade de suspeitos + timer + barra de culpa.
@@ -137,7 +137,7 @@ A identidade do Tribunal já entrega a maior parte:
 ## Integração
 
 - **Perguntas**: pool `mode IN ('live','both')` (sem mexer em `used`); o campo `mode` é introduzido pelo `SUGESTOES.md` e atende os dois modos.
-- **Acusações improvisadas**: o host pode adicionar `customText` direto na sessão — caminho privado/efêmero definido no `SUGESTOES.md` (pipeline ao vivo, sem curadoria).
+- **Acusações improvisadas**: o host pode adicionar `customText` direto na sessão: caminho privado/efêmero definido no `SUGESTOES.md` (pipeline ao vivo, sem curadoria).
 - **Crédito de autoria**: se a rodada usa `questionId` com `authorFriendId` setado, mostrar "acusação proposta por @fulano".
 - **Histórico**: (depois) escrever um resumo da sessão no histórico do grupo pra quem não participou ver o "Grande Culpado da Noite".
 
