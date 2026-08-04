@@ -44,7 +44,7 @@ export default function NewGroupPage() {
   function onSuccess(newGroup: NewGroupResponse) {
     toast.success("Tribunal aberto!");
     router.push(
-      `/groups/created?accessCode=${newGroup.data.accessCode}&groupName=${newGroup.data.name}`
+      `/groups/created?accessCode=${newGroup.data.accessCode}&groupName=${encodeURIComponent(newGroup.data.name)}`
     );
   }
 
